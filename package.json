@@ -8,6 +8,7 @@
     "@nrwl/cli": "14.4.3",
     "@nrwl/js": "14.4.3",
     "@nrwl/nest": "^14.4.3",
+    "@nrwl/react": "^14.4.3",
     "@nrwl/workspace": "14.4.3",
     "nx": "14.4.3",
     "prettier": "^2.6.2",
