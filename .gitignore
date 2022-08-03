@@ -41,3 +41,6 @@ yarn-error.log*
 
 #idea
 .idea
+
+#project
+src/assets/build
