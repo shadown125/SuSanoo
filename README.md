@@ -1,92 +1,131 @@
-# SuSanoo
+# Create T3 App
 
-This project was generated using [Nx](https://nx.dev).
+This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack.
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Why are there `.js` files in here?
 
-🔎 **Smart, Fast and Extensible Build System**
+As per [T3-Axiom #3](https://github.com/t3-oss/create-t3-app/tree/next#3-typesafety-isnt-optional), we believe take typesafety as a first class citizen. Unfortunately, not all frameworks and plugins support TypeScript which means some of the configuration files have to be `.js` files.
 
-## Adding capabilities to your workspace
+We try to emphasize that these files are javascript for a reason, by explicitly declaring its type (`cjs` or `mjs`) depending on what's supported by the library it is used by. Also, all the `js` files in this project are still typechecked using a `@ts-check` comment at the top.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## What's next? How do I make an app with this?
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+We try to keep this project as simple as possible, so you can start with the most basic configuration and then move on to more advanced configuration.
 
-Below are our core plugins:
+If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-- [React](https://reactjs.org)
-    - `npm install --save-dev @nrwl/react`
-- Web (no framework frontends)
-    - `npm install --save-dev @nrwl/web`
-- [Angular](https://angular.io)
-    - `npm install --save-dev @nrwl/angular`
-- [Nest](https://nestjs.com)
-    - `npm install --save-dev @nrwl/nest`
-- [Express](https://expressjs.com)
-    - `npm install --save-dev @nrwl/express`
-- [Node](https://nodejs.org)
-    - `npm install --save-dev @nrwl/node`
+- [Next-Auth.js](https://next-auth.js.org)
+- [Prisma](https://prisma.io)
+- [TailwindCSS](https://tailwindcss.com)
+- [tRPC](https://trpc.io) (using @next version? [see v10 docs here](https://alpha.trpc.io))
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+## How do I deploy this?
 
-## Generate an application
+### Vercel
 
-Run `nx g @nrwl/react:app my-app` to generate an application.
+We recommend deploying to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss). It makes it super easy to deploy NextJs apps.
 
-> You can use any of the plugins above to generate applications as well.
+- Push your code to a GitHub repository.
+- Go to [Vercel](https://vercel.com/?utm_source=t3-oss&utm_campaign=oss) and sign up with GitHub.
+- Create a Project and import the repository you pushed your code to.
+- Add your environment variables.
+- Click **Deploy**
+- Now whenever you push a change to your repository, Vercel will automatically redeploy your website!
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Docker
 
-## Generate a library
+You can also dockerize this stack and deploy a container.
 
-Run `nx g @nrwl/react:lib my-lib` to generate a library.
+1. In your [next.config.mjs](next.config.mjs), add the `output: "standalone"` option to your config.
+2. Create a `.dockerignore` file with the following contents:
+   <details>
+   <summary>.dockerignore</summary>
 
-> You can also use any of the plugins above to generate libraries as well.
+   ```
+   Dockerfile
+   .dockerignore
+   node_modules
+   npm-debug.log
+   README.md
+   .next
+   .git
+   ```
 
-Libraries are shareable across libraries and applications. They can be imported from `@susanno/mylib`.
+  </details>
 
-## Development server
+3. Create a `Dockerfile` with the following contents:
+   <details>
+   <summary>Dockerfile</summary>
 
-Run `nx serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+   ```Dockerfile
+   # Install dependencies only when needed
+   FROM node:16-alpine AS deps
+   # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+   RUN apk add --no-cache libc6-compat
+   WORKDIR /app
 
-## Code scaffolding
-
-Run `nx g @nrwl/react:component my-component --project=my-app` to generate a new component.
-
-## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `nx test my-app` to execute the unit tests via [Jest](https://jestjs.io).
-
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev) to learn more.
+   # Install dependencies based on the preferred package manager
+   COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+   RUN \
+      if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+      elif [ -f package-lock.json ]; then npm ci; \
+      elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i; \
+      else echo "Lockfile not found." && exit 1; \
+      fi
 
 
+   # Rebuild the source code only when needed
+   FROM node:16-alpine AS builder
+   WORKDIR /app
+   COPY --from=deps /app/node_modules ./node_modules
+   COPY susanoo .
 
-## ☁ Nx Cloud
+   # Next.js collects completely anonymous telemetry data about general usage.
+   # Learn more here: https://nextjs.org/telemetry
+   # Uncomment the following line in case you want to disable telemetry during the build.
+   # ENV NEXT_TELEMETRY_DISABLED 1
 
-### Distributed Computation Caching & Distributed Task Execution
+   RUN yarn build
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+   # If using npm comment out above and use below instead
+   # RUN npm run build
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+   # Production image, copy all the files and run next
+   FROM node:16-alpine AS runner
+   WORKDIR /app
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
+   ENV NODE_ENV production
+   # Uncomment the following line in case you want to disable telemetry during runtime.
+   # ENV NEXT_TELEMETRY_DISABLED 1
 
-Visit [Nx Cloud](https://nx.app/) to learn more.
+   RUN addgroup --system --gid 1001 nodejs
+   RUN adduser --system --uid 1001 nextjs
+
+   # You only need to copy next.config.js if you are NOT using the default configuration
+   # COPY --from=builder /app/next.config.js ./
+   COPY --from=builder /app/public ./public
+   COPY --from=builder /app/package.json ./package.json
+
+   # Automatically leverage output traces to reduce image size
+   # https://nextjs.org/docs/advanced-features/output-file-tracing
+   COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+   COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+   USER nextjs
+
+   EXPOSE 3000
+
+   ENV PORT 3000
+
+   CMD ["node", "server.js"]
+   ```
+
+  </details>
+
+4. You can now build an image to deploy yourself, or use a PaaS such as [Railway's](https://railway.app) automated [Dockerfile deployments](https://docs.railway.app/deploy/dockerfiles) to deploy your app.
+
+## Useful resources
+
+Here are some resources that we commonly refer to:
+
+- [Protecting routes with Next-Auth.js](https://next-auth.js.org/configuration/nextjs#unstable_getserversession)
