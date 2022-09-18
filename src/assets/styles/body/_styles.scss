@@ -1,0 +1,12 @@
+@use '../susanoo';
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: {
+        color: var(--light-dark);
+        image: linear-gradient(130deg, var(--ligh-purple), var(--light-dark) 0%, var(--ligh-purple), var(--light-dark) 100%);
+    }
+}
