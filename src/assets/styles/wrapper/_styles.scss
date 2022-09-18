@@ -1,0 +1,8 @@
+@use '../susanoo';
+
+.wrapper {
+    max: {
+        width: var(--wrapper);
+    }
+    margin: 0 auto;
+}
