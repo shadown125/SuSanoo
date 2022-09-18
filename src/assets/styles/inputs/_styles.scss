@@ -1,0 +1,61 @@
+@use '../susanoo';
+
+.input {
+    position: relative;
+    &.is-invalid {
+        &::before {
+            width: 100%;
+            background: {
+                color: var(--red);
+            }
+        }
+    }
+    &:focus,
+    &:focus-within {
+        &::before {
+            width: 100%;
+        }
+    }
+    &::before {
+        content: '';
+        width: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        background: {
+            color: var(--color-primary);
+        }
+        transition: width 0.25s linear;
+    }
+}
+
+input,
+textarea {
+    width: 100%;
+    border: {
+        style: unset;
+        width: unset;
+        color: unset;
+    }
+    padding: susanoo.rem-calc(16) susanoo.rem-calc(12);
+    background: {
+        color: #171717;
+    }
+    border: {
+        radius: 2px;
+    }
+    color: white;
+    &:focus,
+    &:focus-within {
+        outline: unset;
+    }
+    &::selection {
+        background: var(--color-tertiary);
+    }
+}
+
+textarea {
+    resize: none;
+    height: susanoo.rem-calc(150);
+}
