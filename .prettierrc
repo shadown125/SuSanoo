@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "arrowParens": "always",
+  "printWidth": 180,
+  "singleQuote": false,
+  "jsxSingleQuote": false,
+  "semi": true,
+  "trailingComma": "all",
+  "tabWidth": 4,
+  "overrides": [
+    {
+      "files" : "*.scss",
+      "options": {
+        "singleQuote": true
+      }
+    }
+  ]
+}
