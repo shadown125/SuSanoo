@@ -1,0 +1,59 @@
+@use '../susanoo';
+@use 'variables';
+
+@mixin grid($column: #{variables.$grid-columns}) {
+    display: grid;
+    grid: {
+        template: {
+            columns: repeat($column, 1fr);
+        }
+    }
+}
+
+@mixin grid-centered($column: #{variables.$grid-columns}, $height: 100vh) {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    height: $height;
+    grid: {
+        template: {
+            columns: repeat($column, 1fr);
+        }
+    }
+}
+
+@mixin grid-item() {
+    --columns: #{variables.$grid-columns};
+
+    grid: {
+        column: span var(--columns);
+    }
+    @include susanoo.media(medium) {
+        grid: {
+            column: span var(--column-medium, var(--columns));
+        }
+    }
+    @include susanoo.media(large) {
+        grid: {
+            column: span var(--column-large, var(--column-medium, var(--columns)));
+        }
+    }
+}
+
+@mixin grid-item-extend() {
+    --columns: #{variables.$grid-columns};
+
+    grid: {
+        column: var(--column-start) / span var(--columns);
+    }
+    @include susanoo.media(medium) {
+        grid: {
+            column: var(--column-start-medium, var(--column-start)) / span var(--column-medium, var(--columns));
+        }
+    }
+    @include susanoo.media(large) {
+        grid: {
+            column: var(--column-start-large, var(--column-start-medium, var(--column-start))) / span var(--column-large, var(--column-medium, var(--columns)));
+        }
+    }
+}

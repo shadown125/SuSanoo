@@ -1,0 +1,14 @@
+@use '../susanoo';
+@use 'variables';
+@use 'mixins';
+
+html {
+    font: {
+        size: clamp(#{susanoo.rem-calc(16)}, 2vw, #{susanoo.rem-calc(22)});
+        family: variables.$font-family;
+    }
+}
+
+.grid {
+    @include mixins.grid();
+}
