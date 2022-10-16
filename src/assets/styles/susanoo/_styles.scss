@@ -52,6 +52,7 @@ $rem-base: 16px;
 }
 
 $sus-breakpoints: (
+    xsmall: rem-calc(500),
     small: rem-calc(640),
     medium: rem-calc(800),
     large: rem-calc(1200),
