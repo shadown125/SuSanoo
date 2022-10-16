@@ -11,4 +11,7 @@ html {
 
 .grid {
     @include mixins.grid();
+    &--centered {
+        @include mixins.grid-centered();
+    }
 }
