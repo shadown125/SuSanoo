@@ -2,12 +2,43 @@
 
 .input {
     position: relative;
+    background: {
+        color: rgba(255, 255, 255, 0.3);
+    }
+    border: {
+        radius: susanoo.rem-calc(40);
+        style: solid;
+        width: 2px;
+        color: transparent;
+    }
+    width: 100%;
     &.is-invalid {
-        &::before {
-            width: 100%;
-            background: {
-                color: var(--red);
+        border: {
+            color: var(--color-red);
+        }
+        + .error-message {
+            color: var(--color-red);
+            padding: {
+                left: susanoo.rem-calc(12);
             }
+        }
+    }
+    &.is-icon {
+        > input {
+            padding: {
+                left: susanoo.rem-calc(56);
+            }
+        }
+        &::before {
+            @include susanoo.icon(null, true);
+            position: absolute;
+            top: 50%;
+            left: susanoo.rem-calc(20);
+            transform: translateY(-50%);
+            font: {
+                size: susanoo.rem-calc(20);
+            }
+            color: rgba(0, 0, 0, 0.3);
         }
     }
     &:focus,
@@ -15,18 +46,6 @@
         &::before {
             width: 100%;
         }
-    }
-    &::before {
-        content: '';
-        width: 0;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 2px;
-        background: {
-            color: var(--color-primary);
-        }
-        transition: width 0.25s linear;
     }
 }
 
@@ -38,24 +57,30 @@ textarea {
         width: unset;
         color: unset;
     }
-    padding: susanoo.rem-calc(16) susanoo.rem-calc(12);
+    padding: susanoo.rem-calc(12);
     background: {
-        color: #171717;
+        color: transparent;
     }
     border: {
         radius: 2px;
     }
-    color: white;
+    color: var(--color-light-dark);
     &:focus,
     &:focus-within {
         outline: unset;
     }
     &::selection {
-        background: var(--color-tertiary);
+        background: var(--color-primary);
     }
 }
 
 textarea {
     resize: none;
     height: susanoo.rem-calc(150);
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
