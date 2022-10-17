@@ -6,6 +6,7 @@ import superjson from "superjson";
 import { SessionProvider } from "next-auth/react";
 import "../../public/main.css";
 import HeadPage from "../../components/headPage/HeadPage";
+import { appWithTranslation } from "next-i18next";
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
     return (
@@ -46,4 +47,5 @@ export default withTRPC<AppRouter>({
      * @link https://trpc.io/docs/ssr
      */
     ssr: false,
-})(MyApp);
+    //@ts-ignore
+})(appWithTranslation(MyApp));

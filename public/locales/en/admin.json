@@ -1,0 +1,7 @@
+{
+    "introductionText": "Please login to use Susanoo",
+    "missingAccount": "Don't have an account? Contact owner for getting one.",
+    "requiredPassword": "Password is a required field",
+    "requiredEmail": "Email is a required field",
+    "validEmail": "Email need to be valid"
+}

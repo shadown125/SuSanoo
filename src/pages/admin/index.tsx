@@ -1,11 +1,12 @@
-import { NextPage } from "next";
-import { Form, Formik } from "formik";
-import EmailField from "../../../elements/inputFields/EmailField";
+import { GetStaticProps, NextPage } from "next";
 import { admin } from "../../../schemas/validation/admin";
-import PasswordField from "../../../elements/inputFields/PasswordField";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import i18n from "../../../next-i18next.config.mjs";
+import { useTranslation } from "next-i18next";
+import AdminForm from "../../../components/adminForm/AdminForm";
 
 const Admin: NextPage = () => {
-    const submitHandler = (data: { email: string; password: string }, { setSubmitting, resetForm }: { setSubmitting: Function; resetForm: Function }) => {};
+    const { t } = useTranslation("admin");
 
     return (
         <section className="section admin">
@@ -14,24 +15,9 @@ const Admin: NextPage = () => {
                     <div className="container">
                         <div className="content">
                             <h1 className="headline h2">Susanoo</h1>
-                            <span>Please login to use Susanoo</span>
-                            <Formik initialValues={{ email: "", password: "" }} onSubmit={submitHandler} validationSchema={admin}>
-                                {({ isSubmitting }) => (
-                                    <Form>
-                                        <div className="row login">
-                                            <EmailField name="email" />
-                                        </div>
-                                        <div className="row password">
-                                            <PasswordField name="password" />
-                                        </div>
-                                        <button className="button is-login" disabled={isSubmitting} type="submit">
-                                            Login
-                                            <span></span>
-                                        </button>
-                                    </Form>
-                                )}
-                            </Formik>
-                            <span className="account">Don't have an account? Contact owner for getting one</span>
+                            <span>{t("introductionText")}</span>
+                            <AdminForm />
+                            <span className="account">{t("missingAccount")}</span>
                         </div>
                     </div>
                 </div>
@@ -41,3 +27,11 @@ const Admin: NextPage = () => {
 };
 
 export default Admin;
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale!, ["common", "admin"], i18n)),
+        },
+    };
+};
