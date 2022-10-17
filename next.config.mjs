@@ -1,4 +1,5 @@
 import { env } from "./src/env/server.mjs";
+import i18n from "./next-i18next.config.mjs";
 
 /**
  * Don't be scared of the generics here.
@@ -15,4 +16,5 @@ function defineNextConfig(config) {
 export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
+  ...i18n,
 });
