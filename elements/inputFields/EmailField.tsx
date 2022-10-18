@@ -1,7 +1,8 @@
 import { useField } from "formik";
 import { useTranslation } from "next-i18next";
+import { FC } from "react";
 
-const EmailField = (props: { name: string }) => {
+const EmailField: FC<{ name: string }> = (props) => {
     const { t } = useTranslation("admin");
     const [field, meta] = useField(props);
     const errorText = meta.error && meta.touched ? meta.error : "";

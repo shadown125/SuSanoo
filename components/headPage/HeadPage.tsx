@@ -1,6 +1,7 @@
 import Head from "next/head";
+import { FC } from "react";
 
-const HeadPage = () => {
+const HeadPage: FC = () => {
     return (
         <Head>
             <meta charSet="UTF-8" />

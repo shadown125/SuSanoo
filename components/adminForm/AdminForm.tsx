@@ -5,10 +5,10 @@ import PasswordField from "../../elements/inputFields/PasswordField";
 import { useTranslation } from "next-i18next";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { response } from "../../src/types/response";
 
-const AdminForm = () => {
+const AdminForm: FC = () => {
     const { t } = useTranslation("");
     const router = useRouter();
     const [notification, setNotification] = useState<string>("");
