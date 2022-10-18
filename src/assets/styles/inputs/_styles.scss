@@ -6,7 +6,7 @@
         color: rgba(255, 255, 255, 0.3);
     }
     border: {
-        radius: susanoo.rem-calc(40);
+        radius: susanoo.rem-calc(8);
         style: solid;
         width: 2px;
         color: transparent;
@@ -26,14 +26,14 @@
     &.is-icon {
         > input {
             padding: {
-                left: susanoo.rem-calc(56);
+                left: susanoo.rem-calc(40);
             }
         }
         &::before {
             @include susanoo.icon(null, true);
             position: absolute;
             top: 50%;
-            left: susanoo.rem-calc(20);
+            left: susanoo.rem-calc(10);
             transform: translateY(-50%);
             font: {
                 size: susanoo.rem-calc(20);
@@ -43,6 +43,9 @@
     }
     &:focus,
     &:focus-within {
+        border: {
+            color: var(--color-light-purple);
+        }
         &::before {
             width: 100%;
         }
