@@ -10,22 +10,25 @@ const AdminForm = () => {
     const submitHandler = (data: { email: string; password: string }, { setSubmitting, resetForm }: { setSubmitting: Function; resetForm: Function }) => {};
 
     return (
-        <Formik initialValues={{ email: "", password: "" }} onSubmit={submitHandler} validationSchema={admin}>
-            {({ isSubmitting }) => (
-                <Form>
-                    <div className="row login">
-                        <EmailField name="email" />
-                    </div>
-                    <div className="row password">
-                        <PasswordField name="password" />
-                    </div>
-                    <button className="button is-login" disabled={isSubmitting} type="submit">
-                        {t("login")}
-                        <span></span>
-                    </button>
-                </Form>
-            )}
-        </Formik>
+        <>
+            <div className={`notification notification--${notification}${notification && " is-active"}`}>{t(`admin:${errorMessage}`)}</div>
+            <Formik initialValues={{ email: "", password: "" }} onSubmit={submitHandler} validationSchema={admin}>
+                {({ isSubmitting }) => (
+                    <Form>
+                        <div className="row login">
+                            <EmailField name="email" />
+                        </div>
+                        <div className="row password">
+                            <PasswordField name="password" />
+                        </div>
+                        <button className="button is-login" disabled={isSubmitting} type="submit">
+                            {t("common:login")}
+                            <span></span>
+                        </button>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
 };
 
