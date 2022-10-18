@@ -3,5 +3,7 @@
     "missingAccount": "Don't have an account? Contact owner for getting one.",
     "requiredPassword": "Password is a required field",
     "requiredEmail": "Email is a required field",
-    "validEmail": "Email need to be valid"
+    "validEmail": "Email need to be valid",
+    "invalidEmailOrPassword": "Email or password are invalid. Please try again",
+    "errorOccurred": "Error occurred. Could not log you in! Please try again"
 }

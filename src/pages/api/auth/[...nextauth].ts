@@ -1,30 +1,69 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
+import CredentialProvider from "next-auth/providers/credentials";
+import { verifyPassword } from "../../../../lib/auth";
 
 export const authOptions: NextAuthOptions = {
-  // Include user.id on session
-  callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
-      }
-      return session;
+    // Include user.id on session
+    callbacks: {
+        session({ session, user, token }) {
+            if (session.user) {
+                session.user.id = token.id as string;
+            }
+            return session;
+        },
+        jwt: async ({ user, token }) => {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        async redirect({ baseUrl }) {
+            return `${baseUrl}/admin/panel`;
+        },
     },
-  },
-  // Configure one or more authentication providers
-  adapter: PrismaAdapter(prisma),
-  providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
-    // ...add more providers here
-  ],
+    adapter: PrismaAdapter(prisma),
+    providers: [
+        CredentialProvider({
+            name: "credentials",
+            credentials: {
+                email: {
+                    label: "E-Mail",
+                    type: "email",
+                },
+                password: { label: "Password", type: "password" },
+            },
+            authorize: async (credentials) => {
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email: credentials!.email,
+                    },
+                });
+
+                if (!user) {
+                    throw new Error("invalidEmailOrPassword");
+                }
+
+                const isValid = await verifyPassword(credentials!.password, user.password);
+
+                if (!isValid) {
+                    throw new Error("errorOccurred");
+                }
+
+                return user;
+            },
+        }),
+    ],
+    secret: process.env.NEXTAUTH_SECRET,
+    session: {
+        strategy: "jwt",
+        maxAge: 2 * 60 * 60,
+        updateAge: 5 * 60,
+    },
 };
 
 export default NextAuth(authOptions);

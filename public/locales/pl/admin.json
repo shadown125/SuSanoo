@@ -3,5 +3,7 @@
     "missingAccount": "Nie masz konta? Skontaktuj się z właścicielem w celu jego uzyskania.",
     "requiredPassword": "Hasło jest wymaganym polem",
     "requiredEmail": "Email jest wymaganym polem",
-    "validEmail": "Email musi być poprawny"
+    "validEmail": "Email musi być poprawny",
+    "invalidEmailOrPassword": "E-mail lub hasło są nieprawidłowe. Proszę spróbować ponownie",
+    "errorOccurred": "Wystąpił błąd. Nie można się zalogować! Proszę spróbować ponownie"
 }
