@@ -1,10 +1,10 @@
 import { trpc } from "../../../utils/trpc";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import { getSuSAuthSession } from "../../../server/common/get-server-session";
 
-const Panel = () => {
+const Panel: NextPage = () => {
     const { data } = trpc.useQuery(["auth.getSession"]);
     const router = useRouter();
 
