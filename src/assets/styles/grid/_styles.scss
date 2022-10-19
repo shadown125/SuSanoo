@@ -15,3 +15,7 @@ html {
         @include mixins.grid-centered();
     }
 }
+
+.inner-panel {
+    background-color: var(--color-light-dark);
+}
