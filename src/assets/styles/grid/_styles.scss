@@ -9,6 +9,11 @@ html {
     }
 }
 
+.app {
+    --grid-margin: #{susanoo.rem-calc(20)};
+    --panel-padding: #{susanoo.rem-calc(16)};
+}
+
 .grid {
     @include mixins.grid();
     &--centered {
@@ -22,7 +27,7 @@ html {
 
 .default-grid {
     display: flex;
-    gap: susanoo.rem-calc(20);
+    gap: var(--grid-margin);
 }
 
 main {
