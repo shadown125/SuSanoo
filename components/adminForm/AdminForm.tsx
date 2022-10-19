@@ -7,6 +7,12 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { response } from "../../src/types/response";
+import { FormikSubmission } from "../../src/types/formik";
+
+type SubmitData = {
+    email: string;
+    password: string;
+};
 
 const AdminForm: FC = () => {
     const { t } = useTranslation("");
@@ -14,7 +20,7 @@ const AdminForm: FC = () => {
     const [notification, setNotification] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const submitHandler = async (data: { email: string; password: string }, { setSubmitting, resetForm }: { setSubmitting: Function; resetForm: Function }) => {
+    const submitHandler = async (data: SubmitData, { setSubmitting, resetForm }: FormikSubmission) => {
         try {
             const response = await signIn("credentials", {
                 redirect: false,
@@ -27,13 +33,12 @@ const AdminForm: FC = () => {
             if (error !== null) {
                 setNotification("failed");
                 setErrorMessage(error);
-                setSubmitting(false);
-                resetForm(true);
                 return;
             }
 
             await router.replace("/admin/panel");
 
+            setNotification("");
             setSubmitting(false);
             resetForm(true);
         } catch (error) {
