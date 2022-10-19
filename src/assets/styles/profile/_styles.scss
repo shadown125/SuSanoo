@@ -1,0 +1,52 @@
+@use '../susanoo';
+
+.profile {
+    display: flex;
+    gap: susanoo.rem-calc(20);
+    padding: susanoo.rem-calc(12);
+    align-items: center;
+    border: {
+        width: 2px;
+        style: solid;
+        color: #282843;
+        radius: susanoo.rem-calc(6);
+    }
+    transition: background-color 0.15s linear;
+    @include susanoo.media(small) {
+        gap: susanoo.rem-calc(12);
+        flex: {
+            direction: column;
+        }
+        .name,
+        .email {
+            text-align: center;
+        }
+    }
+    &:hover {
+        cursor: pointer;
+        background: {
+            color: var(--color-primary);
+        }
+    }
+    .image-wrapper {
+        img {
+            height: susanoo.rem-calc(60);
+            width: susanoo.rem-calc(60);
+            min: {
+                width: susanoo.rem-calc(60);
+            }
+            object-fit: cover;
+            border: {
+                radius: 50%;
+            }
+        }
+    }
+    .content {
+        .email {
+            color: var(--color-light-grey);
+            font: {
+                size: susanoo.rem-calc(14);
+            }
+        }
+    }
+}

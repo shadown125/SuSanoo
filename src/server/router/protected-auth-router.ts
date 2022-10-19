@@ -11,4 +11,15 @@ export const protectedAuthRouter = createProtectedRouter()
         resolve({ ctx }) {
             return "He who asks a question is a fool for five minutes; he who does not ask a question remains a fool forever.";
         },
+    })
+    .query("getProfile", {
+        resolve({ ctx }) {
+            const { name, image, email } = ctx.session.user;
+
+            return {
+                name,
+                image,
+                email,
+            };
+        },
     });
