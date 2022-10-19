@@ -8,6 +8,7 @@
     max: {
         width: var(---wrapper);
     }
+    color: var(--color-light-dark);
     .container {
         @include mixins.grid-item-extend();
         --columns: 6;
