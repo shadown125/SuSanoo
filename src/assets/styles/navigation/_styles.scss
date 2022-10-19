@@ -1,0 +1,73 @@
+@use '../susanoo';
+@use '../lists/mixins' as lists;
+@use '../icons/variables' as icons;
+
+.navigation {
+    border: {
+        radius: susanoo.rem-calc(6);
+    }
+    padding: susanoo.rem-calc(16);
+    .headline {
+        text-align: center;
+    }
+    ul {
+        @include lists.reset-list();
+        margin: susanoo.rem-calc(32) 0;
+        .is-icon {
+            --color-icon: var(--color-light-grey);
+        }
+        .icon-dashboard {
+            &::before {
+                @include susanoo.icon(icons.$icon-blackboard, false);
+            }
+        }
+        .icon-pages {
+            &::before {
+                @include susanoo.icon(icons.$icon-layers, false);
+            }
+        }
+        .icon-settings {
+            &::before {
+                @include susanoo.icon(icons.$icon-cog, false);
+            }
+        }
+        .link {
+            $padding-vertical: #{susanoo.rem-calc(12)};
+
+            width: 100%;
+            border: {
+                radius: susanoo.rem-calc(10);
+            }
+            padding: {
+                top: $padding-vertical;
+                bottom: $padding-vertical;
+                left: susanoo.rem-calc(56);
+                right: susanoo.rem-calc(12);
+            }
+            &:hover {
+                color: white;
+                background: {
+                    color: var(--color-primary);
+                }
+                &.is-icon {
+                    --color-icon: white;
+                }
+            }
+            &.is-active {
+                background: {
+                    color: var(--color-primary);
+                }
+                &.is-icon {
+                    --color-icon: white;
+                }
+            }
+        }
+        li {
+            &:not(:last-child) {
+                margin: {
+                    bottom: susanoo.rem-calc(6);
+                }
+            }
+        }
+    }
+}
