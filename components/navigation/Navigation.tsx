@@ -2,26 +2,10 @@ import { FC } from "react";
 import Profile from "../profile/Profile";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { links } from "../../content/navigation/links";
 
 const Navigation: FC = () => {
     const router = useRouter();
-    const links = [
-        {
-            name: "Dashboard",
-            path: "/admin/panel",
-            icon: "icon-dashboard",
-        },
-        {
-            name: "Pages",
-            path: "/admin/pages",
-            icon: "icon-pages",
-        },
-        {
-            name: "Settings",
-            path: "/admin/settings",
-            icon: "icon-settings",
-        },
-    ];
 
     return (
         <div className="inner-panel navigation">
