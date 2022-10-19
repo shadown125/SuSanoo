@@ -61,5 +61,67 @@ button {
                 }
             }
         }
+        &:disabled {
+            span {
+                &::before {
+                    background: {
+                        color: var(--color-light-dark);
+                    }
+                }
+            }
+        }
+    }
+    &:disabled {
+        color: transparent;
+        background: {
+            color: var(--color-light-dark);
+        }
+        pointer-events: none;
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: {
+                color: var(--color-pink);
+            }
+            animation: disabled-1 1.5s cubic-bezier(0.65, 0.81, 0.73, 0.4) infinite;
+        }
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: {
+                color: var(--color-pink);
+            }
+            animation: disabled-2 1.5s 1s cubic-bezier(0.16, 0.84, 0.44, 1) infinite;
+        }
+    }
+}
+
+@keyframes disabled-1 {
+    0% {
+        left: -200%;
+        right: 100%;
+    }
+    60%,
+    100% {
+        left: 100%;
+        right: -90%;
+    }
+}
+
+@keyframes disabled-2 {
+    0% {
+        left: -200%;
+        right: 100%;
+    }
+    60%,
+    100% {
+        left: 107%;
+        right: -8%;
     }
 }
