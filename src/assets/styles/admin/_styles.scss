@@ -56,6 +56,13 @@
                 }
             }
         }
+        @include susanoo.media(small) {
+            overflow-y: scroll;
+            overflow-x: hidden;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
         &::before {
             content: '';
             position: absolute;
@@ -72,6 +79,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 100%;
         max: {
             width: var(--max-width);
         }
