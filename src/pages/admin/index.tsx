@@ -1,9 +1,10 @@
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { admin } from "../../../schemas/validation/admin";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import i18n from "../../../next-i18next.config.mjs";
 import { useTranslation } from "next-i18next";
 import AdminForm from "../../../components/adminForm/AdminForm";
+import { getSuSAuthSession } from "../../server/common/get-server-session";
 
 const Admin: NextPage = () => {
     const { t } = useTranslation("admin");
@@ -28,10 +29,22 @@ const Admin: NextPage = () => {
 
 export default Admin;
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const session = await getSuSAuthSession(ctx);
+
+    if (session) {
+        return {
+            redirect: {
+                destination: "/admin/panel",
+                permanent: false,
+            },
+        };
+    }
+
     return {
         props: {
-            ...(await serverSideTranslations(locale!, ["common", "admin"], i18n)),
+            ...(await serverSideTranslations(ctx.locale!, ["common", "admin"], i18n)),
+            session,
         },
     };
 };
