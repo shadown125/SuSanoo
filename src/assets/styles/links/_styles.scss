@@ -1,0 +1,28 @@
+@use '../susanoo';
+
+a {
+    display: inline-block;
+    text: {
+        decoration: none;
+    }
+}
+
+.link {
+    position: relative;
+    color: var(--color-links, white);
+    transition: color 0.15s linear, background-color 0.15s ease-in-out;
+    &.is-icon {
+        &::before {
+            @include susanoo.icon(null, true);
+            position: absolute;
+            top: 50%;
+            left: susanoo.rem-calc(10);
+            transform: translateY(-50%);
+            font: {
+                size: susanoo.rem-calc(20);
+            }
+            color: var(--color-icon, white);
+            transition: color 0.15s linear;
+        }
+    }
+}
