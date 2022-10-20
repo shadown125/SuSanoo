@@ -131,6 +131,38 @@ button {
             }
         }
     }
+    &.is-secondary {
+        color: var(--color-light-grey);
+        text-transform: none;
+        background: {
+            color: transparent;
+        }
+        padding: susanoo.rem-calc(8) susanoo.rem-calc(14);
+        border: {
+            bottom: {
+                width: 2px;
+                style: solid;
+                color: var(--color-light-grey);
+            }
+        }
+        transition: color 0.15s linear, border-bottom-color 0.15s linear;
+        &:hover {
+            color: var(--color-teal);
+            border: {
+                bottom: {
+                    color: var(--color-teal);
+                }
+            }
+        }
+        &.is-active {
+            color: var(--color-teal);
+            border: {
+                bottom: {
+                    color: var(--color-teal);
+                }
+            }
+        }
+    }
 }
 
 @keyframes disabled-1 {
