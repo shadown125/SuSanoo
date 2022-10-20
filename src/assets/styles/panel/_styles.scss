@@ -1,0 +1,70 @@
+@use '../susanoo';
+@use '../grid/mixins' as grid;
+@use '../utils' as utils;
+
+.panel {
+    .container-wrapper {
+        @include grid.grid-item-extend();
+        --columns: 14;
+        --column-start: 2;
+
+        overflow-y: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        > .container {
+            display: flex;
+            gap: susanoo.rem-calc(20);
+            border: {
+                radius: susanoo.rem-calc(12);
+            }
+            padding: var(--panel-padding);
+            background: {
+                color: var(--color-dark);
+            }
+            > .inner-container {
+                display: flex;
+                flex: {
+                    direction: column;
+                }
+                flex: {
+                    grow: 1;
+                }
+            }
+        }
+    }
+    .middle-section,
+    .right-section {
+        display: flex;
+        flex: {
+            direction: column;
+        }
+        width: 100%;
+        gap: susanoo.rem-calc(20);
+        min: {
+            height: susanoo.rem-calc(700);
+        }
+        > section {
+            padding: susanoo.rem-calc(16);
+            border: {
+                radius: susanoo.rem-calc(20);
+            }
+            min: {
+                height: susanoo.rem-calc(300);
+            }
+            max: {
+                height: susanoo.rem-calc(400);
+            }
+            overflow-y: auto;
+            background: {
+                color: var(--color-light-dark);
+            }
+            @include utils.scrollbar();
+        }
+    }
+    .right-section {
+        max: {
+            width: susanoo.rem-calc(300);
+        }
+    }
+}

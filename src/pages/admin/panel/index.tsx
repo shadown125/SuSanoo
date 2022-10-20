@@ -1,26 +1,28 @@
-import { trpc } from "../../../utils/trpc";
 import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { signOut } from "next-auth/react";
 import { getSuSAuthSession } from "../../../server/common/get-server-session";
+import DefaultLayout from "../../../../layouts/DefaultLayout";
+import UserList from "../../../../components/userList/UserList";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import i18n from "../../../../next-i18next.config.mjs";
 
 const Panel: NextPage = () => {
-    const { data } = trpc.useQuery(["auth.getSession"]);
-    const router = useRouter();
-
-    const logoutHandler = async () => {
-        await router.push("/admin");
-        await signOut();
-    };
-
     return (
-        <div>
-            <h1 className="headline h1">This is Admin Panel</h1>
-            <h2 className="headline h2">Hello {data?.user?.name}</h2>
-            <button className="button" onClick={logoutHandler}>
-                Logout
-            </button>
-        </div>
+        <DefaultLayout>
+            <div className="middle-section">
+                <section className="upper">
+                    <h2 className="headline h5">middle</h2>
+                </section>
+                <UserList />
+            </div>
+            <div className="right-section">
+                <section className="upper">
+                    <h2 className="headline h5">col-right</h2>
+                </section>
+                <section className="lower">
+                    <h2 className="headline h5">col-right</h2>
+                </section>
+            </div>
+        </DefaultLayout>
     );
 };
 
@@ -32,11 +34,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     if (!session) {
         return {
             redirect: {
-                destination: "/admin",
+                destination: `/${ctx.locale}/admin`,
                 permanent: false,
             },
         };
     }
 
-    return { props: { session } };
+    return {
+        props: {
+            ...(await serverSideTranslations(ctx.locale!, ["common", "panel"], i18n)),
+            session,
+        },
+    };
 };
