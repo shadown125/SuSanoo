@@ -44,6 +44,7 @@ model User {
     image         String?
     role          Role      @default(USER)
     created_at    String
+    status        Boolean
     accounts      Account[]
     sessions      Session[]
 }
