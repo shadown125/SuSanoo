@@ -35,7 +35,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     if (session) {
         return {
             redirect: {
-                destination: "/admin/panel",
+                destination: `/${ctx.locale}/admin/panel`,
                 permanent: false,
             },
         };
