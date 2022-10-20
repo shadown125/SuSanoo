@@ -13,6 +13,7 @@ const main = async () => {
             password: hashedPassword,
             image: "/dummy-image.jpg",
             created_at: new Date().toLocaleDateString(),
+            status: false,
         },
         update: {},
         where: { email: "do@example.com" },
@@ -26,6 +27,7 @@ const main = async () => {
             password: hashedPassword,
             image: "/dummy-image.jpg",
             created_at: new Date().toLocaleDateString(),
+            status: false,
         },
         update: {},
         where: { email: "chuckNoriss@gigachad.com" },
@@ -39,9 +41,24 @@ const main = async () => {
             password: hashedPassword,
             image: "/dummy-image.jpg",
             created_at: new Date().toLocaleDateString(),
+            status: false,
         },
         update: {},
         where: { email: "itachiU@sharingan.com" },
+    });
+
+    await prisma.user.upsert({
+        create: {
+            id: "2313dfadfawdsfasfds",
+            name: "Sasuke Uchiha",
+            email: "sasuke@sharingan.com",
+            password: hashedPassword,
+            image: "/dummy-image.jpg",
+            created_at: new Date().toLocaleDateString(),
+            status: false,
+        },
+        update: {},
+        where: { email: "sasuke@sharingan.com" },
     });
 };
 
