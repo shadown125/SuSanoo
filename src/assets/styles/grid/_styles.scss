@@ -4,7 +4,7 @@
 
 html {
     font: {
-        size: clamp(#{susanoo.rem-calc(16)}, 2vw, #{susanoo.rem-calc(22)});
+        size: clamp(#{susanoo.rem-calc(16)}, 2vw, #{susanoo.rem-calc(20)});
         family: variables.$font-family;
     }
 }
