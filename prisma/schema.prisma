@@ -43,6 +43,7 @@ model User {
     password      String
     image         String?
     role          Role      @default(USER)
+    created_at    String
     accounts      Account[]
     sessions      Session[]
 }
