@@ -1,0 +1,24 @@
+@use '../susanoo';
+
+@mixin scrollbar($width: 30, $border-width: 12, $border-color: rgba(0, 0, 0, 0), $background-color: var(--color-primary), $hover-background-color: var(--color-light-purple)) {
+    &::-webkit-scrollbar {
+        width: susanoo.rem-calc($width);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: {
+            color: $background-color;
+            clip: padding-box;
+        }
+        border: {
+            radius: susanoo.rem-calc(30);
+            style: solid;
+            width: susanoo.rem-calc($border-width);
+            color: $border-color;
+        }
+        &:hover {
+            background: {
+                color: $hover-background-color;
+            }
+        }
+    }
+}
