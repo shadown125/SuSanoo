@@ -1,4 +1,12 @@
 {
     "login": "login",
-    "password": "Hasło"
+    "password": "Hasło",
+    "all": "Wszyscy",
+    "active": "Aktywni",
+    "offline": "Offline",
+    "profile": "Profil",
+    "role": "Rola",
+    "created": "Utworzony",
+    "action": "Działanie",
+    "edit": "Edycja"
 }

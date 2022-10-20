@@ -1,0 +1,161 @@
+@use '../susanoo';
+@use '../lists/mixins' as lists;
+
+.users {
+    .headline {
+        margin: {
+            bottom: 2px;
+        }
+    }
+    .sub-headline {
+        color: var(--color-light-grey);
+        font: {
+            size: susanoo.rem-calc(12);
+        }
+    }
+    .table-wrapper {
+        margin: 0 susanoo.rem-calc(-16);
+    }
+    .head {
+        display: flex;
+        justify-content: space-between;
+        .tabs {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+    table {
+        border-spacing: 0 #{susanoo.rem-calc(4)};
+        margin: {
+            top: susanoo.rem-calc(4);
+        }
+        overflow-x: scroll;
+    }
+    thead {
+        th {
+            padding: susanoo.rem-calc(16) susanoo.rem-calc(16);
+            &:first-child {
+                text-align: left;
+            }
+            &:last-child {
+                padding: {
+                    left: susanoo.rem-calc(4);
+                }
+            }
+        }
+    }
+    tbody {
+        margin: 0 susanoo.rem-calc(-16);
+        tr {
+            $border-radius: #{susanoo.rem-calc(12)};
+
+            th {
+                padding: {
+                    top: susanoo.rem-calc(12);
+                    left: susanoo.rem-calc(16);
+                    bottom: susanoo.rem-calc(12);
+                }
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius: $border-radius;
+            }
+            td {
+                text-align: center;
+                vertical-align: middle;
+                padding: susanoo.rem-calc(12) 0;
+                &:last-child {
+                    padding: {
+                        top: susanoo.rem-calc(12);
+                        right: susanoo.rem-calc(16);
+                        bottom: susanoo.rem-calc(12);
+                    }
+                    border-top-right-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
+                }
+            }
+            transition: background-color 0.15s linear;
+            &:hover {
+                background: {
+                    color: var(--color-dirty-blue);
+                }
+                .email {
+                    color: white;
+                }
+            }
+        }
+    }
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: susanoo.rem-calc(20);
+        font: {
+            weight: normal;
+        }
+        .image-wrapper {
+            --color-profile-status: none;
+
+            position: relative;
+            &::before {
+                $circle: #{susanoo.rem-calc(16)};
+
+                content: '';
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: $circle;
+                height: $circle;
+                border: {
+                    radius: 50%;
+                }
+                background: {
+                    color: var(--color-profile-status);
+                }
+            }
+        }
+        img {
+            $square: #{susanoo.rem-calc(50)};
+
+            object-fit: cover;
+            border: {
+                radius: 50%;
+            }
+            height: $square;
+            width: $square;
+            min: {
+                width: $square;
+            }
+        }
+        .name {
+            text-align: left;
+        }
+        .email {
+            color: var(--color-light-grey);
+            font: {
+                size: susanoo.rem-calc(12);
+            }
+            transition: color 0.15s linear;
+        }
+    }
+    .empty-message {
+        font: {
+            size: susanoo.rem-calc(20);
+        }
+        margin: {
+            top: susanoo.rem-calc(24);
+        }
+        text-align: center;
+    }
+    .button {
+        &:not(&.is-secondary) {
+            padding: susanoo.rem-calc(4) susanoo.rem-calc(20);
+            text-transform: none;
+            background: {
+                color: var(--color-dark-blue);
+            }
+            &::after {
+                background: {
+                    color: var(--color-dark-blue);
+                }
+            }
+        }
+    }
+}

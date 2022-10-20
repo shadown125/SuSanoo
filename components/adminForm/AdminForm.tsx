@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { response } from "../../src/types/response";
 import { FormikSubmission } from "../../src/types/formik";
+import { trpc } from "../../src/utils/trpc";
 
 type SubmitData = {
     email: string;
@@ -19,6 +20,8 @@ const AdminForm: FC = () => {
     const router = useRouter();
     const [notification, setNotification] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
+
+    const { mutate: status } = trpc.useMutation(["auth.setUserStatus"]);
 
     const submitHandler = async (data: SubmitData, { setSubmitting, resetForm }: FormikSubmission) => {
         try {
@@ -36,7 +39,8 @@ const AdminForm: FC = () => {
                 return;
             }
 
-            await router.replace("/admin/panel");
+            await status({ status: true });
+            await router.replace(`${router.locale}/admin/panel`);
 
             setNotification("");
             setSubmitting(false);

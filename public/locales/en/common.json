@@ -1,4 +1,12 @@
 {
     "login": "login",
-    "password": "Password"
+    "password": "Password",
+    "all": "All",
+    "active": "Active",
+    "offline": "Offline",
+    "profile": "Profile",
+    "role": "Role",
+    "created": "Created",
+    "action": "Action",
+    "edit": "Edit"
 }

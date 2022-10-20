@@ -1,4 +1,5 @@
 import { createProtectedRouter } from "./protected-router";
+import { z } from "zod";
 
 // Example router with queries that can only be hit if the user requesting is signed in
 export const protectedAuthRouter = createProtectedRouter()
@@ -21,5 +22,31 @@ export const protectedAuthRouter = createProtectedRouter()
                 image,
                 email,
             };
+        },
+    })
+    .query("getAllUsers", {
+        resolve: async ({ ctx }) => {
+            return await ctx.prisma.user.findMany({
+                where: {
+                    id: {
+                        not: ctx.session.user.id,
+                    },
+                },
+            });
+        },
+    })
+    .mutation("setUserStatus", {
+        input: z.object({
+            status: z.boolean(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { status } = input;
+
+            return await ctx.prisma.user.update({
+                where: { id: ctx.session.user.id },
+                data: {
+                    status,
+                },
+            });
         },
     });
