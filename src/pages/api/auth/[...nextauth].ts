@@ -1,6 +1,5 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 
-// Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "../../../server/db/client";
 import { env } from "../../../env/server.mjs";
@@ -8,7 +7,6 @@ import CredentialProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "../../../../lib/auth";
 
 export const authOptions: NextAuthOptions = {
-    // Include user.id on session
     callbacks: {
         session({ session, user, token }) {
             if (session.user) {
