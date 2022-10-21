@@ -4,6 +4,7 @@ import Image from "next/future/image";
 import Filter from "./Filter";
 import { useTranslation } from "next-i18next";
 import { motion, AnimatePresence } from "framer-motion";
+import UserListItem from "./UserListItem";
 
 export enum FilteredStates {
     All,
@@ -44,10 +45,6 @@ const UserList: FC = () => {
         }
     };
 
-    const setProfileStatusColor = (status: boolean) => {
-        return { "--color-profile-status": status ? "var(--color-green)" : "var(--color-red)" } as CSSProperties;
-    };
-
     return (
         <section className="users">
             <div className="container">
@@ -77,24 +74,14 @@ const UserList: FC = () => {
                                         <AnimatePresence>
                                             {users!.map((user, index) => (
                                                 <motion.tr layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }} key={index}>
-                                                    <th>
-                                                        <div className="user-profile">
-                                                            <div className="image-wrapper" style={setProfileStatusColor(user.status)}>
-                                                                <Image src={user.image as string} sizes="100vw" width={100} height={100} alt="Profile image" />
-                                                            </div>
-                                                            <div className="info">
-                                                                <div className="name">{user.name}</div>
-                                                                <div className="email">{user.email}</div>
-                                                            </div>
-                                                        </div>
-                                                    </th>
-                                                    <td>{user.role}</td>
-                                                    <td>{user.created_at}</td>
-                                                    <td>
-                                                        <button className="button is-primary">
-                                                            <span>{t("common:edit")}</span>
-                                                        </button>
-                                                    </td>
+                                                    <UserListItem
+                                                        createdAt={user.created_at}
+                                                        email={user.email!}
+                                                        image={user.image!}
+                                                        name={user.name!}
+                                                        role={user.role!}
+                                                        status={user.status!}
+                                                    />
                                                 </motion.tr>
                                             ))}
                                         </AnimatePresence>
