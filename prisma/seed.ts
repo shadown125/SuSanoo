@@ -60,6 +60,20 @@ const main = async () => {
         update: {},
         where: { email: "sasuke@sharingan.com" },
     });
+
+    await prisma.user.upsert({
+        create: {
+            id: "hfdaskljh1u8934ty81bkbd",
+            name: "Anna Maria Wesołowska",
+            email: "wesolowska@prawo.com",
+            password: hashedPassword,
+            image: "/dummy-image.jpg",
+            created_at: new Date().toLocaleDateString(),
+            status: false,
+        },
+        update: {},
+        where: { email: "wesolowska@prawo.com" },
+    });
 };
 
 main();
