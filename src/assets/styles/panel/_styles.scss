@@ -45,12 +45,10 @@
             height: susanoo.rem-calc(700);
         }
         > section {
+            @include utils.scrollbar();
             padding: susanoo.rem-calc(16);
             border: {
                 radius: susanoo.rem-calc(20);
-            }
-            min: {
-                height: susanoo.rem-calc(300);
             }
             max: {
                 height: susanoo.rem-calc(400);
@@ -59,7 +57,11 @@
             background: {
                 color: var(--color-light-dark);
             }
-            @include utils.scrollbar();
+            &:not(&.users) {
+                min: {
+                    height: susanoo.rem-calc(300);
+                }
+            }
         }
     }
     .right-section {
