@@ -1,6 +1,5 @@
-import { CSSProperties, FC, useState } from "react";
+import { FC, useState } from "react";
 import { trpc } from "../../src/utils/trpc";
-import Image from "next/future/image";
 import Filter from "./Filter";
 import { useTranslation } from "next-i18next";
 import { motion, AnimatePresence } from "framer-motion";
