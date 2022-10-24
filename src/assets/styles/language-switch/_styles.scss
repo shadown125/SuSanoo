@@ -24,7 +24,7 @@
         }
         &.is-icon {
             padding: {
-                right: susanoo.rem-calc(26);
+                right: susanoo.rem-calc(30);
             }
             &::after {
                 @include susanoo.icon(icons.$icon-chevron-right);
