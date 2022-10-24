@@ -2,9 +2,6 @@
 @use '../lists/mixins' as lists;
 
 .users {
-    min: {
-        height: susanoo.rem-calc(400);
-    }
     .headline {
         margin: {
             bottom: 2px;

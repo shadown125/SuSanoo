@@ -60,9 +60,15 @@
             background: {
                 color: var(--color-light-dark);
             }
-            &:not(&.users) {
+            &:not(&.users, &.lower) {
                 min: {
-                    height: susanoo.rem-calc(300);
+                    height: susanoo.rem-calc(350);
+                }
+            }
+            &.lower,
+            &.users {
+                min: {
+                    height: susanoo.rem-calc(400);
                 }
             }
         }
