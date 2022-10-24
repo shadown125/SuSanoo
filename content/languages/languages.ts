@@ -1,4 +1,10 @@
-export const languages = [
+type languages = {
+    name: string;
+    icon: string;
+    locale: string;
+}[];
+
+export const languages: languages = [
     {
         name: "polish",
         icon: "poland-icon.svg",

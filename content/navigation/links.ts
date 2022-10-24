@@ -1,4 +1,10 @@
-export const links = [
+type links = {
+    name: string;
+    path: string;
+    icon: string;
+}[];
+
+export const links: links = [
     {
         name: "Dashboard",
         path: "/admin/panel",
