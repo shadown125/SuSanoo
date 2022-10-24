@@ -8,5 +8,7 @@
     "role": "Role",
     "created": "Created",
     "action": "Action",
-    "edit": "Edit"
+    "edit": "Edit",
+    "english": "English",
+    "polish": "Polish"
 }
