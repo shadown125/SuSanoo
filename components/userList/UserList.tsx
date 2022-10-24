@@ -20,7 +20,7 @@ const UserList: FC = () => {
         refetchInterval: 1000 * 60 * 5,
         select: (users) => {
             if (filtered === FilteredStates.All) {
-                return users;
+                return users.sort((a, b) => (a.status === b.status ? 0 : a.status ? -1 : 1));
             }
             if (filtered === FilteredStates.Active) {
                 return users.filter((user) => user.status === true);
