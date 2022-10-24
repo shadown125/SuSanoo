@@ -4,5 +4,10 @@
     "currently": "Currently",
     "noRegisteredUsers": "no registered Users",
     "noActiveUsers": "no active Users",
-    "noOfflineUsers": "no offline Users"
+    "noOfflineUsers": "no offline Users",
+    "overview": {
+        "title": "Users Online",
+        "contentActivities": "Content Activities",
+        "onlineUsers": "Online Users"
+    }
 }

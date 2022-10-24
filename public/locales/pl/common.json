@@ -10,5 +10,12 @@
     "action": "Działanie",
     "edit": "Edycja",
     "english": "Angielski",
-    "polish": "Polski"
+    "polish": "Polski",
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota",
+    "sunday": "Niedziela"
 }

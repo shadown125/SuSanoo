@@ -4,22 +4,23 @@ import DefaultLayout from "../../../../layouts/DefaultLayout";
 import UserList from "../../../../components/userList/UserList";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import i18n from "../../../../next-i18next.config.mjs";
+import Overview from "../../../../components/overview/Overview";
 
 const Panel: NextPage = () => {
     return (
         <DefaultLayout>
             <div className="middle-section">
                 <section className="upper">
-                    <h2 className="headline h5">middle</h2>
+                    <Overview />
                 </section>
                 <UserList />
             </div>
             <div className="right-section">
                 <section className="upper">
-                    <h2 className="headline h5">col-right</h2>
+                    <h2 className="headline h5">Notifications</h2>
                 </section>
                 <section className="lower">
-                    <h2 className="headline h5">col-right</h2>
+                    <h2 className="headline h5">History</h2>
                 </section>
             </div>
         </DefaultLayout>

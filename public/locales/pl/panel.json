@@ -4,5 +4,10 @@
     "currently": "Obecnie",
     "noRegisteredUsers": "brak zarejestrowanych użytkowników",
     "noActiveUsers": "brak aktywnych użytkowników",
-    "noOfflineUsers": "brak użytkowników offline"
+    "noOfflineUsers": "brak użytkowników offline",
+    "overview": {
+        "title": "Użytkownicy online",
+        "contentActivities": "Treść Działania",
+        "onlineUsers": "Użytkownicy online"
+    }
 }
