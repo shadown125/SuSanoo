@@ -10,7 +10,7 @@
         "postinstall": "prisma generate",
         "style:build": "npm-run-all --parallel copy:* build:*",
         "build:styles": "npm-run-all sass:build postcss:build",
-        "build:images": "imagemin src/assets/pics/*.{jpg,png} --out-dir=public",
+        "build:images": "imagemin src/assets/pics/*.{jpg,png,svg} --out-dir=public",
         "copy:fonts": "copyfiles src/assets/fonts/**/* public --flat",
         "watch": "npm-run-all --parallel watch:*",
         "watch:styles": "npm-run-all --parallel sass:watch postcss:watch",
