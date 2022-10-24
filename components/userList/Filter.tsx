@@ -5,15 +5,15 @@ import { useTranslation } from "next-i18next";
 const Filter: FC<{ setFiltered: Dispatch<any>; states: FilterStates; filtered: FilteredStates }> = ({ setFiltered, states, filtered }) => {
     const { t } = useTranslation("common");
 
-    const setAllUsers = () => {
+    const setAllUsers = (): void => {
         setFiltered(states.All);
     };
 
-    const setActiveUsers = () => {
+    const setActiveUsers = (): void => {
         setFiltered(states.Active);
     };
 
-    const setOfflineUsers = () => {
+    const setOfflineUsers = (): void => {
         setFiltered(states.Offline);
     };
 

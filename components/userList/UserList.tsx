@@ -32,7 +32,7 @@ const UserList: FC = () => {
         },
     });
 
-    const emptyMessageOnState = () => {
+    const emptyMessageOnState = (): string | undefined => {
         if (filtered === FilteredStates.All) {
             return t("panel:noRegisteredUsers");
         }

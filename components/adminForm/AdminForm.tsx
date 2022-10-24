@@ -23,7 +23,7 @@ const AdminForm: FC = () => {
 
     const { mutate: status } = trpc.useMutation(["auth.setUserStatus"]);
 
-    const submitHandler = async (data: SubmitData, { setSubmitting, resetForm }: FormikSubmission) => {
+    const submitHandler = async (data: SubmitData, { setSubmitting, resetForm }: FormikSubmission): Promise<void> => {
         try {
             const response = await signIn("credentials", {
                 redirect: false,

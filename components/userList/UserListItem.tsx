@@ -12,7 +12,7 @@ const UserListItem: FC<{
 }> = ({ name, status, image, role, createdAt, email }) => {
     const { t } = useTranslation("");
 
-    const setProfileStatusColor = (status: boolean) => {
+    const setProfileStatusColor = (status: boolean): CSSProperties => {
         return { "--color-profile-status": status ? "var(--color-green)" : "var(--color-red)" } as CSSProperties;
     };
 

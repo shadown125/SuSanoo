@@ -11,7 +11,7 @@ const PageHeader: FC = () => {
 
     const { mutate: status } = trpc.useMutation(["auth.setUserStatus"]);
 
-    const logoutHandler = async () => {
+    const logoutHandler = async (): Promise<void> => {
         await status({ status: false });
         await signOut();
     };
