@@ -4,8 +4,10 @@ import { signOut } from "next-auth/react";
 import { links } from "../../content/navigation/links";
 import { trpc } from "../../src/utils/trpc";
 import LanguageSwitch from "../languageSwitch/LanguageSwitch";
+import { useTranslation } from "next-i18next";
 
 const PageHeader: FC = () => {
+    const { t } = useTranslation("common");
     const router = useRouter();
     const currentRoute = links.filter((link) => router.pathname === link.path);
 
@@ -23,7 +25,7 @@ const PageHeader: FC = () => {
                 <div className="content">
                     <LanguageSwitch />
                     <button className="button is-primary" onClick={logoutHandler}>
-                        <span>Logout</span>
+                        <span>{t("logout")}</span>
                     </button>
                 </div>
             </div>
