@@ -9,14 +9,11 @@ const DefaultLayout: FC<{ children: JSX.Element[] | JSX.Element }> = ({ children
                     <div className="container-wrapper">
                         <div className="container">
                             <Navigation />
-                            <main>
-                                <header className="page-header">
-                                    <div className="container">
-                                        <h1>This is header</h1>
-                                    </div>
-                                </header>
-                                <div className="default-grid">{children}</div>
-                            </main>
+                            <div className="inner-container">
+                                <main>
+                                    <div className="default-grid">{children}</div>
+                                </main>
+                            </div>
                         </div>
                     </div>
                 </div>
