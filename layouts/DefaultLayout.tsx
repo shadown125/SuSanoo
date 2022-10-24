@@ -1,5 +1,6 @@
 import { FC } from "react";
 import Navigation from "../components/navigation/Navigation";
+import PageHeader from "../components/pageHeader/PageHeader";
 
 const DefaultLayout: FC<{ children: JSX.Element[] | JSX.Element }> = ({ children }) => {
     return (
@@ -10,6 +11,7 @@ const DefaultLayout: FC<{ children: JSX.Element[] | JSX.Element }> = ({ children
                         <div className="container">
                             <Navigation />
                             <div className="inner-container">
+                                <PageHeader />
                                 <main>
                                     <div className="default-grid">{children}</div>
                                 </main>
