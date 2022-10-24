@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { languages } from "../../content/languages/languages";
 
+type activeLanguage = { name: string; icon: string; locale: string } | undefined;
+
 const LanguageSwitch: FC = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
@@ -35,9 +37,9 @@ const LanguageSwitch: FC = () => {
         },
     };
 
-    const getActiveLanguage = () => languages.filter((item) => item.locale === router.locale)[0];
+    const getActiveLanguage = (): activeLanguage => languages.filter((item) => item.locale === router.locale)[0];
 
-    const getAllAvailableLanguages = () => languages.filter((item) => item.locale !== router.locale);
+    const getAllAvailableLanguages = (): languages => languages.filter((item) => item.locale !== router.locale);
 
     const toggleOpenMenu = () => {
         setIsOpen(!isOpen);

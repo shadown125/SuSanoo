@@ -1,4 +1,4 @@
-type languages = {
+export type languages = {
     name: string;
     icon: string;
     locale: string;
