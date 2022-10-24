@@ -20,9 +20,6 @@ export const authOptions: NextAuthOptions = {
             }
             return token;
         },
-        async redirect({ baseUrl }) {
-            return `${baseUrl}/admin/panel`;
-        },
     },
     adapter: PrismaAdapter(prisma),
     providers: [
