@@ -22,3 +22,49 @@
         }
     }
 }
+
+@mixin default-table($hover: var(--color-dirty-blue)) {
+    table {
+        border-spacing: 0 #{susanoo.rem-calc(4)};
+        margin: {
+            top: susanoo.rem-calc(4);
+        }
+        overflow-x: scroll;
+    }
+    tbody {
+        margin: 0 susanoo.rem-calc(-16);
+        tr {
+            $border-radius: #{susanoo.rem-calc(12)};
+
+            th {
+                padding: {
+                    top: susanoo.rem-calc(12);
+                    left: susanoo.rem-calc(16);
+                    bottom: susanoo.rem-calc(12);
+                }
+                border-top-left-radius: $border-radius;
+                border-bottom-left-radius: $border-radius;
+            }
+            td {
+                text-align: center;
+                vertical-align: middle;
+                padding: susanoo.rem-calc(12) 0;
+                &:last-child {
+                    padding: {
+                        top: susanoo.rem-calc(12);
+                        right: susanoo.rem-calc(16);
+                        bottom: susanoo.rem-calc(12);
+                    }
+                    border-top-right-radius: $border-radius;
+                    border-bottom-right-radius: $border-radius;
+                }
+            }
+            transition: background-color 0.15s linear;
+            &:hover {
+                background: {
+                    color: $hover;
+                }
+            }
+        }
+    }
+}
