@@ -24,7 +24,7 @@ export const protectedAuthRouter = createProtectedRouter()
             };
         },
     })
-    .query("getAvailableUsers", {
+    .query("getUsers", {
         resolve: async ({ ctx }) => {
             return await ctx.prisma.user.findMany({
                 where: {
