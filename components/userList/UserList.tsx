@@ -74,7 +74,7 @@ const UserList: FC = () => {
                                             {users!.map((user, index) => (
                                                 <motion.tr layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }} key={index}>
                                                     <UserListItem
-                                                        createdAt={user.created_at}
+                                                        createdAt={user.createdAt.toLocaleDateString()}
                                                         email={user.email!}
                                                         image={user.image!}
                                                         name={user.name!}
