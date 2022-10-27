@@ -18,7 +18,7 @@ const Overview: FC = () => {
                     {t("panel:overview.title")}: {onlineUsersAmount}
                 </h2>
                 <div className="bar">
-                    {users || onlineUsersAmount ? (
+                    {users && onlineUsersAmount ? (
                         <span className={`inner-bar${inView ? " is-active" : ""}`} style={{ width: `${(onlineUsersAmount! / users!.length) * 100}%` }}></span>
                     ) : (
                         <span className="inner-bar" style={{ width: "0%" }}></span>
