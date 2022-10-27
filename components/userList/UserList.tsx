@@ -16,7 +16,7 @@ export type FilterStates = typeof FilteredStates;
 const UserList: FC = () => {
     const { t } = useTranslation("");
     const [filtered, setFiltered] = useState<FilteredStates>(FilteredStates.All);
-    const { data: users, isLoading } = trpc.useQuery(["auth.getAllUsers"], {
+    const { data: users, isLoading } = trpc.useQuery(["auth.getAvailableUsers"], {
         refetchInterval: 1000 * 60 * 5,
         select: (users) => {
             if (filtered === FilteredStates.All) {
