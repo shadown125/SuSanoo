@@ -31,6 +31,11 @@
         }
         overflow-x: scroll;
     }
+    thead {
+        th {
+            padding: susanoo.rem-calc(16) susanoo.rem-calc(16);
+        }
+    }
     tbody {
         margin: 0 susanoo.rem-calc(-16);
         tr {
