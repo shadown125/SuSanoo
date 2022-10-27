@@ -24,7 +24,7 @@ export const protectedAuthRouter = createProtectedRouter()
             };
         },
     })
-    .query("getAllUsers", {
+    .query("getAvailableUsers", {
         resolve: async ({ ctx }) => {
             return await ctx.prisma.user.findMany({
                 where: {
@@ -35,6 +35,23 @@ export const protectedAuthRouter = createProtectedRouter()
             });
         },
     })
+    .query("getAllUsers", {
+        resolve: async ({ ctx }) => {
+            return await ctx.prisma.user.findMany();
+        },
+    })
+    .query("getOnlineUsersAmount", {
+        resolve: async ({ ctx }) => {
+            const OnlineUsers = await ctx.prisma.user.findMany({
+                where: {
+                    status: true,
+                },
+            });
+
+            return OnlineUsers.length;
+        },
+    })
+
     .mutation("setUserStatus", {
         input: z.object({
             status: z.boolean(),
