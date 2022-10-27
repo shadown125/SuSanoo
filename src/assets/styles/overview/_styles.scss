@@ -50,9 +50,6 @@
                 image: linear-gradient(to right, var(--color-dark-blue), var(--color-light-blue), var(--color-teal));
             }
             transition: width 0.5s ease-in-out;
-            &.is-active {
-                width: 30%;
-            }
         }
     }
 }
