@@ -5,8 +5,8 @@
 .panel {
     .container-wrapper {
         @include grid.grid-item-extend();
-        --columns: 14;
-        --column-start: 2;
+        --columns: 16;
+        --column-start: 1;
 
         overflow-y: scroll;
         &::-webkit-scrollbar {
