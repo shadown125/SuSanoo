@@ -38,6 +38,15 @@
             }
         }
     }
+    tbody {
+        tr {
+            &:hover {
+                .email {
+                    color: white;
+                }
+            }
+        }
+    }
     .user-profile {
         display: flex;
         align-items: center;
