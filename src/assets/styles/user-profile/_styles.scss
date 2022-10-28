@@ -38,4 +38,10 @@
             width: $square;
         }
     }
+    .page {
+        font: {
+            size: susanoo.rem-calc(12);
+        }
+        color: var(--color-light-blue);
+    }
 }

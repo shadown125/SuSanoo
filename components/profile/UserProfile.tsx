@@ -1,7 +1,13 @@
 import { CSSProperties, FC } from "react";
 import Image from "next/future/image";
 
-const UserProfile: FC<{ image: string; name: string; status: boolean; email?: string }> = ({ image, name, status, email }) => {
+const UserProfile: FC<{
+    image: string;
+    name: string;
+    status: boolean;
+    email?: string;
+    page?: string | null;
+}> = ({ image, name, status, email, page }) => {
     const setProfileStatusColor = (status: boolean): CSSProperties => {
         return { "--color-profile-status": status ? "var(--color-green)" : "var(--color-red)" } as CSSProperties;
     };
@@ -13,7 +19,8 @@ const UserProfile: FC<{ image: string; name: string; status: boolean; email?: st
             </div>
             <div className="info">
                 <div className="name">{name}</div>
-                <div className="email">{email}</div>
+                {email && <div className="email">{email}</div>}
+                {page && <div className="page">{page}</div>}
             </div>
         </div>
     );
