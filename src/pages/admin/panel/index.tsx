@@ -5,6 +5,7 @@ import UserList from "../../../../components/userList/UserList";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import i18n from "../../../../next-i18next.config.mjs";
 import Overview from "../../../../components/overview/Overview";
+import CompleteHistory from "../../../../components/history/CompleteHistory";
 
 const Panel: NextPage = () => {
     return (
@@ -20,7 +21,7 @@ const Panel: NextPage = () => {
                     <h2 className="headline h5">Notifications</h2>
                 </section>
                 <section className="lower">
-                    <h2 className="headline h5">History</h2>
+                    <CompleteHistory />
                 </section>
             </div>
         </DefaultLayout>
