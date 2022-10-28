@@ -18,6 +18,57 @@ const main = async () => {
         where: { email: "do@example.com" },
     });
 
+    await prisma.history.upsert({
+        create: {
+            id: "fsjapo12331248r923n2123",
+            userId: "fsjapo12331248r923n",
+            pageId: "fsjapo12331221348r923n231",
+        },
+        update: {},
+        where: { id: "fsjapo12331248r923n2123" },
+    });
+
+    await prisma.history.upsert({
+        create: {
+            id: "fsjapo12331248r923323n2123",
+            userId: "o1j23h12ijh4i2yu1g",
+            pageId: "fsjapo12331221348r923n",
+        },
+        update: {},
+        where: { id: "fsjapo12331248r923323n2123" },
+    });
+
+    await prisma.history.upsert({
+        create: {
+            id: "fsjapo12331248r923323n212",
+            userId: "o1j23h12ijh4i2yu1g",
+            pageId: "fsjapo12331221348r923n",
+        },
+        update: {},
+        where: { id: "fsjapo12331248r923323n212" },
+    });
+
+    await prisma.page.upsert({
+        create: {
+            id: "fsjapo12331221348r923n",
+            name: "Home",
+            authorId: "fsjapo12331248r923n",
+        },
+        update: {},
+        where: { id: "fsjapo12331221348r923n" },
+    });
+
+    await prisma.page.upsert({
+        create: {
+            id: "fsjapo12331221348r923n231",
+            name: "Subpage",
+            authorId: "o1j23h12ijh4i2yu1g",
+            active: false,
+        },
+        update: {},
+        where: { id: "fsjapo12331221348r923n231" },
+    });
+
     await prisma.user.upsert({
         create: {
             id: "o1j23h12ijh4i2yu1g",
