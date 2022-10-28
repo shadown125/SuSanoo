@@ -1,0 +1,46 @@
+@use '../susanoo';
+@use '../utils/mixins' as utils;
+
+.page-list {
+    @include utils.default-table($hover: var(--color-light-purple));
+    tbody {
+        tr {
+            th {
+                padding-left: 0;
+                vertical-align: middle;
+                font: {
+                    weight: normal;
+                }
+            }
+            td {
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+    td,
+    th {
+        text-align: center;
+    }
+    td {
+        &.active {
+            color: var(--color-light-green);
+        }
+        &.inactive {
+            color: var(--color-red);
+        }
+    }
+    .button {
+        text-transform: none;
+        padding: susanoo.rem-calc(6) susanoo.rem-calc(20);
+        background: {
+            color: var(--color-orange);
+        }
+        &::after {
+            background: {
+                color: var(--color-orange);
+            }
+        }
+    }
+}

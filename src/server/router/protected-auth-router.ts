@@ -24,6 +24,20 @@ export const protectedAuthRouter = createProtectedRouter()
             };
         },
     })
+    .query("getUser", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            return await ctx.prisma.user.findUnique({
+                where: {
+                    id,
+                },
+            });
+        },
+    })
     .query("getUsers", {
         resolve: async ({ ctx }) => {
             return await ctx.prisma.user.findMany({
@@ -51,7 +65,13 @@ export const protectedAuthRouter = createProtectedRouter()
             return OnlineUsers.length;
         },
     })
-
+    .query("getCompleteHistory", {
+        resolve: async ({ ctx }) => {
+            return await ctx.prisma.history.findMany({
+                take: 20,
+            });
+        },
+    })
     .mutation("setUserStatus", {
         input: z.object({
             status: z.boolean(),
