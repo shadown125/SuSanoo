@@ -54,7 +54,7 @@
                 radius: susanoo.rem-calc(20);
             }
             max: {
-                height: susanoo.rem-calc(400);
+                height: susanoo.rem-calc(300);
             }
             overflow-y: auto;
             background: {
@@ -70,12 +70,25 @@
                 min: {
                     height: susanoo.rem-calc(400);
                 }
+                max: {
+                    height: susanoo.rem-calc(300);
+                }
+            }
+            &.full {
+                min: {
+                    height: susanoo.rem-calc(700);
+                }
             }
         }
     }
     .right-section {
+        $width: #{susanoo.rem-calc(326)};
+
+        min: {
+            width: $width;
+        }
         max: {
-            width: susanoo.rem-calc(300);
+            width: $width;
         }
     }
 }

@@ -1,14 +1,10 @@
 @use '../susanoo';
 
-.upper {
-    width: 100%;
-}
-
 .overview {
     .charts {
         display: flex;
         gap: susanoo.rem-calc(30);
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: flex-end;
         .doughnut {
             width: susanoo.rem-calc(220);
@@ -16,8 +12,7 @@
         }
         .line {
             height: susanoo.rem-calc(180);
-            display: flex;
-            flex-grow: 1;
+            width: susanoo.rem-calc(320);
         }
     }
     .online-users {
