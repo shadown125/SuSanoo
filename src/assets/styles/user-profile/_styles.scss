@@ -1,0 +1,41 @@
+@use '../susanoo';
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: susanoo.rem-calc(20);
+    .image-wrapper {
+        --color-profile-status: none;
+
+        position: relative;
+        &::before {
+            $circle: #{susanoo.rem-calc(16)};
+
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: $circle;
+            height: $circle;
+            border: {
+                radius: 50%;
+            }
+            background: {
+                color: var(--color-profile-status);
+            }
+        }
+    }
+    img {
+        $square: #{susanoo.rem-calc(50)};
+
+        object-fit: cover;
+        border: {
+            radius: 50%;
+        }
+        height: $square;
+        width: $square;
+        min: {
+            width: $square;
+        }
+    }
+}

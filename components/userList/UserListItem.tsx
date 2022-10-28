@@ -1,6 +1,6 @@
-import { CSSProperties, FC } from "react";
-import Image from "next/future/image";
+import { FC } from "react";
 import { useTranslation } from "next-i18next";
+import UserProfile from "../profile/UserProfile";
 
 const UserListItem: FC<{
     name: string;
@@ -12,22 +12,10 @@ const UserListItem: FC<{
 }> = ({ name, status, image, role, createdAt, email }) => {
     const { t } = useTranslation("");
 
-    const setProfileStatusColor = (status: boolean): CSSProperties => {
-        return { "--color-profile-status": status ? "var(--color-green)" : "var(--color-red)" } as CSSProperties;
-    };
-
     return (
         <>
             <th>
-                <div className="user-profile">
-                    <div className="image-wrapper" style={setProfileStatusColor(status)}>
-                        <Image src={image as string} sizes="100vw" width={100} height={100} alt="Profile image" />
-                    </div>
-                    <div className="info">
-                        <div className="name">{name}</div>
-                        <div className="email">{email}</div>
-                    </div>
-                </div>
+                <UserProfile image={image} name={name} status={status} email={email} />
             </th>
             <td>{role}</td>
             <td>{createdAt}</td>
