@@ -18,5 +18,10 @@
     "friday": "Friday",
     "saturday": "Saturday",
     "sunday": "Sunday",
-    "logout": "Logout"
+    "logout": "Logout",
+    "name": "Name",
+    "yes": "Yes",
+    "no": "No",
+    "inactive": "Inactive",
+    "history": "History"
 }

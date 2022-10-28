@@ -9,5 +9,11 @@
         "title": "Użytkownicy online",
         "contentActivities": "Treść Działania",
         "onlineUsers": "Użytkownicy online"
+    },
+    "history": {
+        "daysAgo": "dni temu",
+        "hoursAgo": "godziny temu",
+        "minutesAgo": "minut temu",
+        "secondsAgo": "sekund temu"
     }
 }

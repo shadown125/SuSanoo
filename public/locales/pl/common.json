@@ -18,5 +18,11 @@
     "friday": "Piątek",
     "saturday": "Sobota",
     "sunday": "Niedziela",
-    "logout": "Wyloguj"
+    "logout": "Wyloguj",
+    "name": "Nazwa",
+    "yes": "Tak",
+    "no": "Nie",
+    "inactive": "Nieaktywna",
+    "status": "Status",
+    "history": "Historia"
 }

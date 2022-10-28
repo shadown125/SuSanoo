@@ -9,5 +9,11 @@
         "title": "Users Online",
         "contentActivities": "Content Activities",
         "onlineUsers": "Online Users"
+    },
+    "history": {
+        "daysAgo": "days ago",
+        "hoursAgo": "hours ago",
+        "minutesAgo": "minutes ago",
+        "secondsAgo": "seconds ago"
     }
 }
