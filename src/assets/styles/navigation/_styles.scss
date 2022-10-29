@@ -9,6 +9,8 @@
     padding: susanoo.rem-calc(16);
     .headline {
         text-align: center;
+        color: var(--color-dark-purple);
+        text-shadow: 0 0 12px var(--color-green-dark), 0 0 4px var(--color-green-dark), 0 0 4px var(--color-green-main);
     }
     ul {
         @include lists.reset-list();
@@ -44,10 +46,11 @@
                 left: susanoo.rem-calc(56);
                 right: susanoo.rem-calc(12);
             }
+            text-shadow: 0 0 4px var(--color-green-dark);
             &:hover {
                 color: white;
                 background: {
-                    color: var(--color-primary);
+                    color: var(--color-green-dark);
                 }
                 &.is-icon {
                     --color-icon: white;
@@ -55,7 +58,7 @@
             }
             &.is-active {
                 background: {
-                    color: var(--color-primary);
+                    color: var(--color-green-dark);
                 }
                 &.is-icon {
                     --color-icon: white;
