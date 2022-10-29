@@ -36,7 +36,9 @@ const PageList: FC = () => {
                                                 <motion.tr layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }} key={index}>
                                                     <th>{name}</th>
                                                     <td>{createdAt.toLocaleDateString()}</td>
-                                                    <td className={active ? "active" : "inactive"}>{active ? t("pages:active") : t("common:inactive")}</td>
+                                                    <td className={`status ${active ? "active" : "inactive"}`}>
+                                                        <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
+                                                    </td>
                                                     <td>
                                                         <Link href={`${router.pathname}/${name!.toLowerCase()}`}>
                                                             <a className="button is-primary">
