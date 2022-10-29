@@ -73,3 +73,30 @@
         }
     }
 }
+
+@mixin status() {
+    .status {
+        &.active {
+            .label {
+                background: {
+                    color: var(--color-light-green);
+                }
+            }
+        }
+        &.inactive {
+            .label {
+                color: white;
+                background: {
+                    color: var(--color-red);
+                }
+            }
+        }
+        .label {
+            display: inline-block;
+            padding: susanoo.rem-calc(6) susanoo.rem-calc(10);
+            border: {
+                radius: susanoo.rem-calc(16);
+            }
+        }
+    }
+}
