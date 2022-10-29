@@ -60,7 +60,7 @@
             background: {
                 color: var(--color-light-dark);
             }
-            &:not(&.users, &.lower) {
+            &:not(&.users, &.lower, &.full) {
                 min: {
                     height: susanoo.rem-calc(350);
                 }
@@ -76,7 +76,7 @@
             }
             &.full {
                 min: {
-                    height: susanoo.rem-calc(700);
+                    height: susanoo.rem-calc(770);
                 }
             }
         }

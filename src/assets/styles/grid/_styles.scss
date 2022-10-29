@@ -28,4 +28,16 @@ html {
 .default-grid {
     display: flex;
     gap: var(--grid-margin);
+    &.one-two {
+        .middle-section {
+            flex-direction: row;
+        }
+        .right-section {
+            flex-direction: column;
+        }
+        .full {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
