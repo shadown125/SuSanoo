@@ -44,3 +44,4 @@ yarn-error.log*
 
 #project
 src/assets/build
+.vscode
