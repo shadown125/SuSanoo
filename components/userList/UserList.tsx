@@ -72,7 +72,7 @@ const UserList: FC = () => {
                                     <motion.tbody layout>
                                         <AnimatePresence>
                                             {users!.map((user, index) => (
-                                                <motion.tr layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }} key={index}>
+                                                <motion.tr layout animate={{ opacity: 1 }} initial={{ opacity: 0 }} exit={{ opacity: 0 }} key={user.id}>
                                                     <UserListItem
                                                         createdAt={user.createdAt.toLocaleDateString()}
                                                         email={user.email!}
