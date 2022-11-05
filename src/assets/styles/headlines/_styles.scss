@@ -17,7 +17,7 @@ h6 {
 }
 
 .headline {
-    color: var(--color-headline, white);
+    color: var(--color-headline, var(--color-green-main));
     &:not(:first-child) {
         margin: {
             top: susanoo.rem-calc(16);
