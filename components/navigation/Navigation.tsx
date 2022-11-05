@@ -16,7 +16,7 @@ const Navigation: FC = () => {
                     {links.map((item, index) => (
                         <li key={index}>
                             <Link href={item.path}>
-                                <a className={`link is-icon is-nav ${item.icon}${router.pathname === item.path ? " is-active" : ""}`}>
+                                <a className={`link is-icon is-nav ${item.icon}${router.pathname.includes(item.path) ? " is-active" : ""}`}>
                                     <span>{item.name}</span>
                                 </a>
                             </Link>

@@ -9,19 +9,19 @@ import { useTranslation } from "next-i18next";
 const PageHeader: FC = () => {
     const { t } = useTranslation("common");
     const router = useRouter();
-    const currentRoute = links.filter((link) => router.pathname === link.path);
+    const currentRoute = links.filter((link) => router.pathname.includes(link.path));
 
     const { mutate: status } = trpc.useMutation(["auth.setUserStatus"]);
 
     const logoutHandler = async (): Promise<void> => {
-        await status({ status: false });
+        status({ status: false });
         await signOut();
     };
 
     return (
         <header className="page-header">
             <div className="container">
-                <h1 className="headline h4">{currentRoute[0]!.name}</h1>
+                {router.pathname.includes(currentRoute[0]!.path) ? <h1 className="headline h4">{currentRoute[0]!.name}</h1> : <h1 className="headline h4">SuS</h1>}
                 <div className="content">
                     <LanguageSwitch />
                     <button className="button is-primary" onClick={logoutHandler}>
