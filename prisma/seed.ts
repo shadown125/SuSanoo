@@ -1,125 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import { hashPassword } from "../lib/auth";
+import { components } from "./seed-data/components";
+import { inputs } from "./seed-data/inputs";
+import { pages } from "./seed-data/pages";
+import { users } from "./seed-data/user";
+import { history } from "./seed-data/history";
 const prisma = new PrismaClient();
 
 const main = async () => {
-    const hashedPassword = await hashPassword("123");
-
-    await prisma.user.upsert({
-        create: {
-            id: "fsjapo12331248r923n",
-            name: "Dawid Ol",
-            email: "do@example.com",
-            password: hashedPassword,
-            image: "/dummy-image.jpg",
-            status: false,
-        },
-        update: {},
-        where: { email: "do@example.com" },
-    });
-
-    await prisma.history.upsert({
-        create: {
-            id: "fsjapo12331248r923n2123",
-            userId: "fsjapo12331248r923n",
-            pageId: "fsjapo12331221348r923n231",
-        },
-        update: {},
-        where: { id: "fsjapo12331248r923n2123" },
-    });
-
-    await prisma.history.upsert({
-        create: {
-            id: "fsjapo12331248r923323n2123",
-            userId: "o1j23h12ijh4i2yu1g",
-            pageId: "fsjapo12331221348r923n",
-        },
-        update: {},
-        where: { id: "fsjapo12331248r923323n2123" },
-    });
-
-    await prisma.history.upsert({
-        create: {
-            id: "fsjapo12331248r923323n212",
-            userId: "o1j23h12ijh4i2yu1g",
-            pageId: "fsjapo12331221348r923n",
-        },
-        update: {},
-        where: { id: "fsjapo12331248r923323n212" },
-    });
-
-    await prisma.page.upsert({
-        create: {
-            id: "fsjapo12331221348r923n",
-            name: "Home",
-            authorId: "fsjapo12331248r923n",
-        },
-        update: {},
-        where: { id: "fsjapo12331221348r923n" },
-    });
-
-    await prisma.page.upsert({
-        create: {
-            id: "fsjapo12331221348r923n231",
-            name: "Subpage",
-            authorId: "o1j23h12ijh4i2yu1g",
-            active: false,
-        },
-        update: {},
-        where: { id: "fsjapo12331221348r923n231" },
-    });
-
-    await prisma.user.upsert({
-        create: {
-            id: "o1j23h12ijh4i2yu1g",
-            name: "Chuck Norris",
-            email: "chuckNoriss@gigachad.com",
-            password: hashedPassword,
-            image: "/dummy-image-4.jpg",
-            status: false,
-        },
-        update: {},
-        where: { email: "chuckNoriss@gigachad.com" },
-    });
-
-    await prisma.user.upsert({
-        create: {
-            id: "njou12iph3291h30123",
-            name: "Itachi Uchiha",
-            email: "itachiU@sharingan.com",
-            password: hashedPassword,
-            image: "/dummy-image-2.jpg",
-            status: false,
-        },
-        update: {},
-        where: { email: "itachiU@sharingan.com" },
-    });
-
-    await prisma.user.upsert({
-        create: {
-            id: "2313dfadfawdsfasfds",
-            name: "Sasuke Uchiha",
-            email: "sasuke@sharingan.com",
-            password: hashedPassword,
-            image: "/dummy-image.jpg",
-            status: false,
-        },
-        update: {},
-        where: { email: "sasuke@sharingan.com" },
-    });
-
-    await prisma.user.upsert({
-        create: {
-            id: "hfdaskljh1u8934ty81bkbd",
-            name: "Anna Maria Wesołowska",
-            email: "wesolowska@prawo.com",
-            password: hashedPassword,
-            image: "/dummy-image-3.jpg",
-            status: false,
-        },
-        update: {},
-        where: { email: "wesolowska@prawo.com" },
-    });
+    await users(prisma);
+    await history(prisma);
+    await pages(prisma);
+    await inputs(prisma);
+    await components(prisma);
 };
 
 main();
