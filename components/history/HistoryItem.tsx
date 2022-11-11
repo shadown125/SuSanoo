@@ -12,7 +12,7 @@ const HistoryItem: FC<{
     const { data: user } = trpc.useQuery(["auth.getUser", { id: id }]);
     const { data: page } = trpc.useQuery(["auth.pages.getPageFromHistory", { pageId }]);
 
-    const lastUpdate = () => {
+    const lastUpdate = (): string => {
         const distance = Date.now() - updated.getTime();
 
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -29,9 +29,8 @@ const HistoryItem: FC<{
         if (minutes > 0) {
             return `${minutes} ${t("history.minutesAgo")}`;
         }
-        if (seconds <= 60) {
-            return `${seconds} ${t("history.secondsAgo")}`;
-        }
+
+        return `${seconds} ${t("history.secondsAgo")}`;
     };
 
     return (
