@@ -52,13 +52,31 @@ model User {
 }
 
 model Page {
-  id        String    @id @default(cuid())
-  name      String?   @unique
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  createdBy User      @relation(fields: [authorId], references: [id])
-  authorId  String
-  history   History[]
+  id         String      @id @default(cuid())
+  name       String      @unique
+  active     Boolean     @default(true)
+  createdAt  DateTime    @default(now())
+  createdBy  User        @relation(fields: [authorId], references: [id])
+  authorId   String
+  history    History[]
+  components Component[]
+}
+
+model Component {
+  id    String  @id @default(cuid())
+  name  String
+  input Input[]
+  page  Page[]
+}
+
+model Input {
+  id          String       @id @default(cuid())
+  name        String
+  type        InputsTypes? @default(text)
+  halfRow     Boolean      @default(false)
+  required    Boolean      @default(false)
+  component   Component    @relation(fields: [componentId], references: [id])
+  componentId String
 }
 
 model History {
@@ -76,6 +94,18 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum InputsTypes {
+  text
+  number
+  email
+  password
+  date
+  checkbox
+  radio
+  select
+  textarea
 }
 
 enum Role {
