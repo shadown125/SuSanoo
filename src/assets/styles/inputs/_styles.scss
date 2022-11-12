@@ -1,15 +1,20 @@
 @use '../susanoo';
 
-.input {
-    position: relative;
-    background: {
-        color: rgba(255, 255, 255, 0.3);
-    }
+@mixin border() {
     border: {
         radius: susanoo.rem-calc(8);
         style: solid;
         width: 2px;
         color: transparent;
+    }
+}
+
+.input {
+    @include border();
+
+    position: relative;
+    background: {
+        color: rgba(255, 255, 255, 0.3);
     }
     width: 100%;
     &.is-invalid {
@@ -52,8 +57,67 @@
     }
 }
 
+.component {
+    &:not(:last-child) {
+        margin: {
+            bottom: susanoo.rem-calc(42);
+        }
+    }
+}
+
+.component-inputs {
+    display: flex;
+    flex: {
+        wrap: wrap;
+    }
+    gap: susanoo.rem-calc(16) susanoo.rem-calc(32);
+    input,
+    textarea,
+    select {
+        @include border();
+
+        color: white;
+        background: {
+            color: #67707560;
+        }
+        padding: susanoo.rem-calc(6) susanoo.rem-calc(12);
+        &:focus,
+        &:focus-within {
+            border: {
+                color: var(--color-green-main);
+            }
+        }
+    }
+    label {
+        display: block;
+        margin: {
+            bottom: susanoo.rem-calc(8);
+        }
+    }
+    textarea {
+        min: {
+            height: susanoo.rem-calc(150);
+        }
+    }
+    .row {
+        width: 100%;
+        flex: {
+            grow: 1;
+        }
+        gap: 0;
+        &-half {
+            $space: susanoo.rem-calc(32);
+
+            padding: 0 $space;
+            margin: 0 calc($space * -1);
+            width: 50%;
+        }
+    }
+}
+
 input,
-textarea {
+textarea,
+select {
     width: 100%;
     border: {
         style: unset;
