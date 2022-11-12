@@ -70,13 +70,21 @@ model Component {
 }
 
 model Input {
-  id          String       @id @default(cuid())
-  name        String
-  type        InputsTypes? @default(text)
-  halfRow     Boolean      @default(false)
-  required    Boolean      @default(false)
-  component   Component    @relation(fields: [componentId], references: [id])
-  componentId String
+  id            String         @id @default(cuid())
+  name          String
+  type          InputsTypes?   @default(text)
+  halfRow       Boolean        @default(false)
+  required      Boolean        @default(false)
+  component     Component      @relation(fields: [componentId], references: [id])
+  componentId   String
+  selectOptions SelectOption[]
+}
+
+model SelectOption {
+  id      String @id @default(cuid())
+  name    String
+  input   Input  @relation(fields: [inputId], references: [id])
+  inputId String
 }
 
 model History {
