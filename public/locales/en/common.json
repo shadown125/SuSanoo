@@ -23,5 +23,11 @@
     "yes": "Yes",
     "no": "No",
     "inactive": "Inactive",
-    "history": "History"
+    "history": "History",
+    "save": "Save",
+    "back": "Back",
+    "validation": {
+        "required": "This field is required",
+        "email": "Email is not valid"
+    }
 }

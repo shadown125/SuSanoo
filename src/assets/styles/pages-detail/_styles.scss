@@ -1,0 +1,79 @@
+@use '../susanoo';
+@use '../utils/mixins' as utils;
+@use '../lists/mixins' as lists;
+
+.pages-detail {
+    @include utils.status();
+
+    .component {
+        $padding: #{susanoo.rem-calc(10)};
+
+        position: relative;
+        padding: {
+            top: susanoo.rem-calc(12);
+            left: $padding;
+            right: $padding;
+            bottom: $padding;
+        }
+        border: {
+            radius: susanoo.rem-calc(6);
+            style: solid;
+            width: 2px;
+            color: var(--color-green-dark);
+        }
+        > .head {
+            position: absolute;
+            top: susanoo.rem-calc(-24);
+            left: susanoo.rem-calc(6);
+            background-color: var(--color-light-dark);
+            padding: susanoo.rem-calc(4);
+            font: {
+                size: susanoo.rem-calc(22);
+            }
+        }
+    }
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .container {
+        ul {
+            @include lists.reset-list();
+        }
+        li {
+            &:not(:last-child) {
+                margin: {
+                    bottom: susanoo.rem-calc(32);
+                }
+            }
+        }
+    }
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        margin: {
+            top: susanoo.rem-calc(32);
+        }
+        .back {
+            background: {
+                color: var(--color-orange);
+            }
+            &::after {
+                background: {
+                    color: var(--color-orange);
+                }
+            }
+        }
+        .submit {
+            background: {
+                color: var(--color-green);
+            }
+            &::after {
+                background: {
+                    color: var(--color-green);
+                }
+            }
+        }
+    }
+}

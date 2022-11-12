@@ -24,5 +24,7 @@
     "no": "Nie",
     "inactive": "Nieaktywna",
     "status": "Status",
-    "history": "Historia"
+    "history": "Historia",
+    "save": "Zapisz",
+    "back": "Powrót"
 }
