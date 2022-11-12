@@ -98,14 +98,13 @@ model VerificationToken {
 
 enum InputsTypes {
   text
-  number
+  textarea
   email
-  password
   date
+  number
   checkbox
   radio
   select
-  textarea
 }
 
 enum Role {
