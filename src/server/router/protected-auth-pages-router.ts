@@ -35,4 +35,25 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 take: 20,
             });
         },
+    })
+    .query("getCurrentPageComponents", {
+        input: z.object({
+            name: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { name } = input;
+
+            return await ctx.prisma.component.findMany({
+                where: {
+                    page: {
+                        some: {
+                            name: name,
+                        },
+                    },
+                },
+                include: {
+                    input: true,
+                },
+            });
+        },
     });
