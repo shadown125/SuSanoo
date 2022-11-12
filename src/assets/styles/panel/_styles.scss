@@ -56,7 +56,10 @@
             max: {
                 height: susanoo.rem-calc(300);
             }
-            overflow-y: auto;
+            overflow: {
+                y: auto;
+                x: hidden;
+            }
             background: {
                 color: var(--color-light-dark);
             }
