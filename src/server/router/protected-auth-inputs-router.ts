@@ -13,6 +13,13 @@ export const protectedAuthInputsRouter = createProtectedRouter()
                 where: {
                     componentId: componentId,
                 },
+                include: {
+                    value: {
+                        select: {
+                            id: true,
+                        },
+                    },
+                },
             });
         },
     })
@@ -22,6 +29,10 @@ export const protectedAuthInputsRouter = createProtectedRouter()
         }),
         resolve: async ({ input, ctx }) => {
             const { id } = input;
+
+            if (id === "") {
+                return null;
+            }
 
             return await ctx.prisma.selectOption.findMany({
                 where: {

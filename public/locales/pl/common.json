@@ -26,5 +26,9 @@
     "status": "Status",
     "history": "Historia",
     "save": "Zapisz",
-    "back": "Powrót"
+    "back": "Powrót",
+    "validation": {
+        "required": "Pole wymagane",
+        "email": "Niepoprawny adres email"
+    }
 }

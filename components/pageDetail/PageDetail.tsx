@@ -1,3 +1,4 @@
+import { PageInputsValues } from "@prisma/client";
 import { Form, Formik } from "formik";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
@@ -8,9 +9,10 @@ import { trpc } from "../../src/utils/trpc";
 import ComponentInput from "./ComponentInput";
 
 const PageDetail: FC<{
+    pageInputsValues: PageInputsValues[];
     name: string;
     active: boolean;
-}> = ({ name, active }) => {
+}> = ({ pageInputsValues, name, active }) => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { data: components, isLoading } = trpc.useQuery([
@@ -19,6 +21,7 @@ const PageDetail: FC<{
             name,
         },
     ]);
+    const { mutate: pageInputValue } = trpc.useMutation(["auth.pages.setNewPageInputValue"]);
 
     const initialValues: Record<string, string> = {};
 
@@ -28,7 +31,12 @@ const PageDetail: FC<{
                 return initialValues;
             }
             component.input.forEach((input) => {
-                initialValues[input.name.toLowerCase()] = "";
+                const value = pageInputsValues.find((pageInputValue) => pageInputValue.inputId === input.id);
+                if (input.type === "date") {
+                    initialValues[value ? value.id : ""] = formatDate(new Date(value ? value.value : ""));
+                    return;
+                }
+                initialValues[value ? value.id : ""] = value ? value.value : "";
             });
         });
 
@@ -42,13 +50,15 @@ const PageDetail: FC<{
             if (component.input.length <= 0) {
                 return inputsFieldConfig;
             }
-            component.input.forEach(({ name, type, required }) => {
+            component.input.forEach(({ id, name, type, required }) => {
+                const value = pageInputsValues.find((pageInputValue) => pageInputValue.inputId === id);
+
                 inputsFieldConfig.push({
-                    id: name,
+                    id: value ? value.id : id,
                     label: name,
                     placeholder: "",
                     type: "text",
-                    validationType: type === "number" || type === "date" ? "number" : "string",
+                    validationType: type === "date" ? "date" : "string",
                     required: required,
                     value: undefined,
                     validations: [
@@ -72,9 +82,22 @@ const PageDetail: FC<{
 
     const submitHandler = (data: typeof initialValues, { setSubmitting, resetForm }: FormikSubmission) => {
         try {
-            console.log(data);
+            for (const [key, value] of Object.entries(data)) {
+                if (key !== "" && value !== "") {
+                    pageInputsValues.forEach((pageInput) => {
+                        if (pageInput.id === key) {
+                            pageInputValue({
+                                inputId: key,
+                                value: value,
+                            });
+                        }
+                    });
+                }
+            }
+
+            buildInitialValues();
+
             setSubmitting(false);
-            resetForm(true);
         } catch (error) {
             throw new Error(error as string);
         }
@@ -140,4 +163,11 @@ const buildValidationSchema = (schema: any, config: any) => {
 
     schema[id] = validator;
     return schema;
+};
+
+const formatDate = (date: Date): string => {
+    const day = `${date.getDate() < 10 ? "0" : ""}${date.getDate()}`;
+    const month = `${date.getMonth() + 1 < 10 ? "0" : ""}${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
 };

@@ -4,7 +4,11 @@ import { z } from "zod";
 export const protectedAuthPageRouter = createProtectedRouter()
     .query("get", {
         resolve: async ({ ctx }) => {
-            return await ctx.prisma.page.findMany();
+            return await ctx.prisma.page.findMany({
+                include: {
+                    pageInputsValues: true,
+                },
+            });
         },
     })
     .query("getPageFromHistory", {
@@ -53,6 +57,24 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
                 include: {
                     input: true,
+                },
+            });
+        },
+    })
+    .mutation("setNewPageInputValue", {
+        input: z.object({
+            inputId: z.string(),
+            value: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { inputId, value } = input;
+
+            return await ctx.prisma.pageInputsValues.update({
+                where: {
+                    id: inputId,
+                },
+                data: {
+                    value: value,
                 },
             });
         },
