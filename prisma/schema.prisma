@@ -52,14 +52,25 @@ model User {
 }
 
 model Page {
-  id         String      @id @default(cuid())
-  name       String      @unique
-  active     Boolean     @default(true)
-  createdAt  DateTime    @default(now())
-  createdBy  User        @relation(fields: [authorId], references: [id])
-  authorId   String
-  history    History[]
-  components Component[]
+  id               String             @id @default(cuid())
+  name             String             @unique
+  active           Boolean            @default(true)
+  createdAt        DateTime           @default(now())
+  createdBy        User               @relation(fields: [authorId], references: [id])
+  authorId         String
+  history          History[]
+  components       Component[]
+  pageInputsValues PageInputsValues[]
+}
+
+model PageInputsValues {
+  id        String   @id @default(cuid())
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId    String
+  input     Input    @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  inputId   String
+  value     String
+  createdAt DateTime @default(now())
 }
 
 model Component {
@@ -70,14 +81,15 @@ model Component {
 }
 
 model Input {
-  id            String         @id @default(cuid())
-  name          String
-  type          InputsTypes?   @default(text)
-  halfRow       Boolean        @default(false)
-  required      Boolean        @default(false)
-  component     Component      @relation(fields: [componentId], references: [id])
+  id            String             @id @default(cuid())
+  name          String             @unique @default(cuid())
+  type          InputsTypes?       @default(text)
+  halfRow       Boolean            @default(false)
+  required      Boolean            @default(false)
+  component     Component          @relation(fields: [componentId], references: [id])
   componentId   String
   selectOptions SelectOption[]
+  value         PageInputsValues[]
 }
 
 model SelectOption {
