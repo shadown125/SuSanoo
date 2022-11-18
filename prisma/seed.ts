@@ -5,6 +5,7 @@ import { pages } from "./seed-data/pages";
 import { users } from "./seed-data/user";
 import { history } from "./seed-data/history";
 import { selectOptions } from "./seed-data/select-options";
+import { pageInputsValues } from "./seed-data/page-inputs-values";
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -14,6 +15,7 @@ const main = async () => {
     await components(prisma);
     await inputs(prisma);
     await selectOptions(prisma);
+    await pageInputsValues(prisma);
 };
 
 main();
