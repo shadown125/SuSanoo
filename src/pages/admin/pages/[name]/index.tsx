@@ -8,6 +8,7 @@ import { trpc } from "../../../../utils/trpc";
 import PageHistory from "../../../../../components/history/PageHistory";
 import { useTranslation } from "next-i18next";
 import PageDetail from "../../../../../components/pageDetail/PageDetail";
+import AddComponent from "../../../../../components/addComponent/AddComponent";
 
 const Edit: NextPage<{ name: string }> = ({ name }) => {
     const { t } = useTranslation("");
@@ -32,7 +33,7 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
                     </div>
                     <div className="right-section">
                         <section className="upper">
-                            <h2 className="headline h5">Notifications</h2>
+                            <h2 className="headline h5">Add Component</h2>
                         </section>
                         <section className="lower">
                             <h2 className="headline h5">{t("common:history")}</h2>
@@ -48,7 +49,7 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
                     </div>
                     <div className="right-section">
                         <section className="upper">
-                            <h2 className="headline h5">Notifications</h2>
+                            <AddComponent id={page.id} />
                         </section>
                         <section className="lower">
                             <PageHistory id={page.id} />
