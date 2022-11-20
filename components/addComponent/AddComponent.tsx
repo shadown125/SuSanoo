@@ -1,11 +1,13 @@
 import { FC } from "react";
 import { trpc } from "../../src/utils/trpc";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "next-i18next";
 
 const AddComponent: FC<{
     id: string;
 }> = ({ id }) => {
     const trpcCtx = trpc.useContext();
+    const { t } = useTranslation("pages");
     const { data: components, refetch: componentsRefetch } = trpc.useQuery([
         "auth.components.getAvaibleComponents",
         {
@@ -29,7 +31,7 @@ const AddComponent: FC<{
 
     return (
         <div className="add-component">
-            <h2 className="headline h5">Add Component</h2>
+            <h2 className="headline h5">{t("addComponent")}</h2>
             {!components ? (
                 <p>Loading...</p>
             ) : (

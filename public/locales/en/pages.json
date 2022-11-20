@@ -1,4 +1,5 @@
 {
     "active": "Active",
-    "doesNotExist": "Page doesn't exist"
+    "doesNotExist": "Page doesn't exist",
+    "addComponent": "Add Component"
 }
