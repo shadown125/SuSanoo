@@ -113,6 +113,18 @@
             width: 50%;
         }
     }
+    .is-invalid {
+        input {
+            border: {
+                width: 2px;
+                style: solid;
+                color: var(--color-red);
+            }
+        }
+        .error-message {
+            color: var(--color-red);
+        }
+    }
 }
 
 input,
