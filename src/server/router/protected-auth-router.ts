@@ -69,6 +69,9 @@ export const protectedAuthRouter = createProtectedRouter()
         resolve: async ({ ctx }) => {
             return await ctx.prisma.history.findMany({
                 take: 20,
+                orderBy: {
+                    changeAt: "desc",
+                },
             });
         },
     })
