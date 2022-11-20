@@ -48,6 +48,9 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     pageId: id,
                 },
                 take: 20,
+                orderBy: {
+                    changeAt: "desc",
+                },
             });
         },
     })
