@@ -129,7 +129,7 @@ const PageDetail: FC<{
                 <div>Loading...</div>
             ) : (
                 <div className="container">
-                    <Formik initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
+                    <Formik enableReinitialize initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
                         {({ isSubmitting }) => (
                             <Form>
                                 {components.map((component, index) => (
