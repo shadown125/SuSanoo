@@ -5,9 +5,10 @@ export const protectedAuthInputsRouter = createProtectedRouter()
     .query("get", {
         input: z.object({
             componentId: z.string(),
+            pageId: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { componentId } = input;
+            const { componentId, pageId } = input;
 
             return await ctx.prisma.input.findMany({
                 where: {
@@ -15,6 +16,9 @@ export const protectedAuthInputsRouter = createProtectedRouter()
                 },
                 include: {
                     value: {
+                        where: {
+                            pageId: pageId,
+                        },
                         select: {
                             id: true,
                         },

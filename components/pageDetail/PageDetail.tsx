@@ -9,10 +9,10 @@ import { trpc } from "../../src/utils/trpc";
 import ComponentInput from "./ComponentInput";
 
 const PageDetail: FC<{
-    pageInputsValues: PageInputsValues[];
     name: string;
     active: boolean;
-}> = ({ pageInputsValues, name, active }) => {
+    pageId: string;
+}> = ({ name, active, pageId }) => {
     const { t } = useTranslation("common");
     const router = useRouter();
     const { data: components, isLoading } = trpc.useQuery([
@@ -21,6 +21,7 @@ const PageDetail: FC<{
             name,
         },
     ]);
+    const { data: pageInputsValues } = trpc.useQuery(["auth.pages.getPageInputsValues", { pageId }]);
     const { mutate: pageInputValue } = trpc.useMutation(["auth.pages.setNewPageInputValue"]);
 
     const initialValues: Record<string, string> = {};
@@ -31,7 +32,7 @@ const PageDetail: FC<{
                 return initialValues;
             }
             component.input.forEach((input) => {
-                const value = pageInputsValues.find((pageInputValue) => pageInputValue.inputId === input.id);
+                const value = pageInputsValues?.find((pageInputValue) => pageInputValue.inputId === input.id);
                 if (input.type === "date") {
                     initialValues[value ? value.id : ""] = formatDate(new Date(value ? value.value : ""));
                     return;
@@ -51,7 +52,7 @@ const PageDetail: FC<{
                 return inputsFieldConfig;
             }
             component.input.forEach(({ id, name, type, required }) => {
-                const value = pageInputsValues.find((pageInputValue) => pageInputValue.inputId === id);
+                const value = pageInputsValues?.find((pageInputValue) => pageInputValue.inputId === id);
 
                 inputsFieldConfig.push({
                     id: value ? value.id : id,
@@ -84,7 +85,7 @@ const PageDetail: FC<{
         try {
             for (const [key, value] of Object.entries(data)) {
                 if (key !== "" && value !== "") {
-                    pageInputsValues.forEach((pageInput) => {
+                    pageInputsValues?.forEach((pageInput) => {
                         if (pageInput.id === key) {
                             pageInputValue({
                                 inputId: key,
@@ -115,13 +116,13 @@ const PageDetail: FC<{
                 <div>Loading...</div>
             ) : (
                 <div className="container">
-                    <Formik initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
+                    <Formik enableReinitialize initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
                         {({ isSubmitting }) => (
                             <Form>
                                 {components.map((component, index) => (
                                     <div className="component" key={index}>
                                         <div className="head">{component.name}</div>
-                                        <ComponentInput componentId={component.id} />
+                                        <ComponentInput pageId={pageId} componentId={component.id} />
                                     </div>
                                 ))}
                                 <div className="actions">

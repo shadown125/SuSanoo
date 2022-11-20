@@ -32,11 +32,24 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 where: {
                     id: componentId,
                 },
+                include: {
+                    input: true,
+                },
             });
 
             if (!component) {
                 throw new Error("Component not found");
             }
+
+            component.input.forEach(async (input) => {
+                await ctx.prisma.pageInputsValues.create({
+                    data: {
+                        pageId: pageId,
+                        inputId: input.id,
+                        value: "",
+                    },
+                });
+            });
 
             await ctx.prisma.page.update({
                 where: {

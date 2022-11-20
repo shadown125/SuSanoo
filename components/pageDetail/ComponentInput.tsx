@@ -37,8 +37,9 @@ const ComponentInputBuilder = (type: string, name: string, id: string, rawId: st
 
 const ComponentInput: FC<{
     componentId: string;
-}> = ({ componentId }) => {
-    const { data: input } = trpc.useQuery(["auth.inputs.get", { componentId }]);
+    pageId: string;
+}> = ({ componentId, pageId }) => {
+    const { data: input } = trpc.useQuery(["auth.inputs.get", { componentId, pageId }]);
 
     return (
         <div className="component-inputs">

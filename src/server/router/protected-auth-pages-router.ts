@@ -4,13 +4,24 @@ import { z } from "zod";
 export const protectedAuthPageRouter = createProtectedRouter()
     .query("get", {
         resolve: async ({ ctx }) => {
-            return await ctx.prisma.page.findMany({
-                include: {
-                    pageInputsValues: true,
+            return await ctx.prisma.page.findMany();
+        },
+    })
+    .query("getPageInputsValues", {
+        input: z.object({
+            pageId: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId } = input;
+
+            return await ctx.prisma.pageInputsValues.findMany({
+                where: {
+                    pageId: pageId,
                 },
             });
         },
     })
+
     .query("getPageFromHistory", {
         input: z.object({
             pageId: z.string(),

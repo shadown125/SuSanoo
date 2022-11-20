@@ -44,7 +44,7 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
                 <>
                     <div className="middle-section">
                         <section className="full">
-                            <PageDetail pageInputsValues={page.pageInputsValues} name={page.name} active={page.active} />
+                            <PageDetail pageId={page.id} name={page.name} active={page.active} />
                         </section>
                     </div>
                     <div className="right-section">

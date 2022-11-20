@@ -20,6 +20,7 @@ const AddComponent: FC<{
             {
                 onSuccess: (_) => {
                     trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
+                    trpcCtx.invalidateQueries(["auth.pages.getPageInputsValues"]);
                     componentsRefetch();
                 },
             },
