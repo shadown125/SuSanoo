@@ -36,8 +36,16 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        .headline {
+            margin: {
+                bottom: unset;
+            }
+        }
     }
     .container {
+        margin: {
+            top: susanoo.rem-calc(24);
+        }
         ul {
             @include lists.reset-list();
         }
