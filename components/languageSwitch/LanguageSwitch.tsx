@@ -53,7 +53,14 @@ const LanguageSwitch: FC = () => {
             </div>
             <motion.div className="sub-menu" initial="closed" animate={isOpen ? "open" : "closed"} variants={menuItemVariants}>
                 {getAllAvailableLanguages().map((item, index) => (
-                    <Link href={router.pathname} locale={item.locale} key={index}>
+                    <Link
+                        href={{
+                            pathname: router.pathname,
+                            query: router.query,
+                        }}
+                        locale={item.locale}
+                        key={index}
+                    >
                         <div className="language">
                             <Image src={`/${item.icon}`} sizes="100vw" width={50} height={50} alt="Language image" />
                             <span>{t(item.name)}</span>

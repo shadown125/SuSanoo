@@ -40,7 +40,7 @@ const PageList: FC = () => {
                                                         <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
                                                     </td>
                                                     <td>
-                                                        <Link href={`${router.pathname}/${name!.toLowerCase()}`}>
+                                                        <Link href={`${router.pathname}/${name.toLowerCase()}`}>
                                                             <a className="button is-primary">
                                                                 <span>{t("common:edit")}</span>
                                                             </a>
