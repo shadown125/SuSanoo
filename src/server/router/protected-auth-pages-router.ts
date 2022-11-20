@@ -51,6 +51,27 @@ export const protectedAuthPageRouter = createProtectedRouter()
             });
         },
     })
+    .mutation("setNewPageHistoryChangeLog", {
+        input: z.object({
+            pageId: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId } = input;
+
+            const userId = ctx.session.user.id;
+
+            if (!userId) {
+                throw new Error("User not found");
+            }
+
+            return await ctx.prisma.history.create({
+                data: {
+                    pageId: pageId,
+                    userId: userId,
+                },
+            });
+        },
+    })
     .query("getCurrentPageComponents", {
         input: z.object({
             name: z.string(),

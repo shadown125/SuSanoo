@@ -13,6 +13,7 @@ const PageDetail: FC<{
     active: boolean;
     pageId: string;
 }> = ({ name, active, pageId }) => {
+    const trpcCtx = trpc.useContext();
     const { t } = useTranslation("common");
     const router = useRouter();
     const { data: components, isLoading } = trpc.useQuery([
@@ -23,6 +24,7 @@ const PageDetail: FC<{
     ]);
     const { data: pageInputsValues } = trpc.useQuery(["auth.pages.getPageInputsValues", { pageId }]);
     const { mutate: pageInputValue } = trpc.useMutation(["auth.pages.setNewPageInputValue"]);
+    const { mutate: setNewHistoryChangeLog } = trpc.useMutation(["auth.pages.setNewPageHistoryChangeLog"]);
 
     const initialValues: Record<string, string> = {};
 
@@ -97,6 +99,17 @@ const PageDetail: FC<{
             }
 
             buildInitialValues();
+
+            setNewHistoryChangeLog(
+                {
+                    pageId,
+                },
+                {
+                    onSuccess: () => {
+                        trpcCtx.invalidateQueries(["auth.pages.getCurrentPageHistory"]);
+                    },
+                },
+            );
 
             setSubmitting(false);
         } catch (error) {
