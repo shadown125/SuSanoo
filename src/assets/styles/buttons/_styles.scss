@@ -163,6 +163,55 @@ button {
             }
         }
     }
+    &.is-tertiary {
+        text-transform: none;
+        padding: susanoo.rem-calc(6) susanoo.rem-calc(14);
+        border: {
+            width: 2px;
+            style: solid;
+            color: var(--color-dark);
+        }
+        color: var(--color-dark);
+        transition: border-color 0.35s linear, color 0.2s linear;
+        overflow: hidden;
+        &:hover {
+            color: white;
+            border: {
+                color: var(--color-green);
+            }
+            &::before,
+            &::after {
+                transform: translateX(0%);
+            }
+        }
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: -1;
+            transition: transform 0.35s linear;
+        }
+        &::before {
+            border: {
+                top: susanoo.rem-calc(20) solid var(--color-green);
+                bottom: susanoo.rem-calc(20) solid var(--color-green);
+                right: susanoo.rem-calc(22) solid transparent;
+            }
+            transform: translateX(-100%);
+        }
+        &::after {
+            border: {
+                top: susanoo.rem-calc(20) solid var(--color-green);
+                bottom: susanoo.rem-calc(20) solid var(--color-green);
+                left: susanoo.rem-calc(22) solid transparent;
+            }
+            transform: translateX(100%);
+        }
+    }
 }
 
 @keyframes disabled-1 {
