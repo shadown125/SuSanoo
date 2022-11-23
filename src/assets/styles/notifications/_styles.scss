@@ -35,3 +35,22 @@
         }
     }
 }
+
+.notification-message {
+    position: relative;
+    &.is-error {
+        .notification {
+            background: {
+                color: var(--color-red);
+            }
+        }
+    }
+    .notification {
+        border: {
+            radius: susanoo.rem-calc(6);
+        }
+        background: {
+            color: var(--color-green);
+        }
+    }
+}

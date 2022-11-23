@@ -30,5 +30,10 @@
     "validation": {
         "required": "This field is required",
         "email": "Email is not valid"
-    }
+    },
+    "editPage": "Edit page",
+    "editPageIsActive": "Editing active",
+    "pageSuccefullySaved": "Page was saved successfully",
+    "componentSuccefullyAddedToPage": "Component was added successfully to page",
+    "SomethingWentWrong": "Something went wrong. Please try again later"
 }

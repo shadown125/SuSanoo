@@ -174,7 +174,8 @@ button {
         color: var(--color-dark);
         transition: border-color 0.35s linear, color 0.2s linear;
         overflow: hidden;
-        &:hover {
+        &:hover,
+        &.is-active {
             color: white;
             border: {
                 color: var(--color-green);

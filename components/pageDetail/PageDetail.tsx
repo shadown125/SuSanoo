@@ -1,9 +1,10 @@
-import { PageInputsValues } from "@prisma/client";
 import { Form, Formik } from "formik";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, RefObject } from "react";
 import * as yup from "yup";
+import shallow from "zustand/shallow";
+import { useNotificationStore, useDetailPageStore } from "../../src/store/store";
 import { FormikSubmission } from "../../src/types/formik";
 import { trpc } from "../../src/utils/trpc";
 import ComponentInput from "./ComponentInput";
@@ -12,7 +13,20 @@ const PageDetail: FC<{
     name: string;
     active: boolean;
     pageId: string;
-}> = ({ name, active, pageId }) => {
+    middleSectionRef: RefObject<HTMLDivElement>;
+}> = ({ name, active, pageId, middleSectionRef }) => {
+    const { setNotificationMessage, setNotificationState, setNotificationError } = useNotificationStore(
+        (state) => ({
+            setNotificationMessage: state.setNotificationMessage,
+            setNotificationState: state.setNotificationState,
+            setNotificationError: state.setNotificationError,
+        }),
+        shallow,
+    );
+
+    const editState = useDetailPageStore((state) => state.editState);
+    const setEditState = useDetailPageStore((state) => state.setEditState);
+
     const trpcCtx = trpc.useContext();
     const { t } = useTranslation("common");
     const router = useRouter();
@@ -111,8 +125,35 @@ const PageDetail: FC<{
                 },
             );
 
+            setNotificationMessage(t("pageSuccefullySaved"));
+            setNotificationState(true);
+
+            setTimeout(() => {
+                setNotificationState(false);
+            }, 3000);
+            setTimeout(() => {
+                setNotificationMessage("");
+            }, 5000);
+
             setSubmitting(false);
+            middleSectionRef.current?.scroll(0, 0);
         } catch (error) {
+            setNotificationError(true);
+            setNotificationMessage(t("SomethingWentWrong"));
+            setNotificationState(true);
+
+            setTimeout(() => {
+                setNotificationState(false);
+            }, 3000);
+            setTimeout(() => {
+                setNotificationError(false);
+                setNotificationMessage("");
+            }, 5000);
+
+            middleSectionRef.current?.scroll(0, 0);
+
+            setSubmitting(false);
+
             throw new Error(error as string);
         }
     };
@@ -121,8 +162,13 @@ const PageDetail: FC<{
         <div className="pages-detail">
             <div className="head">
                 <h1 className="headline h1">{name}</h1>
-                <div className={`status${active ? " active" : " inactive"}`}>
-                    <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
+                <div className="actions">
+                    <button className={`button is-tertiary${editState ? " is-active" : ""}`} onClick={() => setEditState(!editState)}>
+                        <span>{editState ? t("editPageIsActive") : t("editPage")}</span>
+                    </button>
+                    <div className={`status${active ? " active" : " inactive"}`}>
+                        <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
+                    </div>
                 </div>
             </div>
             {!components || isLoading ? (
@@ -135,6 +181,9 @@ const PageDetail: FC<{
                                 {components.map((component, index) => (
                                     <div className="component" key={index}>
                                         <div className="head">{component.name}</div>
+                                        <button className={`button delete-button is-primary${editState ? " is-active" : ""}`}>
+                                            <span>Delete Component</span>
+                                        </button>
                                         <ComponentInput pageId={pageId} componentId={component.id} />
                                     </div>
                                 ))}

@@ -9,6 +9,8 @@ import PageHistory from "../../../../../components/history/PageHistory";
 import { useTranslation } from "next-i18next";
 import PageDetail from "../../../../../components/pageDetail/PageDetail";
 import AddComponent from "../../../../../components/addComponent/AddComponent";
+import Notification from "../../../../../elements/Notification";
+import { useRef } from "react";
 
 const Edit: NextPage<{ name: string }> = ({ name }) => {
     const { t } = useTranslation("");
@@ -16,6 +18,7 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
     const { data: pages } = trpc.useQuery(["auth.pages.get"], {
         select: (pages) => pages.filter((page) => page.name.toLowerCase() === name),
     });
+    const middleSection = useRef<HTMLDivElement>(null);
 
     const page = pages ? pages[0] : null;
 
@@ -43,13 +46,14 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
             ) : (
                 <>
                     <div className="middle-section">
-                        <section className="full">
-                            <PageDetail pageId={page.id} name={page.name} active={page.active} />
+                        <section ref={middleSection} className="full">
+                            <Notification />
+                            <PageDetail pageId={page.id} name={page.name} active={page.active} middleSectionRef={middleSection} />
                         </section>
                     </div>
                     <div className="right-section">
                         <section className="upper">
-                            <AddComponent id={page.id} />
+                            <AddComponent id={page.id} middleSectionRef={middleSection} />
                         </section>
                         <section className="lower">
                             <PageHistory id={page.id} />

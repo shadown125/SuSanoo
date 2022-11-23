@@ -1,13 +1,25 @@
-import { FC } from "react";
+import { FC, RefObject } from "react";
 import { trpc } from "../../src/utils/trpc";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "next-i18next";
+import { useNotificationStore } from "../../src/store/store";
+import shallow from "zustand/shallow";
 
 const AddComponent: FC<{
     id: string;
-}> = ({ id }) => {
+    middleSectionRef: RefObject<HTMLDivElement>;
+}> = ({ id, middleSectionRef }) => {
+    const { setNotificationMessage, setNotificationState, setNotificationError } = useNotificationStore(
+        (state) => ({
+            setNotificationMessage: state.setNotificationMessage,
+            setNotificationState: state.setNotificationState,
+            setNotificationError: state.setNotificationError,
+        }),
+        shallow,
+    );
+
     const trpcCtx = trpc.useContext();
-    const { t } = useTranslation("pages");
+    const { t } = useTranslation("");
     const { data: components, refetch: componentsRefetch } = trpc.useQuery([
         "auth.components.getAvaibleComponents",
         {
@@ -24,6 +36,33 @@ const AddComponent: FC<{
                     trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
                     trpcCtx.invalidateQueries(["auth.pages.getPageInputsValues"]);
                     componentsRefetch();
+
+                    setNotificationMessage(t("common:componentSuccefullyAddedToPage"));
+                    setNotificationState(true);
+
+                    setTimeout(() => {
+                        setNotificationState(false);
+                    }, 3000);
+                    setTimeout(() => {
+                        setNotificationMessage("");
+                    }, 5000);
+
+                    middleSectionRef.current?.scroll(0, 0);
+                },
+                onError: (_) => {
+                    setNotificationError(true);
+                    setNotificationMessage(t("common:SomethingWentWrong"));
+                    setNotificationState(true);
+
+                    setTimeout(() => {
+                        setNotificationState(false);
+                    }, 3000);
+                    setTimeout(() => {
+                        setNotificationError(false);
+                        setNotificationMessage("");
+                    }, 5000);
+
+                    middleSectionRef.current?.scroll(0, 0);
                 },
             },
         );
@@ -31,7 +70,7 @@ const AddComponent: FC<{
 
     return (
         <div className="add-component">
-            <h2 className="headline h5">{t("addComponent")}</h2>
+            <h2 className="headline h5">{t("pages:addComponent")}</h2>
             {!components ? (
                 <p>Loading...</p>
             ) : (
