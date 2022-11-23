@@ -51,7 +51,7 @@ const AddComponent: FC<{
                 },
                 onError: (_) => {
                     setNotificationError(true);
-                    setNotificationMessage(t("common:SomethingWentWrong"));
+                    setNotificationMessage(t("common:somethingWentWrong"));
                     setNotificationState(true);
 
                     setTimeout(() => {

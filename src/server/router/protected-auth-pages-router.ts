@@ -113,4 +113,35 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
             });
         },
+    })
+    .mutation("deletePageComponent", {
+        input: z.object({
+            pageId: z.string(),
+            componentId: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { componentId, pageId } = input;
+
+            await ctx.prisma.page.update({
+                where: {
+                    id: pageId,
+                },
+                data: {
+                    components: {
+                        disconnect: {
+                            id: componentId,
+                        },
+                    },
+                },
+            });
+
+            await ctx.prisma.pageInputsValues.deleteMany({
+                where: {
+                    pageId: pageId,
+                    input: {
+                        componentId: componentId,
+                    },
+                },
+            });
+        },
     });

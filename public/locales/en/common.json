@@ -35,5 +35,6 @@
     "editPageIsActive": "Editing active",
     "pageSuccefullySaved": "Page was saved successfully",
     "componentSuccefullyAddedToPage": "Component was added successfully to page",
-    "SomethingWentWrong": "Something went wrong. Please try again later"
+    "somethingWentWrong": "Something went wrong. Please try again later",
+    "pageComponentSuccefullyDeleted": "Component was deleted successfully"
 }

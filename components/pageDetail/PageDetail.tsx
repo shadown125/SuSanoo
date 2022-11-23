@@ -39,6 +39,7 @@ const PageDetail: FC<{
     const { data: pageInputsValues } = trpc.useQuery(["auth.pages.getPageInputsValues", { pageId }]);
     const { mutate: pageInputValue } = trpc.useMutation(["auth.pages.setNewPageInputValue"]);
     const { mutate: setNewHistoryChangeLog } = trpc.useMutation(["auth.pages.setNewPageHistoryChangeLog"]);
+    const { mutate: deletePageComponent } = trpc.useMutation(["auth.pages.deletePageComponent"]);
 
     const initialValues: Record<string, string> = {};
 
@@ -136,10 +137,13 @@ const PageDetail: FC<{
             }, 5000);
 
             setSubmitting(false);
-            middleSectionRef.current?.scroll(0, 0);
+            middleSectionRef.current?.scroll({
+                top: 0,
+                behavior: "smooth",
+            });
         } catch (error) {
             setNotificationError(true);
-            setNotificationMessage(t("SomethingWentWrong"));
+            setNotificationMessage(t("somethingWentWrong"));
             setNotificationState(true);
 
             setTimeout(() => {
@@ -150,12 +154,61 @@ const PageDetail: FC<{
                 setNotificationMessage("");
             }, 5000);
 
-            middleSectionRef.current?.scroll(0, 0);
-
             setSubmitting(false);
+
+            middleSectionRef.current?.scroll({
+                top: 0,
+                behavior: "smooth",
+            });
 
             throw new Error(error as string);
         }
+    };
+
+    const deletePageComponentHandler = (componentId: string) => {
+        deletePageComponent(
+            { componentId, pageId },
+            {
+                onSuccess: () => {
+                    trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
+                    trpcCtx.invalidateQueries(["auth.pages.getCurrentPageHistory"]);
+                    trpcCtx.invalidateQueries(["auth.components.getAvaibleComponents"]);
+
+                    setNotificationMessage(t("componentSuccefullyDeleted"));
+                    setNotificationState(true);
+
+                    setTimeout(() => {
+                        setNotificationState(false);
+                    }, 3000);
+                    setTimeout(() => {
+                        setNotificationMessage("");
+                    }, 5000);
+
+                    middleSectionRef.current?.scroll({
+                        top: 0,
+                        behavior: "smooth",
+                    });
+                },
+                onError: () => {
+                    setNotificationError(true);
+                    setNotificationMessage(t("somethingWentWrong"));
+                    setNotificationState(true);
+
+                    setTimeout(() => {
+                        setNotificationState(false);
+                    }, 3000);
+                    setTimeout(() => {
+                        setNotificationError(false);
+                        setNotificationMessage("");
+                    }, 5000);
+
+                    middleSectionRef.current?.scroll({
+                        top: 0,
+                        behavior: "smooth",
+                    });
+                },
+            },
+        );
     };
 
     return (
@@ -163,7 +216,7 @@ const PageDetail: FC<{
             <div className="head">
                 <h1 className="headline h1">{name}</h1>
                 <div className="actions">
-                    <button className={`button is-tertiary${editState ? " is-active" : ""}`} onClick={() => setEditState(!editState)}>
+                    <button className={`button is-tertiary${editState ? " is-active" : ""}`} onClick={() => setEditState(!editState)} type="button">
                         <span>{editState ? t("editPageIsActive") : t("editPage")}</span>
                     </button>
                     <div className={`status${active ? " active" : " inactive"}`}>
@@ -181,7 +234,11 @@ const PageDetail: FC<{
                                 {components.map((component, index) => (
                                     <div className="component" key={index}>
                                         <div className="head">{component.name}</div>
-                                        <button className={`button delete-button is-primary${editState ? " is-active" : ""}`}>
+                                        <button
+                                            className={`button delete-button is-primary${editState ? " is-active" : ""}`}
+                                            onClick={() => deletePageComponentHandler(component.id)}
+                                            type="button"
+                                        >
                                             <span>Delete Component</span>
                                         </button>
                                         <ComponentInput pageId={pageId} componentId={component.id} />

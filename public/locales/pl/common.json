@@ -35,5 +35,6 @@
     "editPageIsActive": "Edytowanie aktywne",
     "pageSuccefullySaved": "Strona została zapisana pomyślnie",
     "componentSuccefullyAddedToPage": "Komponent został dodany pomyślnie do strony",
-    "SomethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie później"
+    "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie później",
+    "componentSuccefullyDeleted": "Komponent został usunięty pomyślnie"
 }
