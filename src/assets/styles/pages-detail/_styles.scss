@@ -67,6 +67,10 @@
                 bottom: unset;
             }
         }
+        .actions {
+            display: flex;
+            gap: susanoo.rem-calc(12);
+        }
     }
     .container {
         margin: {
