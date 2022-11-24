@@ -52,15 +52,25 @@ model User {
 }
 
 model Page {
-  id               String             @id @default(cuid())
-  name             String             @unique
-  active           Boolean            @default(true)
-  createdAt        DateTime           @default(now())
-  createdBy        User               @relation(fields: [authorId], references: [id])
-  authorId         String
-  history          History[]
-  components       Component[]
-  pageInputsValues PageInputsValues[]
+  id                  String                @id @default(cuid())
+  name                String                @unique
+  active              Boolean               @default(true)
+  createdAt           DateTime              @default(now())
+  createdBy           User                  @relation(fields: [authorId], references: [id])
+  authorId            String
+  history             History[]
+  components          Component[]
+  pageInputsValues    PageInputsValues[]
+  PageComponentsIndex PageComponentsIndex[]
+}
+
+model PageComponentsIndex {
+  id          String    @id @default(cuid())
+  pageId      String
+  component   Component @relation(fields: [componentId], references: [id])
+  componentId String
+  index       Int
+  page        Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
 }
 
 model PageInputsValues {
@@ -74,10 +84,11 @@ model PageInputsValues {
 }
 
 model Component {
-  id    String  @id @default(cuid())
-  name  String
-  input Input[]
-  page  Page[]
+  id                  String                @id @default(cuid())
+  name                String
+  input               Input[]
+  page                Page[]
+  PageComponentsIndex PageComponentsIndex[]
 }
 
 model Input {
