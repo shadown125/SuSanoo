@@ -2,7 +2,6 @@ import { FC, createElement } from "react";
 import ComponentCheckboxField from "../../elements/inputFields/components/ComponentCheckboxField";
 import ComponentDateField from "../../elements/inputFields/components/ComponentDateField";
 import ComponentEmailField from "../../elements/inputFields/components/ComponentEmailField";
-import { inputType } from "../../elements/inputFields/components/ComponentInput";
 import ComponentNumberField from "../../elements/inputFields/components/ComponentNumberField";
 import ComponentRadioField from "../../elements/inputFields/components/ComponentRadioField";
 import ComponentSelectField from "../../elements/inputFields/components/ComponentSelectField";
@@ -13,7 +12,6 @@ import { trpc } from "../../src/utils/trpc";
 export type InputComponentType = FC<{
     name: string;
     id: string;
-    type?: inputType;
     rawId?: string;
 }>;
 
