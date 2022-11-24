@@ -6,6 +6,7 @@ import { users } from "./seed-data/user";
 import { history } from "./seed-data/history";
 import { selectOptions } from "./seed-data/select-options";
 import { pageInputsValues } from "./seed-data/page-inputs-values";
+import { pageComponentsIndex } from "./seed-data/page-components-index";
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -16,6 +17,7 @@ const main = async () => {
     await inputs(prisma);
     await selectOptions(prisma);
     await pageInputsValues(prisma);
+    await pageComponentsIndex(prisma);
 };
 
 main();
