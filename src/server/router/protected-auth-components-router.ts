@@ -34,11 +34,25 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 },
                 include: {
                     input: true,
+                    PageComponentsIndex: true,
+                },
+            });
+
+            const page = await ctx.prisma.page.findUnique({
+                where: {
+                    id: pageId,
+                },
+                include: {
+                    PageComponentsIndex: true,
                 },
             });
 
             if (!component) {
                 throw new Error("Component not found");
+            }
+
+            if (!page) {
+                throw new Error("Page not found");
             }
 
             component.input.forEach(async (input) => {
@@ -49,6 +63,16 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                         value: "",
                     },
                 });
+            });
+
+            console.log(component.PageComponentsIndex.length);
+
+            await ctx.prisma.pageComponentsIndex.create({
+                data: {
+                    pageId: pageId,
+                    componentId: componentId,
+                    index: page.PageComponentsIndex.length,
+                },
             });
 
             await ctx.prisma.page.update({

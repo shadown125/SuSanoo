@@ -8,6 +8,7 @@ import { useNotificationStore, useDetailPageStore } from "../../src/store/store"
 import { FormikSubmission } from "../../src/types/formik";
 import { trpc } from "../../src/utils/trpc";
 import ComponentInput from "./ComponentInput";
+import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 
 const PageDetail: FC<{
     name: string;
@@ -34,12 +35,14 @@ const PageDetail: FC<{
         "auth.pages.getCurrentPageComponents",
         {
             name,
+            pageId,
         },
     ]);
     const { data: pageInputsValues } = trpc.useQuery(["auth.pages.getPageInputsValues", { pageId }]);
     const { mutate: pageInputValue } = trpc.useMutation(["auth.pages.setNewPageInputValue"]);
     const { mutate: setNewHistoryChangeLog } = trpc.useMutation(["auth.pages.setNewPageHistoryChangeLog"]);
     const { mutate: deletePageComponent } = trpc.useMutation(["auth.pages.deletePageComponent"]);
+    const { mutate: updatePageComponentsIndex } = trpc.useMutation(["auth.pages.updatePageComponentsIndex"]);
 
     const initialValues: Record<string, string> = {};
 
@@ -211,6 +214,41 @@ const PageDetail: FC<{
         );
     };
 
+    const handleDragEnd = (result: DropResult) => {
+        const { destination, source } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
+            return;
+        }
+
+        const newComponents = Array.from(components!);
+
+        const [removed] = newComponents.splice(source.index, 1);
+        newComponents.splice(destination.index, 0, removed!);
+
+        newComponents.forEach((component, index) => {
+            if (!component.PageComponentsIndex[0]) {
+                throw new Error("Components index is undefined. Something went wrong.");
+            }
+
+            updatePageComponentsIndex(
+                {
+                    id: component.PageComponentsIndex[0].id,
+                    index,
+                },
+                {
+                    onSuccess: () => {
+                        trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
+                    },
+                },
+            );
+        });
+    };
+
     return (
         <div className="pages-detail">
             <div className="head">
@@ -231,19 +269,42 @@ const PageDetail: FC<{
                     <Formik enableReinitialize initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
                         {({ isSubmitting }) => (
                             <Form>
-                                {components.map((component, index) => (
-                                    <div className="component" key={index}>
-                                        <div className="head">{component.name}</div>
-                                        <button
-                                            className={`button delete-button is-primary${editState ? " is-active" : ""}`}
-                                            onClick={() => deletePageComponentHandler(component.id)}
-                                            type="button"
-                                        >
-                                            <span>Delete Component</span>
-                                        </button>
-                                        <ComponentInput pageId={pageId} componentId={component.id} />
-                                    </div>
-                                ))}
+                                <DragDropContext onDragEnd={handleDragEnd}>
+                                    <Droppable droppableId="components-page-list">
+                                        {(provided) => (
+                                            <div {...provided.droppableProps} ref={provided.innerRef}>
+                                                {components.map((component) => {
+                                                    let pageComponentIndex;
+
+                                                    if (component.PageComponentsIndex[0]) {
+                                                        pageComponentIndex = component.PageComponentsIndex[0].index;
+                                                    } else {
+                                                        return <div>Loading...</div>;
+                                                    }
+
+                                                    return (
+                                                        <Draggable key={component.id} draggableId={component.id.toString()} index={pageComponentIndex} isDragDisabled={!editState}>
+                                                            {(provided) => (
+                                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="component">
+                                                                    <div className="head">{component.name}</div>
+                                                                    <button
+                                                                        className={`button delete-button is-primary${editState ? " is-active" : ""}`}
+                                                                        onClick={() => deletePageComponentHandler(component.id)}
+                                                                        type="button"
+                                                                    >
+                                                                        <span>Delete Component</span>
+                                                                    </button>
+                                                                    <ComponentInput pageId={pageId} componentId={component.id} />
+                                                                </div>
+                                                            )}
+                                                        </Draggable>
+                                                    );
+                                                })}
+                                                {provided.placeholder}
+                                            </div>
+                                        )}
+                                    </Droppable>
+                                </DragDropContext>
                                 <div className="actions">
                                     <button className="button is-primary back" type="button" onClick={router.back}>
                                         <span>{t("back")}</span>
