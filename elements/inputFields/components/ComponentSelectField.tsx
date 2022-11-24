@@ -16,7 +16,7 @@ const ComponentSelectField: InputComponentType = ({ name, id, rawId }) => {
     if (errorText) {
         return (
             <div className="is-invalid">
-                <select {...field} id={name}>
+                <select {...field} value={field.value || ""} id={name}>
                     {selectOptions.map((option, index) => (
                         <option key={index} value={option.name}>
                             {option.name}
@@ -30,7 +30,7 @@ const ComponentSelectField: InputComponentType = ({ name, id, rawId }) => {
 
     return (
         <div>
-            <select {...field} id={name}>
+            <select {...field} value={field.value || ""} id={name}>
                 {selectOptions.map((option, index) => (
                     <option key={index} value={option.name}>
                         {option.name}

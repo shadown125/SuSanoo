@@ -10,7 +10,7 @@ const ComponentEmailField: InputComponentType = ({ name, id }) => {
     if (errorText) {
         return (
             <div className="is-invalid">
-                <input type="email" placeholder={name} id={name} {...field} />
+                <input type="email" placeholder={name} id={name} {...field} value={field.value || ""} />
                 <div className="error-message">{t(`${errorText}`)}</div>
             </div>
         );
@@ -18,7 +18,7 @@ const ComponentEmailField: InputComponentType = ({ name, id }) => {
 
     return (
         <div>
-            <input type="email" placeholder={name} id={name} {...field} />
+            <input type="email" placeholder={name} id={name} {...field} value={field.value || ""} />
         </div>
     );
 };

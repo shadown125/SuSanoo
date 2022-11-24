@@ -10,7 +10,7 @@ const ComponentCheckboxField: InputComponentType = ({ name, id }) => {
     if (errorText) {
         return (
             <div className="is-invalid">
-                <input type="checkbox" id={name} {...field} />
+                <input type="checkbox" id={name} {...field} value={field.value || ""} />
                 <div className="error-message">{t(`${errorText}`)}</div>
             </div>
         );
@@ -18,7 +18,7 @@ const ComponentCheckboxField: InputComponentType = ({ name, id }) => {
 
     return (
         <div>
-            <input type="checkbox" id={name} {...field} />
+            <input type="checkbox" id={name} {...field} value={field.value || ""} />
         </div>
     );
 };

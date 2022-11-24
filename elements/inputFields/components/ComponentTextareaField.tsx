@@ -10,7 +10,7 @@ const ComponentTextareaField: InputComponentType = ({ name, id }) => {
     if (errorText) {
         return (
             <div className="is-invalid">
-                <textarea placeholder={name} id={name} {...field} />
+                <textarea placeholder={name} id={name} {...field} value={field.value || ""} />
                 <div className="error-message">{t(`${errorText}`)}</div>
             </div>
         );
@@ -18,7 +18,7 @@ const ComponentTextareaField: InputComponentType = ({ name, id }) => {
 
     return (
         <div>
-            <textarea placeholder={name} id={name} {...field} />
+            <textarea placeholder={name} id={name} {...field} value={field.value || ""} />
         </div>
     );
 };
