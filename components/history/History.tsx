@@ -7,7 +7,8 @@ export type history = {
     changeBy: string;
     userId: string;
     changeAt: Date;
-    pageId: string;
+    pageId?: string | null;
+    componentId?: string | null;
 }[];
 
 const History: FC<{
@@ -25,7 +26,7 @@ const History: FC<{
                     <ul>
                         {history.map((item, index) => (
                             <li key={index}>
-                                <HistoryItem id={item.userId} updated={item.changeAt} pageId={item.pageId} />
+                                <HistoryItem id={item.userId} updated={item.changeAt} pageId={item.pageId} componentId={item.componentId} />
                             </li>
                         ))}
                     </ul>

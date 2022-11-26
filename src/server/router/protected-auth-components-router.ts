@@ -2,6 +2,34 @@ import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
 
 export const protectedAuthComponentsRouter = createProtectedRouter()
+    .query("getComponentFromHistory", {
+        input: z.object({
+            componentId: z.string(),
+        }),
+        resolve: async ({ ctx, input }) => {
+            return await ctx.prisma.component.findUnique({
+                where: {
+                    id: input.componentId,
+                },
+            });
+        },
+    })
+    .query("getCurrentComponentsHistory", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ ctx, input }) => {
+            return await ctx.prisma.history.findMany({
+                where: {
+                    componentId: input.id,
+                },
+                take: 20,
+                orderBy: {
+                    changeAt: "desc",
+                },
+            });
+        },
+    })
     .query("getAvaibleComponents", {
         input: z.object({
             pageId: z.string(),

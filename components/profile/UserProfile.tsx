@@ -7,7 +7,8 @@ const UserProfile: FC<{
     status: boolean;
     email?: string;
     page?: string | null;
-}> = ({ image, name, status, email, page }) => {
+    component?: string | null;
+}> = ({ image, name, status, email, page, component }) => {
     const setProfileStatusColor = (status: boolean): CSSProperties => {
         return { "--color-profile-status": status ? "var(--color-green)" : "var(--color-red)" } as CSSProperties;
     };
@@ -21,6 +22,7 @@ const UserProfile: FC<{
                 <div className="name">{name}</div>
                 {email && <div className="email">{email}</div>}
                 {page && <div className="page">{page}</div>}
+                {component && <div className="component">{component}</div>}
             </div>
         </div>
     );

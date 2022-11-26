@@ -6,11 +6,13 @@ import { useTranslation } from "next-i18next";
 const HistoryItem: FC<{
     id: string;
     updated: Date;
-    pageId: string;
-}> = ({ id, updated, pageId }) => {
+    pageId: string | null | undefined;
+    componentId: string | null | undefined;
+}> = ({ id, updated, pageId, componentId }) => {
     const { t } = useTranslation("panel");
     const { data: user } = trpc.useQuery(["auth.getUser", { id: id }]);
-    const { data: page } = trpc.useQuery(["auth.pages.getPageFromHistory", { pageId }]);
+    const { data: page } = trpc.useQuery(["auth.pages.getPageFromHistory", { pageId: pageId ?? "" }]);
+    const { data: component } = trpc.useQuery(["auth.components.getComponentFromHistory", { componentId: componentId ?? "" }]);
 
     const lastUpdate = (): string => {
         const distance = Date.now() - updated.getTime();
@@ -35,11 +37,11 @@ const HistoryItem: FC<{
 
     return (
         <div className="user">
-            {!user || !page ? (
+            {!user ? (
                 <div>Loading....</div>
             ) : (
                 <>
-                    <UserProfile image={user.image!} name={user.name!} status={user.status} page={page.name} />
+                    <UserProfile image={user.image!} name={user.name!} status={user.status} page={!page ? null : page.name} component={!component ? null : component.name} />
                     <div className="updated">{lastUpdate()}</div>
                 </>
             )}
