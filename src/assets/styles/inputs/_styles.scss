@@ -70,6 +70,13 @@
         wrap: wrap;
     }
     gap: susanoo.rem-calc(16) susanoo.rem-calc(32);
+    &.is-preview {
+        .input {
+            min: {
+                height: susanoo.rem-calc(36);
+            }
+        }
+    }
     &.is-active {
         .row {
             label {
@@ -100,7 +107,8 @@
     }
     input,
     textarea,
-    select {
+    select,
+    .input {
         @include border();
 
         color: white;
@@ -121,7 +129,8 @@
             bottom: susanoo.rem-calc(8);
         }
     }
-    textarea {
+    textarea,
+    .textarea {
         min: {
             height: susanoo.rem-calc(150);
         }
