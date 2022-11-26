@@ -28,9 +28,9 @@
                 @include susanoo.icon(icons.$icon-layers, false);
             }
         }
-        .icon-settings {
+        .icon-layers {
             &::before {
-                @include susanoo.icon(icons.$icon-cog, false);
+                @include susanoo.icon(icons.$icon-layers, false);
             }
         }
         .link {

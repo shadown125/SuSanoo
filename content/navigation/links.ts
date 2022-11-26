@@ -16,8 +16,8 @@ export const links: links = [
         icon: "icon-pages",
     },
     {
-        name: "Settings",
-        path: "/admin/settings",
-        icon: "icon-settings",
+        name: "Components",
+        path: "/admin/components",
+        icon: "icon-layers",
     },
 ];
