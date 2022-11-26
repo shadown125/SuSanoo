@@ -7,6 +7,7 @@ import ComponentRadioField from "../../elements/inputFields/components/Component
 import ComponentSelectField from "../../elements/inputFields/components/ComponentSelectField";
 import ComponentTextareaField from "../../elements/inputFields/components/ComponentTextareaField";
 import ComponentTextField from "../../elements/inputFields/components/ComponentTextField";
+import { useDetailPageStore } from "../../src/store/store";
 import { trpc } from "../../src/utils/trpc";
 
 export type InputComponentType = FC<{
@@ -38,9 +39,10 @@ const ComponentInput: FC<{
     pageId: string;
 }> = ({ componentId, pageId }) => {
     const { data: input } = trpc.useQuery(["auth.inputs.get", { componentId, pageId }]);
+    const editState = useDetailPageStore((state) => state.editState);
 
     return (
-        <div className="component-inputs">
+        <div className={`component-inputs${editState ? " is-active" : ""}`}>
             {!input ? (
                 <div>Loading...</div>
             ) : (

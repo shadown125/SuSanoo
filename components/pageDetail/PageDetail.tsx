@@ -285,7 +285,12 @@ const PageDetail: FC<{
                                                     return (
                                                         <Draggable key={component.id} draggableId={component.id.toString()} index={pageComponentIndex} isDragDisabled={!editState}>
                                                             {(provided) => (
-                                                                <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="component">
+                                                                <div
+                                                                    ref={provided.innerRef}
+                                                                    {...provided.draggableProps}
+                                                                    {...provided.dragHandleProps}
+                                                                    className={`component${editState ? " is-active" : ""}`}
+                                                                >
                                                                     <div className="head">{component.name}</div>
                                                                     <button
                                                                         className={`button delete-button is-primary${editState ? " is-active" : ""}`}

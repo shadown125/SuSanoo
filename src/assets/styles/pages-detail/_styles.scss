@@ -21,6 +21,21 @@
             width: 2px;
             color: var(--color-green-dark);
         }
+        &.is-active {
+            .head {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: var(--color-teal);
+                font: {
+                    size: susanoo.rem-calc(32);
+                }
+                z-index: 2;
+                background: {
+                    color: transparent;
+                }
+            }
+        }
         .delete-button {
             position: absolute;
             top: susanoo.rem-calc(-12);
@@ -56,6 +71,7 @@
             font: {
                 size: susanoo.rem-calc(22);
             }
+            transition: top 0.2s linear, left 0.2s linear, font-size 0.2s linear, color 0.2s linear, transform 0.2s linear;
         }
     }
     .head {
