@@ -53,7 +53,7 @@ const ComponentDetail: FC<{
                 </button>
             </div>
             <div className="actions">
-                <button className="button is-primary back" type="button" onClick={router.back}>
+                <button className="button is-primary back" type="button" onClick={() => router.push("/admin/components")}>
                     <span>{t("back")}</span>
                 </button>
             </div>
