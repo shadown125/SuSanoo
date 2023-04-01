@@ -15,6 +15,11 @@ type DetailPageStore = {
     setEditState: (state: boolean) => void;
 };
 
+type PopupStore = {
+    addInputPopupState: boolean;
+    setAddInputPopupState: (state: boolean) => void;
+};
+
 export const useNotificationStore = create<NotificationStore>((set) => ({
     notificationState: false,
     setNotificationState: (state: boolean) => set({ notificationState: state }),
@@ -28,4 +33,9 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
 export const useDetailPageStore = create<DetailPageStore>((set) => ({
     editState: false,
     setEditState: (state: boolean) => set({ editState: state }),
+}));
+
+export const usePopupStore = create<PopupStore>((set) => ({
+    addInputPopupState: false,
+    setAddInputPopupState: (state: boolean) => set({ addInputPopupState: state }),
 }));

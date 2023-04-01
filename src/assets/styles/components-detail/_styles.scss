@@ -1,0 +1,91 @@
+@use '../susanoo';
+
+.components-detail {
+    .actions {
+        margin: {
+            top: susanoo.rem-calc(32);
+        }
+    }
+    .component-inputs {
+        .row {
+            position: relative;
+            &-half {
+                .edit {
+                    right: susanoo.rem-calc(22);
+                }
+            }
+        }
+        .edit {
+            $background-color: var(--color-dark-pink);
+
+            position: absolute;
+            top: susanoo.rem-calc(20);
+            right: susanoo.rem-calc(-10);
+            background: {
+                color: $background-color;
+            }
+            &::after {
+                background: {
+                    color: $background-color;
+                }
+            }
+            > span {
+                display: none;
+            }
+        }
+    }
+    .edit-input-popup {
+        .headline {
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex: {
+                direction: column;
+            }
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin: {
+                top: auto;
+            }
+        }
+        .delete-button {
+            background: {
+                color: var(--color-dark-pink);
+            }
+            &::before,
+            &::after {
+                background: {
+                    color: var(--color-dark-pink);
+                }
+            }
+        }
+    }
+    .add-input {
+        margin: {
+            top: susanoo.rem-calc(32);
+        }
+        padding: susanoo.rem-calc(16);
+        width: 100%;
+        background: {
+            color: var(--color-dark-pink);
+        }
+        color: var(--color-teal);
+        &::before,
+        &::after {
+            border: {
+                top: {
+                    color: var(--color-dark-pink);
+                }
+                bottom: {
+                    color: var(--color-dark-pink);
+                }
+            }
+            background: {
+                color: var(--color-pink);
+            }
+        }
+    }
+}

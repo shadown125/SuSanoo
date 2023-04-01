@@ -36,5 +36,8 @@
     "pageSuccefullySaved": "Page was saved successfully",
     "componentSuccefullyAddedToPage": "Component was added successfully to page",
     "somethingWentWrong": "Something went wrong. Please try again later",
-    "pageComponentSuccefullyDeleted": "Component was deleted successfully"
+    "pageComponentSuccefullyDeleted": "Component was deleted successfully",
+    "selectInput": "Select input",
+    "selectInputOptions": "Select input options",
+    "delete": "Delete"
 }

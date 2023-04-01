@@ -2,6 +2,15 @@ import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
 
 export const protectedAuthComponentsRouter = createProtectedRouter()
+    .query("get", {
+        resolve: async ({ ctx }) => {
+            return await ctx.prisma.component.findMany({
+                include: {
+                    input: true,
+                },
+            });
+        },
+    })
     .query("getComponentFromHistory", {
         input: z.object({
             componentId: z.string(),
@@ -44,6 +53,31 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                             id: pageId,
                         },
                     },
+                },
+            });
+        },
+    })
+    .mutation("addNewHistoryChangeLog", {
+        input: z.object({
+            componentId: z.string(),
+        }),
+        resolve: ({ ctx, input }) => {
+            const { componentId } = input;
+
+            const userId = ctx.session.user.id;
+
+            if (!componentId) {
+                throw new Error("Component not found");
+            }
+
+            if (!userId) {
+                throw new Error("User not found");
+            }
+
+            return ctx.prisma.history.create({
+                data: {
+                    componentId: componentId,
+                    userId: userId,
                 },
             });
         },
@@ -92,8 +126,6 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                     },
                 });
             });
-
-            console.log(component.PageComponentsIndex.length);
 
             await ctx.prisma.pageComponentsIndex.create({
                 data: {

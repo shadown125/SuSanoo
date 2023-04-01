@@ -1,0 +1,23 @@
+@use '../susanoo';
+
+.edit-input-popup {
+    .form-container {
+        display: flex;
+        flex: {
+            wrap: wrap;
+        }
+        gap: 1rem 2rem;
+    }
+    .row {
+        width: 100%;
+        flex: {
+            grow: 1;
+        }
+        &-half {
+            width: 50%;
+        }
+    }
+    .actions {
+        width: 100%;
+    }
+}

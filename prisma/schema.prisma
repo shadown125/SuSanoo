@@ -85,15 +85,16 @@ model PageInputsValues {
 
 model Component {
   id                  String                @id @default(cuid())
-  name                String
+  name                String                @unique
   input               Input[]
   page                Page[]
   PageComponentsIndex PageComponentsIndex[]
+  history             History[]
 }
 
 model Input {
   id            String             @id @default(cuid())
-  name          String             @unique @default(cuid())
+  name          String
   type          InputsTypes?       @default(text)
   halfRow       Boolean            @default(false)
   required      Boolean            @default(false)
@@ -111,12 +112,14 @@ model SelectOption {
 }
 
 model History {
-  id       String   @id @default(cuid())
-  changeBy User     @relation(fields: [userId], references: [id])
-  userId   String
-  changeAt DateTime @default(now())
-  page     Page     @relation(fields: [pageId], references: [id])
-  pageId   String
+  id          String     @id @default(cuid())
+  changeBy    User       @relation(fields: [userId], references: [id])
+  userId      String
+  changeAt    DateTime   @default(now())
+  page        Page?      @relation(fields: [pageId], references: [id])
+  pageId      String?    @default("")
+  component   Component? @relation(fields: [componentId], references: [id])
+  componentId String?    @default("")
 }
 
 model VerificationToken {

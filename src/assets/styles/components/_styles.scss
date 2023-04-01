@@ -1,0 +1,41 @@
+@use '../susanoo';
+@use '../utils' as utils;
+
+.components-list {
+    @include utils.default-table($hover: var(--color-dark-pink));
+
+    .edit-button {
+        display: flex;
+        .button {
+            $background-color: var(--color-green);
+
+            background: {
+                color: $background-color;
+            }
+            margin: 0 auto;
+            &::after {
+                background: {
+                    color: $background-color;
+                }
+            }
+        }
+    }
+    tbody {
+        tr {
+            th {
+                vertical-align: middle;
+                padding: {
+                    right: susanoo.rem-calc(20);
+                }
+                font: {
+                    weight: normal;
+                }
+            }
+            td {
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}
