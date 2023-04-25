@@ -125,6 +125,7 @@ const PageDetail: FC<{
                 {
                     onSuccess: () => {
                         trpcCtx.invalidateQueries(["auth.pages.getCurrentPageHistory"]);
+                        trpcCtx.invalidateQueries(["inputs.get"]);
                     },
                 },
             );

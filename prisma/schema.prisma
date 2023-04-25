@@ -74,11 +74,12 @@ model PageComponentsIndex {
 }
 
 model PageInputsValues {
-  id        String   @id @default(cuid())
-  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId    String
-  input     Input    @relation(fields: [inputId], references: [id], onDelete: Cascade)
-  inputId   String
+  id      String @id @default(cuid())
+  page    Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId  String
+  input   Input  @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  inputId String
+
   value     String
   createdAt DateTime @default(now())
 }
