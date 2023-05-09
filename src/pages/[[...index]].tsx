@@ -27,9 +27,9 @@ const SusanooProvider: FC<{
                 <StaticRouter location={nextRouter.locale === nextRouter.defaultLocale ? nextRouter.asPath : "/" + nextRouter.locale + nextRouter.asPath}>
                     <InitialPage
                         pages={
-                            pages as (Page & {
+                            (pages as (Page & {
                                 components: Component[];
-                            })[]
+                            })[]) || []
                         }
                         errorPage={errorPage}
                     />
