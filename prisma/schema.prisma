@@ -58,6 +58,7 @@ model Page {
   createdAt           DateTime              @default(now())
   createdBy           User                  @relation(fields: [authorId], references: [id])
   authorId            String
+  route               String                @unique
   history             History[]
   components          Component[]
   pageInputsValues    PageInputsValues[]
