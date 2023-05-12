@@ -1,5 +1,14 @@
 {
     "active": "Active",
     "doesNotExist": "Page doesn't exist",
-    "addComponent": "Add Component"
+    "addComponent": "Add Component",
+    "addPage": "Add Page",
+    "addNewPage": "Add New Page",
+    "addComponentToPage": "Add Component to Page",
+    "avaibleComponents": "All avaible components are already added",
+    "generatedRoute": "Generated url",
+    "nestPage": "Select page to nest",
+    "avaibleNestedPages": "There are no avaible pages to nest",
+    "pageComponents": "Page Components",
+    "noComponentsAdded": "No components added"
 }

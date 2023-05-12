@@ -2,6 +2,44 @@ import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 
 export const protectedAuthPageRouter = createProtectedRouter()
+    .mutation("create", {
+        input: z.object({
+            name: z.string(),
+            route: z.string(),
+            components: z.array(z.string()),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { name, route, components } = input;
+            const userId = ctx.session.user.id;
+
+            if (!userId) {
+                throw new Error("User not found");
+            }
+
+            const page = await ctx.prisma.page.create({
+                data: {
+                    authorId: userId,
+                    name: name,
+                    route: route,
+                },
+            });
+
+            return components.forEach(async (componentId, index) => {
+                await ctx.prisma.page.update({
+                    where: {
+                        id: page.id,
+                    },
+                    data: {
+                        availableComponents: {
+                            connect: {
+                                id: componentId,
+                            },
+                        },
+                    },
+                });
+            });
+        },
+    })
     .query("get", {
         resolve: async ({ ctx }) => {
             return await ctx.prisma.page.findMany();
@@ -21,7 +59,6 @@ export const protectedAuthPageRouter = createProtectedRouter()
             });
         },
     })
-
     .query("getPageFromHistory", {
         input: z.object({
             pageId: z.string(),

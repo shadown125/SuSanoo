@@ -54,12 +54,13 @@ model User {
 model Page {
   id                  String                @id @default(cuid())
   name                String                @unique
-  active              Boolean               @default(true)
+  active              Boolean               @default(false)
   createdAt           DateTime              @default(now())
   createdBy           User                  @relation(fields: [authorId], references: [id])
   authorId            String
   route               String                @unique
   history             History[]
+  availableComponents Component[]           @relation("ComponentsPage")
   components          Component[]
   pageInputsValues    PageInputsValues[]
   PageComponentsIndex PageComponentsIndex[]
@@ -89,6 +90,7 @@ model Component {
   id                  String                @id @default(cuid())
   name                String                @unique
   input               Input[]
+  availablePages      Page[]                @relation("ComponentsPage")
   page                Page[]
   PageComponentsIndex PageComponentsIndex[]
   history             History[]

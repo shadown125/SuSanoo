@@ -1,5 +1,14 @@
 {
     "active": "Aktywny",
     "doesNotExist": "Strona nie istnieje",
-    "addComponent": "Dodaj Komponent"
+    "addComponent": "Dodaj Komponent",
+    "addPage": "Dodaj Stronę",
+    "addNewPage": "Dodaj Nową Stronę",
+    "addComponentToPage": "Dodaj Komponent do Strony",
+    "avaibleComponents": "Wszystkie dostępne komponenty są już dodane",
+    "generatedRoute": "Wygenerowane url",
+    "nestPage": "Wybierz stronę do zagnieżdżenia",
+    "avaibleNestedPages": "Obecnie nie ma dostępnych stron do zagnieżdżenia",
+    "pageComponents": "Komponenty Strony",
+    "noComponentsAdded": "Brak dodanych komponentów"
 }

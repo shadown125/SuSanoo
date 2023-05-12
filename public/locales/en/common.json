@@ -27,6 +27,7 @@
     "status": "Status",
     "save": "Save",
     "back": "Back",
+    "done": "Done",
     "validation": {
         "required": "This field is required",
         "email": "Email is not valid"

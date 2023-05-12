@@ -53,6 +53,13 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                             id: pageId,
                         },
                     },
+                    AND: {
+                        availablePages: {
+                            some: {
+                                id: pageId,
+                            },
+                        },
+                    },
                 },
             });
         },
