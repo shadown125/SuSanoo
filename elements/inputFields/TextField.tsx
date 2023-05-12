@@ -5,6 +5,7 @@ import { FC } from "react";
 const TextField: FC<{
     name: string;
     getValue?: (value: string) => void;
+    value?: string;
 }> = (props) => {
     const { t } = useTranslation("admin");
     const [field, meta] = useField(props);
@@ -23,6 +24,7 @@ const TextField: FC<{
                             field.onChange(e);
                             props.getValue && props.getValue(e.target.value.toLowerCase().replace(/[^a-zA-Z-]/g, ""));
                         }}
+                        value={(props.value && props.value) || field.value}
                     />
                 </div>
                 <div className="error-message">{t(`${errorText}`)}</div>
@@ -37,11 +39,11 @@ const TextField: FC<{
                 id={props.name}
                 placeholder={t(props.name)}
                 {...field}
-                {...field}
                 onChange={(e) => {
                     field.onChange(e);
                     props.getValue && props.getValue(e.target.value.toLowerCase().replace(/[^a-zA-Z-]/g, ""));
                 }}
+                value={(props.value && props.value) || field.value}
             />
         </div>
     );
