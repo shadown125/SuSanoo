@@ -1,6 +1,8 @@
 @use '../susanoo';
 
 @mixin scrollbar($width: 30, $border-width: 12, $border-color: rgba(0, 0, 0, 0), $background-color: var(--color-primary), $hover-background-color: var(--color-light-purple)) {
+    overflow-y: auto;
+    overflow-x: hidden;
     &::-webkit-scrollbar {
         width: susanoo.rem-calc($width);
     }
