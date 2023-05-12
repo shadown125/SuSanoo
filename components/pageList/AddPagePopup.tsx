@@ -34,9 +34,9 @@ const AddPagePopup: FC = () => {
         try {
             createPage(
                 {
-                    name: values.pageName,
+                    name: pagePathName,
                     components: values.components.map((component: { id: string; name: string }) => component.id),
-                    route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
+                    route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName.toLowerCase()}`,
                 },
                 {
                     onSuccess: (_) => {
@@ -52,6 +52,7 @@ const AddPagePopup: FC = () => {
                     },
                 },
             );
+
             setSubmitting(false);
             resetForm(true);
         } catch (error) {
@@ -97,17 +98,17 @@ const AddPagePopup: FC = () => {
                                         {nestedPageRoute ? (
                                             <>
                                                 <span className="nested-page-name">{`/${nestedPageRoute}/`}</span>
-                                                {pagePathName}
+                                                {pagePathName.toLowerCase()}
                                             </>
                                         ) : (
-                                            `/${pagePathName}`
+                                            `/${pagePathName.toLowerCase()}`
                                         )}
                                     </span>
                                     &quot;
                                 </h3>
                                 <Formik
                                     enableReinitialize={true}
-                                    initialValues={{ pageName: pagePathName, components: addedComponents }}
+                                    initialValues={{ pageName: pagePathName.toLowerCase(), components: addedComponents }}
                                     onSubmit={submitHandler}
                                     validationSchema={validationSchema}
                                 >

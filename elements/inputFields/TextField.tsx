@@ -22,7 +22,7 @@ const TextField: FC<{
                         {...field}
                         onChange={(e) => {
                             field.onChange(e);
-                            props.getValue && props.getValue(e.target.value.toLowerCase().replace(/[^a-zA-Z-]/g, ""));
+                            props.getValue && props.getValue(e.target.value.replace(/[^a-zA-Z-]/g, ""));
                         }}
                         value={(props.value && props.value) || field.value}
                     />
@@ -41,7 +41,7 @@ const TextField: FC<{
                 {...field}
                 onChange={(e) => {
                     field.onChange(e);
-                    props.getValue && props.getValue(e.target.value.toLowerCase().replace(/[^a-zA-Z-]/g, ""));
+                    props.getValue && props.getValue(e.target.value.replace(/[^a-zA-Z-]/g, ""));
                 }}
                 value={(props.value && props.value) || field.value}
             />
