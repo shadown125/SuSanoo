@@ -20,7 +20,12 @@ const AddPagePopup: FC = () => {
     const { mutate: createPage } = trpc.useMutation(["auth.pages.create"]);
 
     const [addedComponents, setAddedComponents] = useState<{ id: string; name: string }[]>([]);
-    const [pagePathName, setPagePathName] = useState<string>("");
+    const [pageName, setPageName] = useState<string>("");
+    const pagePathName = pageName
+        .split(" ")
+        .join("-")
+        .replace(/[^a-zA-Z-]/g, "")
+        .toLowerCase();
 
     const { addPagePopupOpen, setAddPagePopupOpen } = useAddPagePopupStore((state) => ({
         addPagePopupOpen: state.popupOpen,
@@ -34,9 +39,9 @@ const AddPagePopup: FC = () => {
         try {
             createPage(
                 {
-                    name: pagePathName,
+                    name: pageName,
                     components: values.components.map((component: { id: string; name: string }) => component.id),
-                    route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName.toLowerCase()}`,
+                    route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
                 },
                 {
                     onSuccess: (_) => {
@@ -47,7 +52,7 @@ const AddPagePopup: FC = () => {
                         setAddComponentState(false);
                         setNestPageState(false);
                         setNestedPageRoute("");
-                        setPagePathName("");
+                        setPageName("");
                         setAddedComponents([]);
                     },
                 },
@@ -98,17 +103,17 @@ const AddPagePopup: FC = () => {
                                         {nestedPageRoute ? (
                                             <>
                                                 <span className="nested-page-name">{`/${nestedPageRoute}/`}</span>
-                                                {pagePathName.toLowerCase()}
+                                                {pagePathName}
                                             </>
                                         ) : (
-                                            `/${pagePathName.toLowerCase()}`
+                                            `/${pagePathName}`
                                         )}
                                     </span>
                                     &quot;
                                 </h3>
                                 <Formik
                                     enableReinitialize={true}
-                                    initialValues={{ pageName: pagePathName.toLowerCase(), components: addedComponents }}
+                                    initialValues={{ pageName: pageName, components: addedComponents }}
                                     onSubmit={submitHandler}
                                     validationSchema={validationSchema}
                                 >
@@ -116,7 +121,7 @@ const AddPagePopup: FC = () => {
                                         <Form>
                                             <div className="row">
                                                 <label htmlFor="name">{t("admin:pageName")}:</label>
-                                                <TextField name="pageName" getValue={setPagePathName} value={pagePathName} />
+                                                <TextField name="pageName" getValue={setPageName} value={pageName} />
                                             </div>
                                             <div className="row">
                                                 <button className="button is-tertiary" onClick={() => setNestPageState(true)}>
