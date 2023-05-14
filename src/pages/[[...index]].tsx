@@ -50,7 +50,7 @@ const InitialPage: FC<{
     const router = useRoutes([
         ...pages?.map((page) => ({
             key: page.name,
-            path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}/${page.name}`,
+            path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}/${page.route}`,
             element: (
                 <>
                     {page.components.map((component) => {
