@@ -10,5 +10,9 @@
     "nestPage": "Wybierz stronę do zagnieżdżenia",
     "avaibleNestedPages": "Obecnie nie ma dostępnych stron do zagnieżdżenia",
     "pageComponents": "Komponenty Strony",
-    "noComponentsAdded": "Brak dodanych komponentów"
+    "noComponentsAdded": "Brak dodanych komponentów",
+    "deletePageQuestion": "Czy na pewno chcesz usunąć stronę?",
+    "deletePageWarning": "Uwaga! Usunięcie strony spowoduje usunięcie wszystkich jej komponentów",
+    "switchPageMode": "Przełącz tryb aktywny strony",
+    "editOptions": "Edytuj opcje"
 }

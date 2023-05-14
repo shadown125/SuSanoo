@@ -28,6 +28,7 @@
     "save": "Save",
     "back": "Back",
     "done": "Done",
+    "deletePage": "Delete page",
     "validation": {
         "required": "This field is required",
         "email": "Email is not valid"

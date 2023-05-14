@@ -24,7 +24,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
             });
 
-            return components.forEach(async (componentId, index) => {
+            return components.forEach(async (componentId) => {
                 await ctx.prisma.page.update({
                     where: {
                         id: page.id,
@@ -43,6 +43,49 @@ export const protectedAuthPageRouter = createProtectedRouter()
     .query("get", {
         resolve: async ({ ctx }) => {
             return await ctx.prisma.page.findMany();
+        },
+    })
+    .query("getById", {
+        input: z.object({
+            id: z.string().nullish(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            if (!id) return null;
+
+            return await ctx.prisma.page.findUnique({
+                where: {
+                    id,
+                },
+            });
+        },
+    })
+    .query("getPageAvailableComponents", {
+        input: z.object({
+            id: z.string().nullish(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            if (!id) return null;
+
+            return await ctx.prisma.component.findMany({
+                where: {
+                    page: {
+                        none: {
+                            id: id,
+                        },
+                    },
+                    AND: {
+                        availablePages: {
+                            some: {
+                                id: id,
+                            },
+                        },
+                    },
+                },
+            });
         },
     })
     .query("getPageInputsValues", {
@@ -88,6 +131,68 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 orderBy: {
                     changeAt: "desc",
                 },
+            });
+        },
+    })
+    .mutation("updateCurrentPage", {
+        input: z.object({
+            id: z.string().nullish(),
+            name: z.string(),
+            route: z.string(),
+            components: z.array(z.string()),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id, name, route, components } = input;
+
+            if (!id) {
+                throw new Error("Page not found");
+            }
+
+            const page = await ctx.prisma.page.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+
+            if (page?.name !== name) {
+                await ctx.prisma.page.update({
+                    where: {
+                        id: id,
+                    },
+                    data: {
+                        name: name,
+                        route: route,
+                    },
+                });
+            }
+
+            await ctx.prisma.pageComponentsIndex.deleteMany({
+                where: {
+                    pageId: id,
+                },
+            });
+
+            await ctx.prisma.page.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    availableComponents: {
+                        set: components.map((componentId) => ({
+                            id: componentId,
+                        })),
+                    },
+                },
+            });
+
+            return components.forEach(async (componentId, index) => {
+                await ctx.prisma.pageComponentsIndex.create({
+                    data: {
+                        pageId: id,
+                        componentId: componentId,
+                        index: index,
+                    },
+                });
             });
         },
     })
@@ -270,6 +375,38 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     input: {
                         componentId: componentId,
                     },
+                },
+            });
+        },
+    })
+    .mutation("updateActiveState", {
+        input: z.object({
+            id: z.string(),
+            active: z.boolean(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id, active } = input;
+
+            return await ctx.prisma.page.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    active: active,
+                },
+            });
+        },
+    })
+    .mutation("delete", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            await ctx.prisma.page.delete({
+                where: {
+                    id: id,
                 },
             });
         },

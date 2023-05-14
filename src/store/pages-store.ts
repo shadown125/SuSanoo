@@ -1,11 +1,11 @@
 import create from "zustand";
 
-export type AddPagePopupStore = {
-    popupOpen: boolean;
-    setPopupOpen: (isOpen: boolean) => void;
+export type AddAndUpdatePagePopupStore = {
+    popupState: boolean;
+    setPopupState: (isOpen: boolean) => void;
 };
 
-export const useAddPagePopupStore = create<AddPagePopupStore>((set) => ({
-    popupOpen: false,
-    setPopupOpen: (isOpen: boolean) => set({ popupOpen: isOpen }),
+export const useAddAndUpdatePagePopupStore = create<AddAndUpdatePagePopupStore>((set) => ({
+    popupState: false,
+    setPopupState: (isOpen: boolean) => set({ popupState: isOpen }),
 }));

@@ -1,23 +1,49 @@
-import { FC, useState } from "react";
-import { useAddPagePopupStore } from "../../src/store/pages-store";
+import { FC, useEffect, useState } from "react";
+import { useAddAndUpdatePagePopupStore } from "../../src/store/pages-store";
 import { FieldArray, Form, Formik, FormikValues } from "formik";
 import { FormikSubmission } from "../../src/types/formik";
 import { useTranslation } from "next-i18next";
 import TextField from "../../elements/inputFields/TextField";
 import { trpc } from "../../src/utils/trpc";
 import { object, string } from "yup";
+import { useRouter } from "next/router";
 
 const validationSchema = object({
     pageName: string().required().min(1).max(60),
 });
 
-const AddPagePopup: FC = () => {
+const AddAndUpdatePagePopup: FC<{
+    update?: boolean;
+    pageId?: string;
+}> = ({ update = false, pageId }) => {
     const { t } = useTranslation("");
     const context = trpc.useContext();
+    const router = useRouter();
 
     const { data: components } = trpc.useQuery(["auth.components.get"]);
     const { data: pages } = trpc.useQuery(["auth.pages.get"]);
+    const {
+        data: currentPage,
+        isLoading: currentPageIsLoading,
+        isFetched: currentPageisFetched,
+    } = trpc.useQuery([
+        "auth.pages.getById",
+        {
+            id: pageId,
+        },
+    ]);
+    const {
+        data: availablePageComponents,
+        isLoading: availablePageComponentsIsLoading,
+        isFetched: availablePageComponentsIsFetched,
+    } = trpc.useQuery([
+        "auth.pages.getPageAvailableComponents",
+        {
+            id: pageId,
+        },
+    ]);
     const { mutate: createPage } = trpc.useMutation(["auth.pages.create"]);
+    const { mutate: updatePage } = trpc.useMutation(["auth.pages.updateCurrentPage"]);
 
     const [addedComponents, setAddedComponents] = useState<{ id: string; name: string }[]>([]);
     const [pageName, setPageName] = useState<string>("");
@@ -27,39 +53,77 @@ const AddPagePopup: FC = () => {
         .replace(/[^a-zA-Z-]/g, "")
         .toLowerCase();
 
-    const { addPagePopupOpen, setAddPagePopupOpen } = useAddPagePopupStore((state) => ({
-        addPagePopupOpen: state.popupOpen,
-        setAddPagePopupOpen: state.setPopupOpen,
+    const { popupState, setPopupState } = useAddAndUpdatePagePopupStore((state) => ({
+        popupState: state.popupState,
+        setPopupState: state.setPopupState,
     }));
+
     const [addComponentState, setAddComponentState] = useState<boolean>(false);
     const [nestPageState, setNestPageState] = useState<boolean>(false);
     const [nestedPageRoute, setNestedPageRoute] = useState<string>("");
 
+    useEffect(() => {
+        if (update && currentPageisFetched && currentPage) {
+            setPageName(currentPage?.name);
+        }
+        if (update && availablePageComponentsIsFetched && availablePageComponents) {
+            setAddedComponents(availablePageComponents);
+        }
+    }, [currentPageisFetched, update, currentPage, availablePageComponentsIsFetched, availablePageComponents]);
+
+    const reset = () => {
+        setPopupState(false);
+        setAddComponentState(false);
+        setNestPageState(false);
+        setNestedPageRoute("");
+        setPageName("");
+        setAddedComponents([]);
+    };
+
     const submitHandler = (values: FormikValues, { setSubmitting, resetForm }: FormikSubmission) => {
         try {
-            createPage(
-                {
-                    name: pageName,
-                    components: values.components.map((component: { id: string; name: string }) => component.id),
-                    route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
-                },
-                {
-                    onSuccess: (_) => {
-                        context.invalidateQueries(["auth.pages.get"]);
-                        context.invalidateQueries(["auth.components.get"]);
-
-                        setAddPagePopupOpen(false);
-                        setAddComponentState(false);
-                        setNestPageState(false);
-                        setNestedPageRoute("");
-                        setPageName("");
-                        setAddedComponents([]);
+            if (!update) {
+                createPage(
+                    {
+                        name: pageName,
+                        components: values.components.map((component: { id: string; name: string }) => component.id),
+                        route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
                     },
-                },
-            );
+                    {
+                        onSuccess: (_) => {
+                            context.invalidateQueries(["auth.pages.get"]);
+                            context.invalidateQueries(["auth.components.get"]);
 
-            setSubmitting(false);
+                            reset();
+                        },
+                    },
+                );
+            } else {
+                updatePage(
+                    {
+                        id: pageId,
+                        name: pageName,
+                        components: values.components.map((component: { id: string; name: string }) => component.id),
+                        route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
+                    },
+                    {
+                        onSuccess: (_) => {
+                            context.invalidateQueries(["auth.pages.get"]);
+                            // context.invalidateQueries(["auth.components.get"]);
+                            context.invalidateQueries(["auth.components.getAvaibleComponents"]);
+
+                            setPopupState(false);
+                            setAddComponentState(false);
+                            setNestPageState(false);
+
+                            router.push(`/admin/pages/${pageName.toLowerCase()}`);
+                        },
+                    },
+                );
+            }
+
             resetForm(true);
+            setSubmitting(false);
         } catch (error) {
             throw new Error(error as string);
         }
@@ -80,21 +144,21 @@ const AddPagePopup: FC = () => {
     const filteredComponents = components?.filter((component) => !addedComponents.find((addedComponent) => addedComponent.id === component.id)) || [];
 
     return (
-        <div className={`popup${addPagePopupOpen ? " is-active" : ""}`}>
+        <div className={`popup add-update-pages-popup${popupState ? " is-active" : ""}`}>
             <div
                 className="blur-background"
                 onClick={() => {
-                    setAddPagePopupOpen(false);
+                    setPopupState(false);
                     setNestPageState(false);
                     setAddComponentState(false);
                 }}
             />
             <div className="container">
-                {!components && !pages ? (
+                {!components && !pages && currentPageIsLoading && availablePageComponentsIsLoading ? (
                     <div>Loading...</div>
                 ) : (
                     <>
-                        {addPagePopupOpen && !addComponentState && !nestPageState && (
+                        {popupState && !addComponentState && !nestPageState && (
                             <>
                                 <h2 className="headline h4">{t("pages:addNewPage")}</h2>
                                 <h3 className="headline h6">
@@ -124,7 +188,7 @@ const AddPagePopup: FC = () => {
                                                 <TextField name="pageName" getValue={setPageName} value={pageName} />
                                             </div>
                                             <div className="row">
-                                                <button className="button is-tertiary" onClick={() => setNestPageState(true)}>
+                                                <button className="button is-tertiary" type="button" onClick={() => setNestPageState(true)}>
                                                     {t("pages:nestPage")}
                                                 </button>
                                             </div>
@@ -132,7 +196,7 @@ const AddPagePopup: FC = () => {
                                                 name="components"
                                                 render={() => (
                                                     <div className="components-container">
-                                                        <button className="button is-tertiary add-component-button" onClick={() => setAddComponentState(true)}>
+                                                        <button className="button is-tertiary add-component-button" type="button" onClick={() => setAddComponentState(true)}>
                                                             {t("pages:addComponent")}
                                                         </button>
                                                         <h4 className="headline h6">{t("pages:pageComponents")}:</h4>
@@ -151,7 +215,7 @@ const AddPagePopup: FC = () => {
                                                 )}
                                             />
                                             <div className="actions">
-                                                <button className="button is-primary back" type="button" onClick={() => setAddPagePopupOpen(false)}>
+                                                <button className="button is-primary back" type="button" onClick={() => setPopupState(false)}>
                                                     <span>{t("back")}</span>
                                                 </button>
                                                 <button className="button is-primary submit" disabled={isSubmitting} type="submit">
@@ -230,4 +294,4 @@ const AddPagePopup: FC = () => {
     );
 };
 
-export default AddPagePopup;
+export default AddAndUpdatePagePopup;

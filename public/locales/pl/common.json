@@ -28,6 +28,7 @@
     "save": "Zapisz",
     "back": "Powrót",
     "done": "Gotowe",
+    "deletePage": "Usuń stronę",
     "validation": {
         "required": "Pole wymagane",
         "email": "Niepoprawny adres email"

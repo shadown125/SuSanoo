@@ -130,4 +130,85 @@
             }
         }
     }
+    button {
+        &.delete {
+            background: {
+                color: var(--color-red);
+            }
+            &::after {
+                background: {
+                    color: var(--color-red);
+                }
+            }
+        }
+    }
+    .edit-bar-popup {
+        .headline {
+            text-align: center;
+            color: var(--color-white);
+        }
+        .container {
+            $height: susanoo.rem-calc(250);
+
+            display: flex;
+            flex-direction: column;
+            max: {
+                height: $height;
+            }
+            min: {
+                height: $height;
+            }
+        }
+        .text {
+            font: {
+                size: susanoo.rem-calc(14);
+            }
+            text-align: center;
+            color: var(--color-red);
+        }
+        .actions {
+            margin: {
+                top: auto;
+            }
+        }
+    }
+    .edit-bar {
+        display: flex;
+        align-items: center;
+        transform: translateX(-50%);
+        padding: susanoo.rem-calc(8);
+        border: {
+            radius: susanoo.rem-calc(6);
+        }
+        height: 0;
+        background: {
+            color: var(--color-dark2-light);
+        }
+        opacity: 0;
+        transition: opacity 0.2s linear, transform 0.2s linear, height 0s 0.2s linear;
+        &.is-active {
+            height: 100%;
+            transform: translateX(0);
+            opacity: 1;
+            transition: opacity 0.2s linear, transform 0.2s linear;
+        }
+        .edit-actions {
+            display: flex;
+            gap: susanoo.rem-calc(12);
+        }
+        .switch-container {
+            display: flex;
+            gap: susanoo.rem-calc(12);
+            margin: {
+                left: auto;
+            }
+        }
+        button {
+            text-transform: unset;
+            padding: susanoo.rem-calc(8);
+            font: {
+                size: susanoo.rem-calc(14);
+            }
+        }
+    }
 }

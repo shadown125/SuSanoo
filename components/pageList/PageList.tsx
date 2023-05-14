@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAddPagePopupStore } from "../../src/store/pages-store";
+import { useAddAndUpdatePagePopupStore } from "../../src/store/pages-store";
 import AddPagePopup from "./AddPagePopup";
 
 const PageList: FC = () => {
@@ -12,8 +12,8 @@ const PageList: FC = () => {
     const router = useRouter();
     const { data: pages, isLoading } = trpc.useQuery(["auth.pages.get"]);
 
-    const { setAddPagePopupOpen } = useAddPagePopupStore((state) => ({
-        setAddPagePopupOpen: state.setPopupOpen,
+    const { setAddPagePopupOpen } = useAddAndUpdatePagePopupStore((state) => ({
+        setAddPagePopupOpen: state.setPopupState,
     }));
 
     return (

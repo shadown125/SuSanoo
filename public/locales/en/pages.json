@@ -10,5 +10,9 @@
     "nestPage": "Select page to nest",
     "avaibleNestedPages": "There are no avaible pages to nest",
     "pageComponents": "Page Components",
-    "noComponentsAdded": "No components added"
+    "noComponentsAdded": "No components added",
+    "deletePageQuestion": "Are you sure you want to delete this page?",
+    "deletePageWarning": "Note: Deleting a page will delete all its components",
+    "switchPageMode": "Switch page active mode",
+    "editOptions": "Edit options"
 }
