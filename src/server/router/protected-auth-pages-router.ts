@@ -148,23 +148,15 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 throw new Error("Page not found");
             }
 
-            const page = await ctx.prisma.page.findUnique({
+            await ctx.prisma.page.update({
                 where: {
                     id: id,
                 },
+                data: {
+                    name: name,
+                    route: route,
+                },
             });
-
-            if (page?.name !== name) {
-                await ctx.prisma.page.update({
-                    where: {
-                        id: id,
-                    },
-                    data: {
-                        name: name,
-                        route: route,
-                    },
-                });
-            }
 
             await ctx.prisma.pageComponentsIndex.deleteMany({
                 where: {

@@ -75,9 +75,6 @@ const AddAndUpdatePagePopup: FC<{
         setPopupState(false);
         setAddComponentState(false);
         setNestPageState(false);
-        setNestedPageRoute("");
-        setPageName("");
-        setAddedComponents([]);
     };
 
     const submitHandler = (values: FormikValues, { setSubmitting, resetForm }: FormikSubmission) => {
@@ -87,7 +84,7 @@ const AddAndUpdatePagePopup: FC<{
                     {
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
-                        route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
+                        route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
                     },
                     {
                         onSuccess: (_) => {
@@ -95,6 +92,9 @@ const AddAndUpdatePagePopup: FC<{
                             context.invalidateQueries(["auth.components.get"]);
 
                             reset();
+                            setNestedPageRoute("");
+                            setPageName("");
+                            setAddedComponents([]);
                         },
                     },
                 );
@@ -104,17 +104,14 @@ const AddAndUpdatePagePopup: FC<{
                         id: pageId,
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
-                        route: `${nestedPageRoute ? `${nestedPageRoute}/` : ""}${pagePathName}`,
+                        route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
                     },
                     {
                         onSuccess: (_) => {
                             context.invalidateQueries(["auth.pages.get"]);
-                            // context.invalidateQueries(["auth.components.get"]);
                             context.invalidateQueries(["auth.components.getAvaibleComponents"]);
 
-                            setPopupState(false);
-                            setAddComponentState(false);
-                            setNestPageState(false);
+                            reset();
 
                             router.push(`/admin/pages/${pageName.toLowerCase()}`);
                         },
@@ -166,7 +163,7 @@ const AddAndUpdatePagePopup: FC<{
                                     <span className="generated-route">
                                         {nestedPageRoute ? (
                                             <>
-                                                <span className="nested-page-name">{`/${nestedPageRoute}/`}</span>
+                                                <span className="nested-page-name">{`${nestedPageRoute}/`}</span>
                                                 {pagePathName}
                                             </>
                                         ) : (

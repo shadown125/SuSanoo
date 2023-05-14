@@ -52,7 +52,7 @@ const InitialPage: FC<{
             page.active
                 ? {
                       key: page.name,
-                      path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}/${page.route}`,
+                      path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}${page.route}`,
                       element: (
                           <>
                               {page.components.map((component) => {
@@ -74,10 +74,6 @@ const InitialPage: FC<{
                       element: errorPage || <>Hehehe 404</>,
                   },
         ),
-        {
-            path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}`,
-            element: <>Homepage</>,
-        },
         {
             path: `*`,
             element: errorPage || <>Hehehe 404</>,
