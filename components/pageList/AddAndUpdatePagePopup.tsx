@@ -69,6 +69,9 @@ const AddAndUpdatePagePopup: FC<{
         if (update && availablePageComponentsIsFetched && availablePageComponents) {
             setAddedComponents(availablePageComponents);
         }
+        if (update && currentPageisFetched && currentPage) {
+            setNestedPageRoute(currentPage?.nestedPath || "");
+        }
     }, [currentPageisFetched, update, currentPage, availablePageComponentsIsFetched, availablePageComponents]);
 
     const reset = () => {
@@ -85,6 +88,7 @@ const AddAndUpdatePagePopup: FC<{
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
                         route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
+                        nestedPath: nestedPageRoute,
                     },
                     {
                         onSuccess: (_) => {
@@ -105,6 +109,7 @@ const AddAndUpdatePagePopup: FC<{
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
                         route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
+                        nestedPath: nestedPageRoute,
                     },
                     {
                         onSuccess: (_) => {
@@ -256,21 +261,23 @@ const AddAndUpdatePagePopup: FC<{
                                     <ul className="pages-list">
                                         {pages?.length || 0 > 0 ? (
                                             <>
-                                                {pages?.map((page) => (
-                                                    <li
-                                                        key={page.id}
-                                                        onClick={() => {
-                                                            if (page.route === nestedPageRoute) {
-                                                                setNestedPageRoute("");
-                                                                return;
-                                                            }
-                                                            setNestedPageRoute(page.route);
-                                                        }}
-                                                        className={`${page.route === nestedPageRoute ? "is-active" : ""}`}
-                                                    >
-                                                        {page.name}
-                                                    </li>
-                                                ))}
+                                                {pages
+                                                    ?.filter((page) => page.id !== pageId)
+                                                    .map((page) => (
+                                                        <li
+                                                            key={page.id}
+                                                            onClick={() => {
+                                                                if (page.nestedPath === nestedPageRoute) {
+                                                                    setNestedPageRoute("");
+                                                                    return;
+                                                                }
+                                                                setNestedPageRoute(page.route);
+                                                            }}
+                                                            className={`${page.route === nestedPageRoute ? "is-active" : ""}`}
+                                                        >
+                                                            {page.name}
+                                                        </li>
+                                                    ))}
                                             </>
                                         ) : (
                                             <li className="not-found">{t("pages:avaibleNestedPages")}</li>

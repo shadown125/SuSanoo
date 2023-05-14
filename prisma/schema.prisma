@@ -59,6 +59,7 @@ model Page {
   createdBy           User                  @relation(fields: [authorId], references: [id])
   authorId            String
   route               String                @unique
+  nestedPath          String                @default("")
   history             History[]
   availableComponents Component[]           @relation("ComponentsPage")
   components          Component[]

@@ -7,9 +7,10 @@ export const protectedAuthPageRouter = createProtectedRouter()
             name: z.string(),
             route: z.string(),
             components: z.array(z.string()),
+            nestedPath: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { name, route, components } = input;
+            const { name, route, components, nestedPath } = input;
             const userId = ctx.session.user.id;
 
             if (!userId) {
@@ -21,6 +22,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     authorId: userId,
                     name: name,
                     route: route,
+                    nestedPath: nestedPath,
                 },
             });
 
@@ -140,9 +142,10 @@ export const protectedAuthPageRouter = createProtectedRouter()
             name: z.string(),
             route: z.string(),
             components: z.array(z.string()),
+            nestedPath: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { id, name, route, components } = input;
+            const { id, name, route, components, nestedPath } = input;
 
             if (!id) {
                 throw new Error("Page not found");
@@ -155,6 +158,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 data: {
                     name: name,
                     route: route,
+                    nestedPath: nestedPath,
                 },
             });
 
