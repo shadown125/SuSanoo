@@ -48,25 +48,32 @@ const InitialPage: FC<{
     const nextRouter = useRouter();
 
     const router = useRoutes([
-        ...pages?.map((page) => ({
-            key: page.name,
-            path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}/${page.route}`,
-            element: (
-                <>
-                    {page.components.map((component) => {
-                        const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
-                        const Component =
-                            componentExist &&
-                            createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
-                                key: component.id,
-                                id: { componentId: component.id, pageId: page.id },
-                            });
+        ...pages?.map((page) =>
+            page.active
+                ? {
+                      key: page.name,
+                      path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}/${page.route}`,
+                      element: (
+                          <>
+                              {page.components.map((component) => {
+                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
+                                  const Component =
+                                      componentExist &&
+                                      createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
+                                          key: component.id,
+                                          id: { componentId: component.id, pageId: page.id },
+                                      });
 
-                        return Component;
-                    })}
-                </>
-            ),
-        })),
+                                  return Component;
+                              })}
+                          </>
+                      ),
+                  }
+                : {
+                      path: `*`,
+                      element: errorPage || <>Hehehe 404</>,
+                  },
+        ),
         {
             path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}`,
             element: <>Homepage</>,
