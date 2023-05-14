@@ -171,6 +171,9 @@ button {
             style: solid;
             color: var(--color-dark);
         }
+        background: {
+            color: var(--color-dark-blue2);
+        }
         color: var(--color-dark);
         transition: border-color 0.35s linear, color 0.2s linear;
         overflow: hidden;
