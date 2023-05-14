@@ -65,12 +65,10 @@ const AddAndUpdatePagePopup: FC<{
     useEffect(() => {
         if (update && currentPageisFetched && currentPage) {
             setPageName(currentPage?.name);
+            setNestedPageRoute(currentPage?.nestedPath || "");
         }
         if (update && availablePageComponentsIsFetched && availablePageComponents) {
             setAddedComponents(availablePageComponents);
-        }
-        if (update && currentPageisFetched && currentPage) {
-            setNestedPageRoute(currentPage?.nestedPath || "");
         }
     }, [currentPageisFetched, update, currentPage, availablePageComponentsIsFetched, availablePageComponents]);
 
