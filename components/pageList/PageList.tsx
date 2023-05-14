@@ -5,7 +5,7 @@ import { useTranslation } from "next-i18next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAddAndUpdatePagePopupStore } from "../../src/store/pages-store";
-import AddPagePopup from "./AddPagePopup";
+import AddPagePopup from "./AddAndUpdatePagePopup";
 
 const PageList: FC = () => {
     const { t } = useTranslation("");

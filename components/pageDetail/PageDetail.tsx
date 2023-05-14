@@ -10,7 +10,7 @@ import { trpc } from "../../src/utils/trpc";
 import ComponentInput from "./ComponentInput";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import EditBar from "./EditBar";
-import AddAndUpdatePagePopup from "../pageList/AddPagePopup";
+import AddAndUpdatePagePopup from "../pageList/AddAndUpdatePagePopup";
 
 const PageDetail: FC<{
     name: string;
