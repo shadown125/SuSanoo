@@ -78,6 +78,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex: {
+            wrap: wrap;
+        }
+        margin: {
+            bottom: susanoo.rem-calc(16);
+        }
         .headline {
             margin: {
                 bottom: unset;
@@ -86,6 +92,7 @@
         .actions {
             display: flex;
             gap: susanoo.rem-calc(12);
+            align-self: flex-start;
         }
     }
     .container {
