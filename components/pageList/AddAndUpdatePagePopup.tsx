@@ -50,7 +50,7 @@ const AddAndUpdatePagePopup: FC<{
     const pagePathName = pageName
         .split(" ")
         .join("-")
-        .replace(/[^a-zA-Z-]/g, "")
+        .replace(/[^a-zA-Z-^0-9]/g, "")
         .toLowerCase();
 
     const { popupState, setPopupState } = useAddAndUpdatePagePopupStore((state) => ({
