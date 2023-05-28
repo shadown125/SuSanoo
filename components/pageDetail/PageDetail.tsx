@@ -252,6 +252,8 @@ const PageDetail: FC<{
         });
     };
 
+    console.log(components);
+
     return (
         <>
             <div className="pages-detail">
@@ -274,52 +276,58 @@ const PageDetail: FC<{
                         <Formik enableReinitialize initialValues={buildInitialValues()} onSubmit={submitHandler} validationSchema={buildInputFieldConfigSchema()}>
                             {({ isSubmitting }) => (
                                 <Form>
-                                    <DragDropContext onDragEnd={handleDragEnd}>
-                                        <Droppable droppableId="components-page-list">
-                                            {(provided) => (
-                                                <div {...provided.droppableProps} ref={provided.innerRef}>
-                                                    {components.map((component) => {
-                                                        let pageComponentIndex;
+                                    {components.length > 0 ? (
+                                        <DragDropContext onDragEnd={handleDragEnd}>
+                                            <Droppable droppableId="components-page-list">
+                                                {(provided) => (
+                                                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                                                        {components.map((component) => {
+                                                            let pageComponentIndex;
 
-                                                        if (component.PageComponentsIndex[0]) {
-                                                            pageComponentIndex = component.PageComponentsIndex[0].index;
-                                                        } else {
-                                                            return <div>Loading...</div>;
-                                                        }
+                                                            if (component.PageComponentsIndex[0]) {
+                                                                pageComponentIndex = component.PageComponentsIndex[0].index;
+                                                            } else {
+                                                                return <div>Loading...</div>;
+                                                            }
 
-                                                        return (
-                                                            <Draggable
-                                                                key={component.id}
-                                                                draggableId={component.id.toString()}
-                                                                index={pageComponentIndex}
-                                                                isDragDisabled={!editState}
-                                                            >
-                                                                {(provided) => (
-                                                                    <div
-                                                                        ref={provided.innerRef}
-                                                                        {...provided.draggableProps}
-                                                                        {...provided.dragHandleProps}
-                                                                        className={`component${editState ? " is-active" : ""}`}
-                                                                    >
-                                                                        <div className="head">{component.name}</div>
-                                                                        <button
-                                                                            className={`button delete-button is-primary${editState ? " is-active" : ""}`}
-                                                                            onClick={() => deletePageComponentHandler(component.id)}
-                                                                            type="button"
+                                                            return (
+                                                                <Draggable
+                                                                    key={component.id}
+                                                                    draggableId={component.id.toString()}
+                                                                    index={pageComponentIndex}
+                                                                    isDragDisabled={!editState}
+                                                                >
+                                                                    {(provided) => (
+                                                                        <div
+                                                                            ref={provided.innerRef}
+                                                                            {...provided.draggableProps}
+                                                                            {...provided.dragHandleProps}
+                                                                            className={`component${editState ? " is-active" : ""}`}
                                                                         >
-                                                                            <span>Delete Component</span>
-                                                                        </button>
-                                                                        <ComponentInput pageId={pageId} componentId={component.id} />
-                                                                    </div>
-                                                                )}
-                                                            </Draggable>
-                                                        );
-                                                    })}
-                                                    {provided.placeholder}
-                                                </div>
-                                            )}
-                                        </Droppable>
-                                    </DragDropContext>
+                                                                            <div className="head">{component.name}</div>
+                                                                            <button
+                                                                                className={`button delete-button is-primary${editState ? " is-active" : ""}`}
+                                                                                onClick={() => deletePageComponentHandler(component.id)}
+                                                                                type="button"
+                                                                            >
+                                                                                <span>Delete Component</span>
+                                                                            </button>
+                                                                            <ComponentInput pageId={pageId} componentId={component.id} />
+                                                                        </div>
+                                                                    )}
+                                                                </Draggable>
+                                                            );
+                                                        })}
+                                                        {provided.placeholder}
+                                                    </div>
+                                                )}
+                                            </Droppable>
+                                        </DragDropContext>
+                                    ) : (
+                                        <div className="no-components">
+                                            <span>{t("noComponents")}</span>
+                                        </div>
+                                    )}
                                     <div className="actions">
                                         <button
                                             className="button is-primary back"
