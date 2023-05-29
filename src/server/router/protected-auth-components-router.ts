@@ -48,16 +48,9 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
 
             return await ctx.prisma.component.findMany({
                 where: {
-                    page: {
-                        none: {
+                    availablePages: {
+                        some: {
                             id: pageId,
-                        },
-                    },
-                    AND: {
-                        availablePages: {
-                            some: {
-                                id: pageId,
-                            },
                         },
                     },
                 },
@@ -103,7 +96,6 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 },
                 include: {
                     input: true,
-                    PageComponentsIndex: true,
                 },
             });
 
@@ -111,8 +103,11 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 where: {
                     id: pageId,
                 },
-                include: {
-                    PageComponentsIndex: true,
+            });
+
+            const pageComponents = await ctx.prisma.pageComponent.findMany({
+                where: {
+                    pageId: pageId,
                 },
             });
 
@@ -124,37 +119,45 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 throw new Error("Page not found");
             }
 
-            component.input.forEach(async (input) => {
+            if (!pageComponents) {
+                throw new Error("Page components not found");
+            }
+
+            const newPageComponent = await ctx.prisma.pageComponent.create({
+                data: {
+                    pageId: pageId,
+                    name: component.name,
+                    componentId: componentId,
+                    index: pageComponents.length,
+                },
+            });
+
+            component.input.map(async (input) => {
                 await ctx.prisma.pageInputsValues.create({
                     data: {
                         pageId: pageId,
                         inputId: input.id,
+                        pageComponentId: newPageComponent.id,
                         value: "",
                     },
                 });
             });
 
-            await ctx.prisma.pageComponentsIndex.create({
-                data: {
-                    pageId: pageId,
-                    componentId: componentId,
-                    index: page.PageComponentsIndex.length,
-                },
-            });
-
-            await ctx.prisma.page.update({
+            await ctx.prisma.pageComponent.update({
                 where: {
-                    id: pageId,
+                    id: newPageComponent.id,
                 },
                 data: {
-                    components: {
-                        connect: {
-                            id: component.id,
-                        },
+                    input: {
+                        connect: component.input.map((input) => {
+                            return {
+                                id: input.id,
+                            };
+                        }),
                     },
                 },
             });
 
-            return component;
+            return newPageComponent;
         },
     });

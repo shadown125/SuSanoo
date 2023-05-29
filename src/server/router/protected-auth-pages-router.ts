@@ -74,16 +74,9 @@ export const protectedAuthPageRouter = createProtectedRouter()
 
             return await ctx.prisma.component.findMany({
                 where: {
-                    page: {
-                        none: {
+                    availablePages: {
+                        some: {
                             id: id,
-                        },
-                    },
-                    AND: {
-                        availablePages: {
-                            some: {
-                                id: id,
-                            },
                         },
                     },
                 },
@@ -221,31 +214,18 @@ export const protectedAuthPageRouter = createProtectedRouter()
         resolve: async ({ input, ctx }) => {
             const { name, pageId } = input;
 
-            const components = await ctx.prisma.component.findMany({
+            const components = await ctx.prisma.pageComponent.findMany({
                 where: {
-                    page: {
-                        some: {
-                            name: name,
-                        },
-                    },
+                    pageId: pageId,
                 },
                 include: {
                     input: true,
-                    PageComponentsIndex: {
-                        where: {
-                            pageId: pageId,
-                        },
-                        select: {
-                            id: true,
-                            index: true,
-                        },
-                    },
                 },
             });
 
             return components.sort((a, b) => {
-                if (a.PageComponentsIndex[0] || b.PageComponentsIndex[0]) {
-                    return a.PageComponentsIndex[0]!.index < b.PageComponentsIndex[0]!.index ? -1 : 1;
+                if (a.index || b.index) {
+                    return a.index < b.index ? -1 : 1;
                 }
 
                 return 0;
@@ -260,7 +240,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
         resolve: async ({ input, ctx }) => {
             const { id, index } = input;
 
-            return await ctx.prisma.pageComponentsIndex.update({
+            return await ctx.prisma.pageComponent.update({
                 where: {
                     id: id,
                 },
@@ -280,7 +260,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
 
             return await ctx.prisma.pageInputsValues.update({
                 where: {
-                    id: inputId,
+                    pageComponentId: inputId,
                 },
                 data: {
                     value: value,
@@ -296,73 +276,20 @@ export const protectedAuthPageRouter = createProtectedRouter()
         resolve: async ({ input, ctx }) => {
             const { componentId, pageId } = input;
 
-            const component = await ctx.prisma.component.findUnique({
+            const component = await ctx.prisma.pageComponent.findUnique({
                 where: {
                     id: componentId,
                 },
-                include: {
-                    PageComponentsIndex: {
-                        where: {
-                            pageId: pageId,
-                            componentId: componentId,
-                        },
-                        select: {
-                            id: true,
-                            index: true,
-                        },
-                    },
-                },
             });
 
-            const page = await ctx.prisma.page.findUnique({
-                where: {
-                    id: pageId,
-                },
-                include: {
-                    components: true,
-                },
-            });
-
-            if (!component || !component.PageComponentsIndex[0]) {
+            if (!component) {
                 throw new Error("Component not found");
             }
 
-            await ctx.prisma.page.update({
+            await ctx.prisma.pageComponent.delete({
                 where: {
-                    id: pageId,
+                    id: componentId,
                 },
-                data: {
-                    components: {
-                        disconnect: {
-                            id: componentId,
-                        },
-                    },
-                },
-            });
-
-            await ctx.prisma.pageComponentsIndex.delete({
-                where: {
-                    id: component.PageComponentsIndex[0].id,
-                },
-            });
-
-            page?.components.forEach(async (_, index) => {
-                if (!component.PageComponentsIndex[0]) {
-                    return;
-                }
-
-                if (component.PageComponentsIndex[0].index > index) {
-                    await ctx.prisma.pageComponentsIndex.update({
-                        where: {
-                            id: component.PageComponentsIndex[0].id,
-                        },
-                        data: {
-                            index: index,
-                        },
-                    });
-                }
-
-                return;
             });
 
             await ctx.prisma.pageInputsValues.deleteMany({

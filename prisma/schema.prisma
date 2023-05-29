@@ -25,6 +25,7 @@ model Account {
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -33,6 +34,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model User {
@@ -52,61 +55,79 @@ model User {
 }
 
 model Page {
-  id                  String                @id @default(cuid())
-  name                String                @unique
-  active              Boolean               @default(false)
-  createdAt           DateTime              @default(now())
-  createdBy           User                  @relation(fields: [authorId], references: [id])
+  id                  String             @id @default(cuid())
+  name                String             @unique
+  active              Boolean            @default(false)
+  createdAt           DateTime           @default(now())
+  createdBy           User               @relation(fields: [authorId], references: [id])
   authorId            String
-  route               String                @unique
-  nestedPath          String                @default("")
+  route               String             @unique
+  nestedPath          String             @default("")
   history             History[]
-  availableComponents Component[]           @relation("ComponentsPage")
-  components          Component[]
+  availableComponents Component[]        @relation("ComponentsPage")
+  pageComponents      PageComponent[]
   pageInputsValues    PageInputsValues[]
-  PageComponentsIndex PageComponentsIndex[]
-}
 
-model PageComponentsIndex {
-  id          String    @id @default(cuid())
-  pageId      String
-  component   Component @relation(fields: [componentId], references: [id])
-  componentId String
-  index       Int
-  page        Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  @@index([authorId])
 }
 
 model PageInputsValues {
-  id      String @id @default(cuid())
-  page    Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId  String
-  input   Input  @relation(fields: [inputId], references: [id], onDelete: Cascade)
-  inputId String
+  id                    String        @id @default(cuid())
+  page                  Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId                String
+  input                 Input         @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  inputId               String
+  pageComponent         PageComponent @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
+  pageComponentId       String        @unique
+  value                 String
+  createdAt             DateTime      @default(now())
+  pageComponentsIndexId String?
 
-  value     String
-  createdAt DateTime @default(now())
+  @@index([pageComponentsIndexId])
+  @@index([pageComponentId])
+  @@index([inputId])
+  @@index([pageId])
+}
+
+model PageComponent {
+  id               String             @id @default(cuid())
+  name             String
+  pageId           String
+  component        Component          @relation(fields: [componentId], references: [id])
+  componentId      String
+  input            Input[]
+  index            Int
+  page             Page               @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  PageInputsValues PageInputsValues[]
+
+  @@index([componentId])
+  @@index([pageId])
 }
 
 model Component {
-  id                  String                @id @default(cuid())
-  name                String                @unique
-  input               Input[]
-  availablePages      Page[]                @relation("ComponentsPage")
-  page                Page[]
-  PageComponentsIndex PageComponentsIndex[]
-  history             History[]
+  id             String          @id @default(cuid())
+  name           String
+  input          Input[]
+  availablePages Page[]          @relation("ComponentsPage")
+  PageComponent  PageComponent[]
+  history        History[]
 }
 
 model Input {
-  id            String             @id @default(cuid())
-  name          String
-  type          InputsTypes?       @default(text)
-  halfRow       Boolean            @default(false)
-  required      Boolean            @default(false)
-  component     Component          @relation(fields: [componentId], references: [id])
-  componentId   String
-  selectOptions SelectOption[]
-  value         PageInputsValues[]
+  id              String             @id @default(cuid())
+  name            String
+  type            InputsTypes?       @default(text)
+  halfRow         Boolean            @default(false)
+  required        Boolean            @default(false)
+  component       Component          @relation(fields: [componentId], references: [id])
+  pageComponent   PageComponent[]
+  pageComponentId String
+  componentId     String
+  selectOptions   SelectOption[]
+  value           PageInputsValues[]
+
+  @@index([componentId])
+  @@index([pageComponentId])
 }
 
 model SelectOption {
@@ -114,6 +135,8 @@ model SelectOption {
   name    String
   input   Input  @relation(fields: [inputId], references: [id])
   inputId String
+
+  @@index([inputId])
 }
 
 model History {
@@ -125,6 +148,10 @@ model History {
   pageId      String?    @default("")
   component   Component? @relation(fields: [componentId], references: [id])
   componentId String?    @default("")
+
+  @@index([userId])
+  @@index([pageId])
+  @@index([componentId])
 }
 
 model VerificationToken {

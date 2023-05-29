@@ -54,12 +54,14 @@ const PageDetail: FC<{
                 return initialValues;
             }
             component.input.forEach((input) => {
-                const value = pageInputsValues?.find((pageInputValue) => pageInputValue.inputId === input.id);
-                if (input.type === "date") {
-                    initialValues[value ? value.id : ""] = formatDate(new Date(value ? value.value : ""));
-                    return;
-                }
-                initialValues[value ? value.id : ""] = value ? value.value : "";
+                pageInputsValues?.forEach((pageInputValue) => {
+                    if (input.type === "date") {
+                        initialValues[pageInputValue.pageComponentId] = formatDate(new Date(pageInputValue.value));
+                        return;
+                    }
+
+                    initialValues[pageInputValue.pageComponentId] = pageInputValue.value;
+                });
             });
         });
 
@@ -108,7 +110,7 @@ const PageDetail: FC<{
             for (const [key, value] of Object.entries(data)) {
                 if (key !== "" && value !== "") {
                     pageInputsValues?.forEach((pageInput) => {
-                        if (pageInput.id === key) {
+                        if (pageInput.pageComponentId === key) {
                             pageInputValue({
                                 inputId: key,
                                 value: value,
@@ -234,13 +236,13 @@ const PageDetail: FC<{
         newComponents.splice(destination.index, 0, removed!);
 
         newComponents.forEach((component, index) => {
-            if (!component.PageComponentsIndex[0]) {
+            if (component.index === undefined) {
                 throw new Error("Components index is undefined. Something went wrong.");
             }
 
             updatePageComponentsIndex(
                 {
-                    id: component.PageComponentsIndex[0].id,
+                    id: component.id,
                     index,
                 },
                 {
@@ -251,8 +253,6 @@ const PageDetail: FC<{
             );
         });
     };
-
-    console.log(components);
 
     return (
         <>
@@ -284,8 +284,8 @@ const PageDetail: FC<{
                                                         {components.map((component) => {
                                                             let pageComponentIndex;
 
-                                                            if (component.PageComponentsIndex[0]) {
-                                                                pageComponentIndex = component.PageComponentsIndex[0].index;
+                                                            if (component.index !== undefined) {
+                                                                pageComponentIndex = component.index;
                                                             } else {
                                                                 return <div>Loading...</div>;
                                                             }
@@ -312,7 +312,7 @@ const PageDetail: FC<{
                                                                             >
                                                                                 <span>Delete Component</span>
                                                                             </button>
-                                                                            <ComponentInput pageId={pageId} componentId={component.id} />
+                                                                            <ComponentInput pageId={pageId} componentId={component.componentId} pageComponentId={component.id} />
                                                                         </div>
                                                                     )}
                                                                 </Draggable>

@@ -37,7 +37,8 @@ const ComponentInputBuilder = (type: string, name: string, id: string, rawId: st
 const ComponentInput: FC<{
     componentId: string;
     pageId: string;
-}> = ({ componentId, pageId }) => {
+    pageComponentId: string;
+}> = ({ componentId, pageId, pageComponentId }) => {
     const { data: input } = trpc.useQuery(["auth.inputs.get", { componentId, pageId }]);
     const editState = useDetailPageStore((state) => state.editState);
 
@@ -61,7 +62,7 @@ const ComponentInput: FC<{
                                             {input.name}
                                             {input.required ? "*" : ""}
                                         </label>
-                                        {ComponentInputBuilder(input.type, input.name, inputValue ? inputValue.id : "undefined", input.id)}
+                                        {ComponentInputBuilder(input.type, input.name, inputValue ? pageComponentId : "undefined", input.componentId)}
                                     </div>,
                                 );
                             }
