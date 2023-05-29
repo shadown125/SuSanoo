@@ -4,7 +4,7 @@ import { FC, createElement } from "react";
 import { useRouter } from "next/router";
 import { useRoutes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { Component, Page } from "@prisma/client";
+import { PageComponent, Page } from "@prisma/client";
 import { SusComponents, SusComponetsType } from "../../sus-components";
 
 const Home: NextPage = () => {
@@ -28,7 +28,7 @@ const SusanooProvider: FC<{
                     <InitialPage
                         pages={
                             (pages as (Page & {
-                                components: Component[];
+                                pageComponents: PageComponent[];
                             })[]) || []
                         }
                         errorPage={errorPage}
@@ -41,7 +41,7 @@ const SusanooProvider: FC<{
 
 const InitialPage: FC<{
     pages: (Page & {
-        components: Component[];
+        pageComponents: PageComponent[];
     })[];
     errorPage?: JSX.Element | JSX.Element[];
 }> = ({ pages, errorPage }) => {
@@ -55,8 +55,9 @@ const InitialPage: FC<{
                       path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}${page.route}`,
                       element: (
                           <>
-                              {page.components.map((component) => {
-                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
+                              {page.pageComponents.map((component) => {
+                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase().replace("-", ""));
+
                                   const Component =
                                       componentExist &&
                                       createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {

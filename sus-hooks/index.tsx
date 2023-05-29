@@ -5,9 +5,9 @@ export const useSusInputs = (id: { componentId: string; pageId: string }) => {
 
     let extractedData: Record<string, string> = {};
 
-    data?.forEach((input) => {
-        const name = input.name;
-        const value = input.value[0]?.value;
+    data?.forEach((component) => {
+        const name = component.input.name;
+        const value = component.value;
 
         if (typeof value === "undefined" || typeof name === "undefined") {
             return;

@@ -10,19 +10,12 @@ export const publicInputsRouter = createRouter()
         resolve: async ({ input, ctx }) => {
             const { componentId, pageId } = input;
 
-            return await ctx.prisma.input.findMany({
+            return await ctx.prisma.pageInputsValues.findMany({
                 where: {
-                    componentId: componentId,
+                    pageComponentId: componentId,
                 },
                 include: {
-                    value: {
-                        where: {
-                            pageId: pageId,
-                        },
-                        select: {
-                            value: true,
-                        },
-                    },
+                    input: true,
                 },
             });
         },
