@@ -4,12 +4,12 @@ import { Test2 } from "./test2";
 
 export type SusComponetsType = FC<{
     id: {
-        componentId: string;
+        pageComponentId: string;
         pageId: string;
     };
 }>;
 
 export const SusComponents: { [key: string]: SusComponetsType } = {
     header: Test1,
-    test2: Test2,
+    section1: Test2,
 };

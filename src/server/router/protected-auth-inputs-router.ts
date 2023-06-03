@@ -3,27 +3,21 @@ import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
 
 export const protectedAuthInputsRouter = createProtectedRouter()
-    .query("get", {
+    .query("getPageInputValues", {
         input: z.object({
-            componentId: z.string(),
+            pageComponentId: z.string(),
             pageId: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { componentId, pageId } = input;
+            const { pageComponentId, pageId } = input;
 
-            return await ctx.prisma.input.findMany({
+            return await ctx.prisma.pageInputsValues.findMany({
                 where: {
-                    componentId: componentId,
+                    pageId: pageId,
+                    pageComponentId: pageComponentId,
                 },
                 include: {
-                    value: {
-                        where: {
-                            pageId: pageId,
-                        },
-                        select: {
-                            id: true,
-                        },
-                    },
+                    input: true,
                 },
             });
         },

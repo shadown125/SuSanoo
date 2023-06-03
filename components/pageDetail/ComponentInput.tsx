@@ -35,34 +35,31 @@ const ComponentInputBuilder = (type: string, name: string, id: string, rawId: st
 };
 
 const ComponentInput: FC<{
-    componentId: string;
     pageId: string;
     pageComponentId: string;
-}> = ({ componentId, pageId, pageComponentId }) => {
-    const { data: input } = trpc.useQuery(["auth.inputs.get", { componentId, pageId }]);
+}> = ({ pageId, pageComponentId }) => {
+    const { data: pageInputValue } = trpc.useQuery(["auth.inputs.getPageInputValues", { pageComponentId, pageId }]);
     const editState = useDetailPageStore((state) => state.editState);
 
     return (
         <div className={`component-inputs${editState ? " is-active" : ""}`}>
-            {!input ? (
+            {!pageInputValue ? (
                 <div>Loading...</div>
             ) : (
                 <>
-                    {input.map((input, index) => {
+                    {pageInputValue.map((pageInput, index) => {
                         const types = Object.keys(AvaiblableComponentsInputList).filter((key) => isNaN(Number(key)));
                         const inputs: JSX.Element[] = [];
 
                         types.forEach((type) => {
-                            if (input.type?.toLowerCase() === type.toLowerCase()) {
-                                const inputValue = input.value[0];
-
+                            if (pageInput.input.type?.toLowerCase() === type.toLowerCase()) {
                                 inputs.push(
-                                    <div key={index} className={`row${input.halfRow ? " row-half" : ""}`}>
-                                        <label htmlFor={input.name}>
-                                            {input.name}
-                                            {input.required ? "*" : ""}
+                                    <div key={index} className={`row${pageInput.input.halfRow ? " row-half" : ""}`}>
+                                        <label htmlFor={pageInput.input.name}>
+                                            {pageInput.input.name}
+                                            {pageInput.input.required ? "*" : ""}
                                         </label>
-                                        {ComponentInputBuilder(input.type, input.name, inputValue ? pageComponentId : "undefined", input.componentId)}
+                                        {ComponentInputBuilder(pageInput.input.type, pageInput.input.name, pageInput.id, pageInput.id)}
                                     </div>,
                                 );
                             }

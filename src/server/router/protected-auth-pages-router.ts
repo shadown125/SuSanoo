@@ -219,7 +219,12 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     pageId: pageId,
                 },
                 include: {
-                    input: true,
+                    input: {
+                        include: {
+                            value: true,
+                        },
+                    },
+                    PageInputsValues: true,
                 },
             });
 
@@ -260,7 +265,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
 
             return await ctx.prisma.pageInputsValues.update({
                 where: {
-                    pageComponentId: inputId,
+                    id: inputId,
                 },
                 data: {
                     value: value,

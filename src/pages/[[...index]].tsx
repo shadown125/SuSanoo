@@ -56,13 +56,13 @@ const InitialPage: FC<{
                       element: (
                           <>
                               {page.pageComponents.map((component) => {
-                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase().replace("-", ""));
+                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
 
                                   const Component =
                                       componentExist &&
                                       createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
                                           key: component.id,
-                                          id: { componentId: component.id, pageId: page.id },
+                                          id: { pageComponentId: component.id, pageId: page.id },
                                       });
 
                                   return Component;

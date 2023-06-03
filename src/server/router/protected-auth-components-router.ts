@@ -132,7 +132,7 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 },
             });
 
-            component.input.map(async (input) => {
+            component.input.forEach(async (input) => {
                 await ctx.prisma.pageInputsValues.create({
                     data: {
                         pageId: pageId,

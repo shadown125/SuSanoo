@@ -75,6 +75,18 @@ export const inputs = async (prisma: PrismaClient) => {
 
     await prisma.input.upsert({
         create: {
+            id: "656532",
+            name: "text",
+            type: "text",
+            componentId: "0234u290qnjkfna",
+            pageComponentId: "0234u290qnjkfna",
+        },
+        update: {},
+        where: { id: "656532" },
+    });
+
+    await prisma.input.upsert({
+        create: {
             id: "fsjap231o3123n212323",
             name: "textarea",
             componentId: "fsjapo3123n2123",

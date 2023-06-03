@@ -78,7 +78,7 @@ model PageInputsValues {
   input                 Input         @relation(fields: [inputId], references: [id], onDelete: Cascade)
   inputId               String
   pageComponent         PageComponent @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
-  pageComponentId       String        @unique
+  pageComponentId       String
   value                 String
   createdAt             DateTime      @default(now())
   pageComponentsIndexId String?

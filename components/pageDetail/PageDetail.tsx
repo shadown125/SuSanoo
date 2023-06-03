@@ -53,15 +53,9 @@ const PageDetail: FC<{
             if (component.input.length <= 0) {
                 return initialValues;
             }
-            component.input.forEach((input) => {
-                pageInputsValues?.forEach((pageInputValue) => {
-                    if (input.type === "date") {
-                        initialValues[pageInputValue.pageComponentId] = formatDate(new Date(pageInputValue.value));
-                        return;
-                    }
 
-                    initialValues[pageInputValue.pageComponentId] = pageInputValue.value;
-                });
+            component.PageInputsValues.forEach((input) => {
+                initialValues[input?.id || ""] = input?.value || "";
             });
         });
 
@@ -110,7 +104,7 @@ const PageDetail: FC<{
             for (const [key, value] of Object.entries(data)) {
                 if (key !== "" && value !== "") {
                     pageInputsValues?.forEach((pageInput) => {
-                        if (pageInput.pageComponentId === key) {
+                        if (pageInput.id === key) {
                             pageInputValue({
                                 inputId: key,
                                 value: value,
@@ -312,7 +306,7 @@ const PageDetail: FC<{
                                                                             >
                                                                                 <span>Delete Component</span>
                                                                             </button>
-                                                                            <ComponentInput pageId={pageId} componentId={component.componentId} pageComponentId={component.id} />
+                                                                            <ComponentInput pageId={pageId} pageComponentId={component.id} />
                                                                         </div>
                                                                     )}
                                                                 </Draggable>

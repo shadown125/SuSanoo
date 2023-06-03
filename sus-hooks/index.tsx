@@ -1,6 +1,6 @@
 import { trpc } from "../src/utils/trpc";
 
-export const useSusInputs = (id: { componentId: string; pageId: string }) => {
+export const useSusInputs = (id: { pageComponentId: string; pageId: string }) => {
     const { data } = trpc.useQuery(["inputs.get", { ...id }]);
 
     let extractedData: Record<string, string> = {};
