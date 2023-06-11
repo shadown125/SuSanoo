@@ -121,7 +121,7 @@ model Input {
   required        Boolean            @default(false)
   component       Component          @relation(fields: [componentId], references: [id])
   pageComponent   PageComponent[]
-  pageComponentId String
+  pageComponentId String?            @default("")
   componentId     String
   selectOptions   SelectOption[]
   value           PageInputsValues[]
