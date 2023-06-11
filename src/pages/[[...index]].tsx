@@ -55,18 +55,20 @@ const InitialPage: FC<{
                       path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}${page.route}`,
                       element: (
                           <>
-                              {page.pageComponents.map((component) => {
-                                  const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
+                              {page.pageComponents
+                                  .sort((a, b) => a.index - b.index)
+                                  .map((component) => {
+                                      const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
 
-                                  const Component =
-                                      componentExist &&
-                                      createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
-                                          key: component.id,
-                                          id: { pageComponentId: component.id, pageId: page.id },
-                                      });
+                                      const Component =
+                                          componentExist &&
+                                          createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
+                                              key: component.id,
+                                              id: { pageComponentId: component.id, pageId: page.id },
+                                          });
 
-                                  return Component;
-                              })}
+                                      return Component;
+                                  })}
                           </>
                       ),
                   }
