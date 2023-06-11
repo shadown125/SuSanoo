@@ -154,13 +154,6 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     nestedPath: nestedPath,
                 },
             });
-
-            await ctx.prisma.pageComponentsIndex.deleteMany({
-                where: {
-                    pageId: id,
-                },
-            });
-
             await ctx.prisma.page.update({
                 where: {
                     id: id,
@@ -172,16 +165,6 @@ export const protectedAuthPageRouter = createProtectedRouter()
                         })),
                     },
                 },
-            });
-
-            return components.forEach(async (componentId, index) => {
-                await ctx.prisma.pageComponentsIndex.create({
-                    data: {
-                        pageId: id,
-                        componentId: componentId,
-                        index: index,
-                    },
-                });
             });
         },
     })
@@ -212,7 +195,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
             pageId: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { name, pageId } = input;
+            const { pageId } = input;
 
             const components = await ctx.prisma.pageComponent.findMany({
                 where: {
