@@ -14,7 +14,7 @@ import ComponentsHistory from "../../../../../components/history/ComponentsHisto
 const ComponentEdit: NextPage<{
     name: string;
 }> = ({ name }) => {
-    const { t } = useTranslation("");
+    const { t } = useTranslation("common");
     const router = useRouter();
     const { data: components } = trpc.useQuery(["auth.components.get"], {
         select: (components) => components.filter((component) => component.name.toLowerCase() === name),
@@ -29,7 +29,7 @@ const ComponentEdit: NextPage<{
                 <>
                     <div className="middle-section">
                         <section className="full">
-                            <h1 className="headline h1">Component not Found</h1>
+                            <h1 className="headline h1">{t("componentNotFound")}</h1>
                             <button className="button is-primary" onClick={router.back}>
                                 <span>Back button</span>
                             </button>
@@ -37,10 +37,10 @@ const ComponentEdit: NextPage<{
                     </div>
                     <div className="right-section">
                         <section className="upper">
-                            <h2 className="headline h5">Add Component</h2>
+                            <h2 className="headline h5">{t("addComponent")}</h2>
                         </section>
                         <section className="lower">
-                            <h2 className="headline h5">{t("common:history")}</h2>
+                            <h2 className="headline h5">{t("history")}</h2>
                         </section>
                     </div>
                 </>
