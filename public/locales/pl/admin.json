@@ -6,5 +6,6 @@
     "validEmail": "Email musi być poprawny",
     "invalidEmailOrPassword": "E-mail lub hasło są nieprawidłowe. Proszę spróbować ponownie",
     "errorOccurred": "Wystąpił błąd. Nie można się zalogować! Proszę spróbować ponownie",
-    "pageName": "Nazwa strony"
+    "pageName": "Nazwa strony",
+    "componentName": "Nazwa komponentu"
 }

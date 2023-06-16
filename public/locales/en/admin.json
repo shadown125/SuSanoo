@@ -6,5 +6,6 @@
     "validEmail": "Email need to be valid",
     "invalidEmailOrPassword": "Email or password are invalid. Please try again",
     "errorOccurred": "Error occurred. Could not log you in! Please try again",
-    "pageName": "Page name"
+    "pageName": "Page name",
+    "componentName": "Component name"
 }

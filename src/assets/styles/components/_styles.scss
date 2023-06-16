@@ -4,6 +4,10 @@
 .components-list {
     @include utils.default-table($hover: var(--color-dark-pink));
 
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+    }
     .edit-button {
         display: flex;
         .button {
@@ -35,6 +39,21 @@
                 &:last-child {
                     padding-right: 0;
                 }
+            }
+        }
+    }
+    .add-component-popup {
+        .headline {
+            text-align: center;
+        }
+        .container {
+            height: unset;
+            min-height: unset;
+        }
+        .actions {
+            justify-content: space-between;
+            margin: {
+                top: susanoo.rem-calc(32);
             }
         }
     }
