@@ -28,6 +28,7 @@
     "save": "Zapisz",
     "back": "Powrót",
     "done": "Gotowe",
+    "remove": "Usuń",
     "deletePage": "Usuń stronę",
     "validation": {
         "required": "Pole wymagane",

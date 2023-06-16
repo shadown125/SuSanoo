@@ -28,6 +28,7 @@
     "save": "Save",
     "back": "Back",
     "done": "Done",
+    "remove": "Remove",
     "deletePage": "Delete page",
     "validation": {
         "required": "This field is required",

@@ -6,6 +6,11 @@
             top: susanoo.rem-calc(32);
         }
     }
+    .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
     .component-inputs {
         .row {
             position: relative;
@@ -31,6 +36,33 @@
             }
             > span {
                 display: none;
+            }
+        }
+    }
+    .remove-component-popup {
+        .headline {
+            text-align: center;
+        }
+        .container {
+            height: unset;
+            min-height: unset;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            margin: {
+                top: susanoo.rem-calc(32);
+            }
+        }
+        .remove {
+            background: {
+                color: var(--color-red);
+            }
+            &::before,
+            &::after {
+                background: {
+                    color: var(--color-red);
+                }
             }
         }
     }

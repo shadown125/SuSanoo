@@ -7,5 +7,7 @@
     "invalidEmailOrPassword": "Email or password are invalid. Please try again",
     "errorOccurred": "Error occurred. Could not log you in! Please try again",
     "pageName": "Page name",
-    "componentName": "Component name"
+    "componentName": "Component name",
+    "removeComponent": "Remove component",
+    "removeComponentText": "Are you sure you want to remove this component? This action cannot be undone."
 }

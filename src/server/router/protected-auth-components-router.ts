@@ -39,6 +39,36 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
             });
         },
     })
+    .mutation("delete", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            const userId = ctx.session.user.id;
+
+            if (!userId) {
+                throw new Error("User not found");
+            }
+
+            const component = await ctx.prisma.component.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+
+            if (!component) {
+                throw new Error("Component not found");
+            }
+
+            return await ctx.prisma.component.delete({
+                where: {
+                    id: id,
+                },
+            });
+        },
+    })
     .query("getComponentFromHistory", {
         input: z.object({
             componentId: z.string(),

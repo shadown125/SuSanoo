@@ -7,5 +7,7 @@
     "invalidEmailOrPassword": "E-mail lub hasło są nieprawidłowe. Proszę spróbować ponownie",
     "errorOccurred": "Wystąpił błąd. Nie można się zalogować! Proszę spróbować ponownie",
     "pageName": "Nazwa strony",
-    "componentName": "Nazwa komponentu"
+    "componentName": "Nazwa komponentu",
+    "removeComponent": "Usuń komponent",
+    "removeComponentText": "Czy na pewno chcesz usunąć ten komponent? Nie będzie można go przywrócić."
 }
