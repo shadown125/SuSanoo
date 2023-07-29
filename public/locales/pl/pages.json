@@ -14,5 +14,6 @@
     "deletePageQuestion": "Czy na pewno chcesz usunąć stronę?",
     "deletePageWarning": "Uwaga! Usunięcie strony spowoduje usunięcie wszystkich jej komponentów",
     "switchPageMode": "Przełącz tryb aktywny strony",
-    "editOptions": "Edytuj opcje"
+    "editOptions": "Edytuj opcje",
+    "homePageAlert": "Pierwszą stroną jest zawsze strone startowa i zaczyna się z '/' linkiem"
 }

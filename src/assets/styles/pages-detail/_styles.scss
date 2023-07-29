@@ -245,6 +245,15 @@
             font: {
                 size: susanoo.rem-calc(14);
             }
+            &:disabled {
+                background: {
+                    color: var(--color-dark2-light);
+                }
+                &::after,
+                &::before {
+                    content: unset;
+                }
+            }
         }
     }
 }

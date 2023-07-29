@@ -14,5 +14,6 @@
     "deletePageQuestion": "Are you sure you want to delete this page?",
     "deletePageWarning": "Note: Deleting a page will delete all its components",
     "switchPageMode": "Switch page active mode",
-    "editOptions": "Edit options"
+    "editOptions": "Edit options",
+    "homePageAlert": "First page is always home page and will start with '/' route"
 }

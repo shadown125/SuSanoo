@@ -85,7 +85,7 @@ const AddAndUpdatePagePopup: FC<{
                     {
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
-                        route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
+                        route: pages?.length === 0 ? "/" : `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
                         nestedPath: nestedPageRoute,
                     },
                     {
@@ -106,7 +106,7 @@ const AddAndUpdatePagePopup: FC<{
                         id: pageId,
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
-                        route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
+                        route: pagePathName === "/" ? "/" : `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
                         nestedPath: nestedPageRoute,
                     },
                     {
@@ -143,6 +143,8 @@ const AddAndUpdatePagePopup: FC<{
 
     const filteredComponents = components?.filter((component) => !addedComponents.find((addedComponent) => addedComponent.id === component.id)) || [];
 
+    console.log(pages?.length);
+
     return (
         <div className={`popup add-update-pages-popup${popupState ? " is-active" : ""}`}>
             <div
@@ -161,16 +163,23 @@ const AddAndUpdatePagePopup: FC<{
                         {popupState && !addComponentState && !nestPageState && (
                             <>
                                 <h2 className="headline h4">{t("pages:addNewPage")}</h2>
+                                {pages?.length === 0 && <div className="home-page-alert">{t("pages:homePageAlert")}</div>}
                                 <h3 className="headline h6">
                                     {t("pages:generatedRoute")}:&quot;
                                     <span className="generated-route">
-                                        {nestedPageRoute ? (
-                                            <>
-                                                <span className="nested-page-name">{`${nestedPageRoute}/`}</span>
-                                                {pagePathName}
-                                            </>
+                                        {pages?.length === 0 ? (
+                                            <>/</>
                                         ) : (
-                                            `/${pagePathName}`
+                                            <>
+                                                {nestedPageRoute ? (
+                                                    <>
+                                                        <span className="nested-page-name">{`${nestedPageRoute}/`}</span>
+                                                        {pagePathName}
+                                                    </>
+                                                ) : (
+                                                    `/${pagePathName}`
+                                                )}
+                                            </>
                                         )}
                                     </span>
                                     &quot;
@@ -187,11 +196,13 @@ const AddAndUpdatePagePopup: FC<{
                                                 <label htmlFor="name">{t("admin:pageName")}:</label>
                                                 <TextField name="pageName" getValue={setPageName} value={pageName} />
                                             </div>
-                                            <div className="row">
-                                                <button className="button is-tertiary" type="button" onClick={() => setNestPageState(true)}>
-                                                    {t("pages:nestPage")}
-                                                </button>
-                                            </div>
+                                            {pages?.length !== 0 && (
+                                                <div className="row">
+                                                    <button className="button is-tertiary" type="button" onClick={() => setNestPageState(true)}>
+                                                        {t("pages:nestPage")}
+                                                    </button>
+                                                </div>
+                                            )}
                                             <FieldArray
                                                 name="components"
                                                 render={() => (

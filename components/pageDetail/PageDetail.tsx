@@ -268,7 +268,7 @@ const PageDetail: FC<{
                         </a>
                     </div>
                 </div>
-                <EditBar pageId={pageId} active={active} />
+                <EditBar pageId={pageId} active={active} pageRoute={pageRoute} />
                 {!components || isLoading ? (
                     <div>Loading...</div>
                 ) : (

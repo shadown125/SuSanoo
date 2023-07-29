@@ -9,7 +9,8 @@ import { useAddAndUpdatePagePopupStore } from "../../src/store/pages-store";
 const EditBar: FC<{
     pageId: string;
     active: boolean;
-}> = ({ pageId, active }) => {
+    pageRoute: string;
+}> = ({ pageId, active, pageRoute }) => {
     const { t } = useTranslation("common");
     const { t: tPage } = useTranslation("pages");
     const [deletePagePopup, setDeletePagePopup] = useState(false);
@@ -55,11 +56,13 @@ const EditBar: FC<{
         );
     };
 
+    console.log(pageRoute);
+
     return (
         <>
             <div className={`edit-bar${editState ? " is-active" : ""}`}>
                 <div className="edit-actions">
-                    <button className="button is-primary delete" onClick={() => setDeletePagePopup(true)}>
+                    <button className="button is-primary delete" disabled={pageRoute !== "/" ? false : true} onClick={() => pageRoute !== "/" && setDeletePagePopup(true)}>
                         {t("deletePage")}
                     </button>
                     <button className="button is-primary" onClick={() => setUpdatePopupState(true)}>
