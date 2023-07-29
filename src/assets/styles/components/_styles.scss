@@ -56,5 +56,10 @@
                 top: susanoo.rem-calc(32);
             }
         }
+        input {
+            &::placeholder {
+                color: white;
+            }
+        }
     }
 }

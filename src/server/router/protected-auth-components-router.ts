@@ -13,10 +13,10 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
     })
     .mutation("create", {
         input: z.object({
-            name: z.string(),
+            componentName: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { name } = input;
+            const { componentName } = input;
 
             const userId = ctx.session.user.id;
 
@@ -26,7 +26,7 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
 
             const components = await ctx.prisma.component.findMany();
 
-            const component = components.find((component) => component.name === name);
+            const component = components.find((component) => component.name === componentName);
 
             if (component) {
                 throw new Error("Component already exists");
@@ -34,7 +34,7 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
 
             return await ctx.prisma.component.create({
                 data: {
-                    name: name,
+                    name: componentName,
                 },
             });
         },

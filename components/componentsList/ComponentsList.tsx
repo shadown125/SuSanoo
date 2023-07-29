@@ -10,7 +10,7 @@ import TextField from "../../elements/inputFields/TextField";
 import { object, string } from "yup";
 
 const validationSchema = object({
-    name: string().required("componentNameRequired").max(50, "componentNameTooLong"),
+    componentName: string().required("componentNameRequired").max(50, "componentNameTooLong"),
 });
 
 const ComponentsList = () => {
@@ -23,7 +23,7 @@ const ComponentsList = () => {
 
     const [addComponentPopupOpen, setAddComponentPopupOpen] = useState<boolean>(false);
 
-    const submitHandler = (values: { name: string }) => {
+    const submitHandler = (values: { componentName: string }) => {
         createComponent(values, {
             onSuccess: (data) => {
                 setComponentId(data.id);
@@ -85,12 +85,12 @@ const ComponentsList = () => {
                 <div className="blur-background" onClick={() => setAddComponentPopupOpen(false)} />
                 <div className="container">
                     <h2 className="headline h4">{t("pages:addComponent")}</h2>
-                    <Formik enableReinitialize={true} initialValues={{ name: "" }} onSubmit={submitHandler} validationSchema={validationSchema}>
+                    <Formik enableReinitialize={true} initialValues={{ componentName: "" }} onSubmit={submitHandler} validationSchema={validationSchema}>
                         {({ isSubmitting }) => (
                             <Form>
                                 <div className="row">
-                                    <label htmlFor="name">{t("admin:componentName")}:</label>
-                                    <TextField name="name" />
+                                    <label htmlFor="componentName">{t("admin:componentName")}:</label>
+                                    <TextField name="componentName" />
                                 </div>
                                 <div className="actions">
                                     <button className="button is-primary back" type="button" onClick={() => setAddComponentPopupOpen(false)}>
