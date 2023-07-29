@@ -56,8 +56,6 @@ const EditBar: FC<{
         );
     };
 
-    console.log(pageRoute);
-
     return (
         <>
             <div className={`edit-bar${editState ? " is-active" : ""}`}>
