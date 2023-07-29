@@ -44,5 +44,6 @@
     "selectInputOptions": "Select input options",
     "delete": "Delete",
     "noComponents": "Currently there are no components added to this page.",
-    "preview": "Page preview"
+    "preview": "Page preview",
+    "componentKey": "Component key value"
 }

@@ -8,8 +8,29 @@
     }
     .head {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex: {
+            direction: column;
+        }
+        gap: susanoo.rem-calc(16);
+        .head-upper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .headline {
+                margin: {
+                    bottom: unset;
+                }
+            }
+        }
+    }
+    .component-key {
+        font: {
+            size: susanoo.rem-calc(20);
+        }
+        color: var(--color-light-blue);
+        > span {
+            color: white;
+        }
     }
     .component-inputs {
         .row {

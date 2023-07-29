@@ -14,9 +14,10 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
     .mutation("create", {
         input: z.object({
             componentName: z.string(),
+            key: z.string(),
         }),
         resolve: async ({ input, ctx }) => {
-            const { componentName } = input;
+            const { componentName, key } = input;
 
             const userId = ctx.session.user.id;
 
@@ -35,6 +36,7 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
             return await ctx.prisma.component.create({
                 data: {
                     name: componentName,
+                    key: key,
                 },
             });
         },
@@ -187,6 +189,7 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                     name: component.name,
                     componentId: componentId,
                     index: pageComponents.length,
+                    key: component.key,
                 },
             });
 

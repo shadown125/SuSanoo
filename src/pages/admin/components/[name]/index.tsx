@@ -49,7 +49,7 @@ const ComponentEdit: NextPage<{
                     <div className="middle-section">
                         <section ref={middleSection} className="full">
                             <Notification />
-                            <ComponentDetail name={component.name} inputs={component.input} />
+                            <ComponentDetail componentKey={component.key} name={component.name} inputs={component.input} />
                         </section>
                     </div>
                     <div className="right-section">

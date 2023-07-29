@@ -44,5 +44,6 @@
     "selectInputOptions": "Wybierz opcje inputu",
     "delete": "Usuń",
     "noComponents": "Obecnie do tej strony nie dodano żadnych komponentów.",
-    "preview": "Podgląd strony"
+    "preview": "Podgląd strony",
+    "componentKey": "Klucz do komponentu"
 }

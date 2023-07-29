@@ -58,7 +58,7 @@ const InitialPage: FC<{
                               {page.pageComponents
                                   .sort((a, b) => a.index - b.index)
                                   .map((component) => {
-                                      const componentExist = Object.keys(SusComponents).find((key) => key === component.name.toLowerCase());
+                                      const componentExist = Object.keys(SusComponents).find((key) => key === component.key.toLowerCase());
 
                                       const Component =
                                           componentExist &&

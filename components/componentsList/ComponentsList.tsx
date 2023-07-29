@@ -24,12 +24,18 @@ const ComponentsList = () => {
     const [addComponentPopupOpen, setAddComponentPopupOpen] = useState<boolean>(false);
 
     const submitHandler = (values: { componentName: string }) => {
-        createComponent(values, {
-            onSuccess: (data) => {
-                setComponentId(data.id);
-                router.push(`${router.pathname}/${data.name.toLowerCase()}`);
+        const { componentName } = values;
+        const key = componentName.replace(/[^a-zA-Z-^0-9]/g, "").toLowerCase();
+
+        createComponent(
+            { componentName, key },
+            {
+                onSuccess: (data) => {
+                    setComponentId(data.id);
+                    router.push(`${router.pathname}/${data.name.toLowerCase()}`);
+                },
             },
-        });
+        );
     };
 
     return (

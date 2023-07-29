@@ -91,6 +91,7 @@ model PageInputsValues {
 
 model PageComponent {
   id               String             @id @default(cuid())
+  key              String
   name             String
   pageId           String
   component        Component          @relation(fields: [componentId], references: [id])
@@ -106,6 +107,7 @@ model PageComponent {
 
 model Component {
   id             String          @id @default(cuid())
+  key            String
   name           String
   input          Input[]
   availablePages Page[]          @relation("ComponentsPage")

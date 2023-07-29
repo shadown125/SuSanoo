@@ -9,9 +9,10 @@ import EditPopup from "./EditPopup";
 import { trpc } from "../../src/utils/trpc";
 
 const ComponentDetail: FC<{
+    componentKey: string;
     name: string;
     inputs: Input[];
-}> = ({ name, inputs }) => {
+}> = ({ name, inputs, componentKey }) => {
     const { t } = useTranslation("common");
     const { t: tAdmin } = useTranslation("admin");
     const router = useRouter();
@@ -41,10 +42,15 @@ const ComponentDetail: FC<{
     return (
         <div className="components-detail">
             <div className="head">
-                <h2 className="headline h4">{name}</h2>
-                <button className="button is-primary" onClick={() => setRemoveComponentPopupOpen(true)}>
-                    <span>{tAdmin("removeComponent")}</span>
-                </button>
+                <div className="head-upper">
+                    <h2 className="headline h4">{name}</h2>
+                    <button className="button is-primary" onClick={() => setRemoveComponentPopupOpen(true)}>
+                        <span>{tAdmin("removeComponent")}</span>
+                    </button>
+                </div>
+                <h3 className="headline h5 component-key">
+                    <span>{t("componentKey")}:</span> {componentKey}
+                </h3>
             </div>
             <div className="container">
                 <div className="component-inputs is-preview">
