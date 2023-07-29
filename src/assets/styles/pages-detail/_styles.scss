@@ -93,6 +93,32 @@
             display: flex;
             gap: susanoo.rem-calc(12);
             align-self: flex-start;
+            flex: {
+                direction: column;
+            }
+            .row {
+                display: flex;
+                flex-direction: row;
+            }
+            .button {
+                &.preview {
+                    $padding: susanoo.rem-calc(8);
+
+                    text-transform: unset;
+                    text-align: center;
+                    background-color: var(--color-orange);
+                    padding: {
+                        top: $padding;
+                        bottom: $padding;
+                    }
+                    &::after,
+                    &::before {
+                        background: {
+                            color: var(--color-orange);
+                        }
+                    }
+                }
+            }
         }
     }
     .container {

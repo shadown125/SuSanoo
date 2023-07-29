@@ -17,7 +17,8 @@ const PageDetail: FC<{
     active: boolean;
     pageId: string;
     middleSectionRef: RefObject<HTMLDivElement>;
-}> = ({ name, active, pageId, middleSectionRef }) => {
+    pageRoute: string;
+}> = ({ name, active, pageId, middleSectionRef, pageRoute }) => {
     const { setNotificationMessage, setNotificationState, setNotificationError } = useNotificationStore(
         (state) => ({
             setNotificationMessage: state.setNotificationMessage,
@@ -254,12 +255,17 @@ const PageDetail: FC<{
                 <div className="head">
                     <h1 className="headline h1">{name}</h1>
                     <div className="actions">
-                        <button className={`button is-tertiary${editState ? " is-active" : ""}`} onClick={() => setEditState(!editState)} type="button">
-                            <span>{editState ? t("editPageIsActive") : t("editPage")}</span>
-                        </button>
-                        <div className={`status${active ? " active" : " inactive"}`}>
-                            <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
+                        <div className="row">
+                            <button className={`button is-tertiary${editState ? " is-active" : ""}`} onClick={() => setEditState(!editState)} type="button">
+                                <span>{editState ? t("editPageIsActive") : t("editPage")}</span>
+                            </button>
+                            <div className={`status${active ? " active" : " inactive"}`}>
+                                <span className="label">{active ? t("pages:active") : t("common:inactive")}</span>
+                            </div>
                         </div>
+                        <a href={pageRoute} target="_blank" rel="noreferrer" className="button is-primary preview">
+                            <span>{t("preview")}</span>
+                        </a>
                     </div>
                 </div>
                 <EditBar pageId={pageId} active={active} />

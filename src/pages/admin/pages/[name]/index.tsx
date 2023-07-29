@@ -48,7 +48,7 @@ const Edit: NextPage<{ name: string }> = ({ name }) => {
                     <div className="middle-section">
                         <section ref={middleSection} className="full">
                             <Notification />
-                            <PageDetail pageId={page.id} name={page.name} active={page.active} middleSectionRef={middleSection} />
+                            <PageDetail pageRoute={page.route} pageId={page.id} name={page.name} active={page.active} middleSectionRef={middleSection} />
                         </section>
                     </div>
                     <div className="right-section">
