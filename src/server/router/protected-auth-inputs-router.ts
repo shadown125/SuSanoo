@@ -52,7 +52,7 @@ export const protectedAuthInputsRouter = createProtectedRouter()
             required: z.boolean(),
         }),
         resolve: async ({ input, ctx }) => {
-            const createdInput = await ctx.prisma.input.create({
+            const newInput = await ctx.prisma.input.create({
                 data: {
                     required: input.required,
                     type: input.type,
@@ -62,21 +62,21 @@ export const protectedAuthInputsRouter = createProtectedRouter()
                 },
             });
 
-            const pages = await ctx.prisma.page.findMany({
+            const currentComponent = await ctx.prisma.component.findUnique({
                 where: {
-                    components: {
-                        some: {
-                            id: input.componentId,
-                        },
-                    },
+                    id: input.componentId,
+                },
+                include: {
+                    PageComponent: true,
                 },
             });
 
-            return pages.forEach(async (page) => {
+            currentComponent?.PageComponent.forEach(async (pageComponent) => {
                 await ctx.prisma.pageInputsValues.create({
                     data: {
-                        inputId: createdInput.id,
-                        pageId: page.id,
+                        pageId: pageComponent.pageId,
+                        pageComponentId: pageComponent.id,
+                        inputId: newInput.id,
                         value: "",
                     },
                 });
