@@ -139,9 +139,20 @@ export const protectedAuthPageRouter = createProtectedRouter()
         }),
         resolve: async ({ input, ctx }) => {
             const { id, name, route, components, nestedPath } = input;
+            let routeName = route;
 
             if (!id) {
                 throw new Error("Page not found");
+            }
+
+            const currentPage = await ctx.prisma.page.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+
+            if (currentPage?.route === "/") {
+                routeName = "/";
             }
 
             await ctx.prisma.page.update({
@@ -150,7 +161,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
                 data: {
                     name: name,
-                    route: route,
+                    route: routeName,
                     nestedPath: nestedPath,
                 },
             });

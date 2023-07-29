@@ -106,7 +106,7 @@ const AddAndUpdatePagePopup: FC<{
                         id: pageId,
                         name: pageName,
                         components: values.components.map((component: { id: string; name: string }) => component.id),
-                        route: pagePathName === "/" ? "/" : `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
+                        route: `${nestedPageRoute ? `${nestedPageRoute}` : ""}/${pagePathName}`,
                         nestedPath: nestedPageRoute,
                     },
                     {
@@ -143,8 +143,6 @@ const AddAndUpdatePagePopup: FC<{
 
     const filteredComponents = components?.filter((component) => !addedComponents.find((addedComponent) => addedComponent.id === component.id)) || [];
 
-    console.log(pages?.length);
-
     return (
         <div className={`popup add-update-pages-popup${popupState ? " is-active" : ""}`}>
             <div
@@ -167,7 +165,7 @@ const AddAndUpdatePagePopup: FC<{
                                 <h3 className="headline h6">
                                     {t("pages:generatedRoute")}:&quot;
                                     <span className="generated-route">
-                                        {pages?.length === 0 ? (
+                                        {pages?.length === 0 || currentPage?.route === "/" ? (
                                             <>/</>
                                         ) : (
                                             <>
