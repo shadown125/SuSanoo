@@ -17,6 +17,7 @@ export const publicInputsRouter = createRouter()
                 },
                 include: {
                     input: true,
+                    value: true,
                 },
             });
         },

@@ -1,4 +1,4 @@
-import { InputsTypes } from "@prisma/client";
+import { InputsTypes, Languages } from "@prisma/client";
 import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
 
@@ -71,14 +71,34 @@ export const protectedAuthInputsRouter = createProtectedRouter()
                 },
             });
 
-            currentComponent?.PageComponent.forEach(async (pageComponent) => {
-                await ctx.prisma.pageInputsValues.create({
+            return currentComponent?.PageComponent.forEach(async (pageComponent) => {
+                const newPageInputValue = await ctx.prisma.pageInputsValues.create({
                     data: {
                         pageId: pageComponent.pageId,
                         pageComponentId: pageComponent.id,
                         inputId: newInput.id,
-                        value: "",
                     },
+                    include: {
+                        page: {
+                            include: {
+                                pageLanguages: true,
+                            },
+                        },
+                    },
+                });
+
+                Object.keys(Languages).forEach(async (language) => {
+                    newPageInputValue.page?.pageLanguages.forEach(async (pageLanguage) => {
+                        if (pageLanguage.language === language) {
+                            await ctx.prisma.pageInputsValuesBasedOnLanguage.create({
+                                data: {
+                                    pageInputsValuesId: newPageInputValue.id,
+                                    language: language,
+                                    value: "",
+                                },
+                            });
+                        }
+                    });
                 });
             });
         },

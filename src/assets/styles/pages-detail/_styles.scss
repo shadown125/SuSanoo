@@ -208,11 +208,157 @@
             }
         }
     }
+    .delete-language-popup {
+        .container {
+            height: fit-content;
+            min: {
+                height: unset;
+            }
+        }
+    }
+    .components-language-bar {
+        padding: susanoo.rem-calc(8);
+        border: {
+            radius: susanoo.rem-calc(6);
+        }
+        background: {
+            color: var(--color-dark);
+        }
+        ul {
+            @include lists.reset-list();
+
+            display: flex;
+            gap: susanoo.rem-calc(8);
+        }
+        .language-box {
+            position: relative;
+            &.is-active {
+                .delete-box {
+                    transform: scale(1);
+                    visibility: visible;
+                }
+            }
+            .delete-box {
+                position: absolute;
+                top: susanoo.rem-calc(-6);
+                right: susanoo.rem-calc(-6);
+                padding: 2px;
+                background: {
+                    color: var(--color-red);
+                }
+                border: {
+                    radius: 4px;
+                }
+                opacity: 0.8;
+                transform: scale(0);
+                visibility: hidden;
+                transition: opacity 0.2s linear, transform 0.15s linear;
+                &:hover {
+                    opacity: 1;
+                }
+            }
+        }
+        .panel {
+            cursor: pointer;
+            transition: background-color 0.2s linear;
+            width: fit-content;
+            padding: susanoo.rem-calc(4) susanoo.rem-calc(8);
+            border: {
+                radius: susanoo.rem-calc(6);
+                width: 1px;
+                style: solid;
+                color: var(--color-dark2);
+            }
+            &:hover {
+                background: {
+                    color: var(--color-light-dark);
+                }
+            }
+            &.is-active {
+                background: {
+                    color: var(--color-dark2);
+                }
+            }
+        }
+        .add-language {
+            $border-radius: susanoo.rem-calc(6);
+
+            position: relative;
+            height: 100%;
+            .language-dropdown {
+                position: absolute;
+                left: 0;
+                top: 110%;
+                border: {
+                    radius: $border-radius;
+                }
+                background: {
+                    color: var(--color-dark1);
+                }
+                z-index: 9999;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.1s linear, visibility 0.1s linear;
+                &.is-active {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                .language {
+                    cursor: pointer;
+                    padding: susanoo.rem-calc(8);
+                    transition: background-color 0.2s linear;
+                    &:hover {
+                        background: {
+                            color: var(--color-light-dark);
+                        }
+                    }
+                }
+            }
+            ul {
+                display: flex;
+                flex-direction: column;
+                gap: 0;
+                li {
+                    &:first-child {
+                        .language {
+                            border-top-left-radius: $border-radius;
+                            border-top-right-radius: $border-radius;
+                        }
+                    }
+                    &:last-child {
+                        .language {
+                            border-bottom-left-radius: $border-radius;
+                            border-bottom-right-radius: $border-radius;
+                        }
+                    }
+                }
+            }
+        }
+        .add-button {
+            padding: susanoo.rem-calc(6) susanoo.rem-calc(8);
+            height: 100%;
+            background: {
+                color: var(--color-light-dark);
+            }
+            border: {
+                radius: susanoo.rem-calc(6);
+            }
+            transition: background-color 0.2s linear;
+            &:hover {
+                background: {
+                    color: var(--color-dirty-blue);
+                }
+            }
+        }
+    }
     .edit-bar {
         display: flex;
         align-items: center;
         transform: translateX(-50%);
         padding: susanoo.rem-calc(8);
+        margin: {
+            bottom: susanoo.rem-calc(16);
+        }
         border: {
             radius: susanoo.rem-calc(6);
         }

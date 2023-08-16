@@ -1,3 +1,4 @@
+import { Languages } from "@prisma/client";
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 
@@ -23,6 +24,12 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     name: name,
                     route: route,
                     nestedPath: nestedPath,
+                },
+            });
+
+            await ctx.prisma.pageLanguages.create({
+                data: {
+                    pageId: page.id,
                 },
             });
 
@@ -59,6 +66,9 @@ export const protectedAuthPageRouter = createProtectedRouter()
             return await ctx.prisma.page.findUnique({
                 where: {
                     id,
+                },
+                include: {
+                    pageLanguages: true,
                 },
             });
         },
@@ -125,6 +135,103 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 take: 20,
                 orderBy: {
                     changeAt: "desc",
+                },
+            });
+        },
+    })
+    .mutation("addLanguageToCurrentPage", {
+        input: z.object({
+            pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, language } = input;
+
+            const pageInputsValues = await ctx.prisma.pageInputsValues.findMany({
+                where: {
+                    pageId: pageId,
+                },
+                include: {
+                    value: true,
+                },
+            });
+
+            pageInputsValues.forEach(async (pageInputValue) => {
+                await ctx.prisma.pageInputsValuesBasedOnLanguage.create({
+                    data: {
+                        pageInputsValuesId: pageInputValue.id,
+                        language: language,
+                        value: "",
+                    },
+                });
+            });
+
+            return await ctx.prisma.pageLanguages.create({
+                data: {
+                    pageId: pageId,
+                    language: language,
+                },
+            });
+        },
+    })
+    .mutation("deleteLanguageFromCurrentPage", {
+        input: z.object({
+            pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, language } = input;
+
+            const pageInputsValues = await ctx.prisma.pageInputsValues.findMany({
+                where: {
+                    pageId: pageId,
+                },
+                include: {
+                    value: true,
+                },
+            });
+
+            pageInputsValues.forEach(async (pageInputValue) => {
+                await ctx.prisma.pageInputsValuesBasedOnLanguage.deleteMany({
+                    where: {
+                        pageInputsValuesId: pageInputValue.id,
+                        language: language,
+                    },
+                });
+            });
+
+            const page = await ctx.prisma.page.findUnique({
+                where: {
+                    id: pageId,
+                },
+                include: {
+                    pageLanguages: true,
+                },
+            });
+
+            const currentPageLanguage = page?.pageLanguages.find((pageLanguage) => pageLanguage.language === language);
+
+            if (!currentPageLanguage) {
+                throw new Error("Page language not found");
+            }
+
+            await ctx.prisma.pageLanguages.delete({
+                where: {
+                    id: currentPageLanguage.id,
+                },
+            });
+        },
+    })
+    .query("getCurrentPageLanguages", {
+        input: z.object({
+            pageId: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId } = input;
+
+            return await ctx.prisma.pageLanguages.findMany({
+                where: {
+                    pageId: pageId,
                 },
             });
         },
@@ -218,7 +325,11 @@ export const protectedAuthPageRouter = createProtectedRouter()
                             value: true,
                         },
                     },
-                    PageInputsValues: true,
+                    PageInputsValues: {
+                        include: {
+                            value: true,
+                        },
+                    },
                 },
             });
 
@@ -253,13 +364,33 @@ export const protectedAuthPageRouter = createProtectedRouter()
         input: z.object({
             inputId: z.string(),
             value: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
         }),
         resolve: async ({ input, ctx }) => {
-            const { inputId, value } = input;
+            const { inputId, value, language } = input;
 
-            return await ctx.prisma.pageInputsValues.update({
+            const inputValue = await ctx.prisma.pageInputsValues.findUnique({
                 where: {
                     id: inputId,
+                },
+                include: {
+                    value: true,
+                },
+            });
+
+            if (!inputValue) {
+                throw new Error("Input value not found");
+            }
+
+            const pageInputLanguageValue = inputValue.value.find((pageInputValue) => pageInputValue.language === language && pageInputValue.pageInputsValuesId === inputValue.id);
+
+            if (!pageInputLanguageValue) {
+                throw new Error("Page input language value not found");
+            }
+
+            return await ctx.prisma.pageInputsValuesBasedOnLanguage.update({
+                where: {
+                    id: pageInputLanguageValue.id,
                 },
                 data: {
                     value: value,

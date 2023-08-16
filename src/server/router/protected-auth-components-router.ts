@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createProtectedRouter } from "./protected-router";
+import { Languages } from "@prisma/client";
 
 export const protectedAuthComponentsRouter = createProtectedRouter()
     .query("get", {
@@ -146,9 +147,10 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
         input: z.object({
             componentId: z.string(),
             pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
         }),
         resolve: async ({ ctx, input }) => {
-            const { componentId, pageId } = input;
+            const { componentId, pageId, language } = input;
 
             const component = await ctx.prisma.component.findUnique({
                 where: {
@@ -162,6 +164,9 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
             const page = await ctx.prisma.page.findUnique({
                 where: {
                     id: pageId,
+                },
+                include: {
+                    pageLanguages: true,
                 },
             });
 
@@ -199,7 +204,6 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                         pageId: pageId,
                         inputId: input.id,
                         pageComponentId: newPageComponent.id,
-                        value: "",
                     },
                 });
             });
@@ -217,6 +221,28 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                         }),
                     },
                 },
+            });
+
+            const pageInputsValues = await ctx.prisma.pageInputsValues.findMany({
+                where: {
+                    pageComponentId: newPageComponent.id,
+                },
+            });
+
+            if (!pageInputsValues) {
+                throw new Error("Page inputs values not found");
+            }
+
+            pageInputsValues.forEach(async (pageInputValue) => {
+                page.pageLanguages.forEach(async (pageLanguage) => {
+                    await ctx.prisma.pageInputsValuesBasedOnLanguage.create({
+                        data: {
+                            pageInputsValuesId: pageInputValue.id,
+                            language: pageLanguage.language,
+                            value: "",
+                        },
+                    });
+                });
             });
 
             return newPageComponent;

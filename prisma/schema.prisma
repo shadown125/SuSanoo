@@ -67,26 +67,47 @@ model Page {
   availableComponents Component[]        @relation("ComponentsPage")
   pageComponents      PageComponent[]
   pageInputsValues    PageInputsValues[]
+  pageLanguages       PageLanguages[]
 
   @@index([authorId])
 }
 
-model PageInputsValues {
-  id                    String        @id @default(cuid())
-  page                  Page          @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId                String
-  input                 Input         @relation(fields: [inputId], references: [id], onDelete: Cascade)
-  inputId               String
-  pageComponent         PageComponent @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
-  pageComponentId       String
-  value                 String
-  createdAt             DateTime      @default(now())
-  pageComponentsIndexId String?
+model PageLanguages {
+  id        String    @id @default(cuid())
+  language  Languages @default(EN)
+  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  @@index([pageComponentsIndexId])
+  @@index([pageId])
+}
+
+model PageInputsValues {
+  id              String                            @id @default(cuid())
+  page            Page                              @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId          String
+  input           Input                             @relation(fields: [inputId], references: [id], onDelete: Cascade)
+  inputId         String
+  pageComponent   PageComponent                     @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
+  pageComponentId String
+  value           PageInputsValuesBasedOnLanguage[]
+  createdAt       DateTime                          @default(now())
+
   @@index([pageComponentId])
   @@index([inputId])
   @@index([pageId])
+}
+
+model PageInputsValuesBasedOnLanguage {
+  id                 String           @id @default(cuid())
+  language           String
+  pageInputsValues   PageInputsValues @relation(fields: [pageInputsValuesId], references: [id], onDelete: Cascade)
+  pageInputsValuesId String
+  value              String
+  createdAt          DateTime         @default(now())
+
+  @@index([pageInputsValuesId])
 }
 
 model PageComponent {
@@ -178,4 +199,10 @@ enum InputsTypes {
 enum Role {
   USER
   ADMIN
+}
+
+enum Languages {
+  EN
+  PL
+  DE
 }

@@ -11,6 +11,8 @@ import ComponentInput from "./ComponentInput";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import EditBar from "./EditBar";
 import AddAndUpdatePagePopup from "../pageList/AddAndUpdatePagePopup";
+import ComponentsLanguageBar from "./ComponentsLanguageBar";
+import { useActivePageLanguageStore } from "../../src/store/pages-store";
 
 const PageDetail: FC<{
     name: string;
@@ -27,6 +29,8 @@ const PageDetail: FC<{
         }),
         shallow,
     );
+
+    const activePageLanguage = useActivePageLanguageStore((state) => state.activePageLanguage);
 
     const editState = useDetailPageStore((state) => state.editState);
     const setEditState = useDetailPageStore((state) => state.setEditState);
@@ -55,8 +59,12 @@ const PageDetail: FC<{
                 return initialValues;
             }
 
-            component.PageInputsValues.forEach((input) => {
-                initialValues[input?.id || ""] = input?.value || "";
+            component.PageInputsValues.forEach((inputValue) => {
+                inputValue.value.forEach((input) => {
+                    if (input.language === activePageLanguage) {
+                        initialValues[inputValue.id] = input.value;
+                    }
+                });
             });
         });
 
@@ -103,13 +111,21 @@ const PageDetail: FC<{
     const submitHandler = (data: typeof initialValues, { setSubmitting, resetForm }: FormikSubmission) => {
         try {
             for (const [key, value] of Object.entries(data)) {
-                if (key !== "" && value !== "") {
+                if (key !== "") {
                     pageInputsValues?.forEach((pageInput) => {
                         if (pageInput.id === key) {
-                            pageInputValue({
-                                inputId: key,
-                                value: value,
-                            });
+                            pageInputValue(
+                                {
+                                    inputId: key,
+                                    value: value,
+                                    language: activePageLanguage,
+                                },
+                                {
+                                    onSuccess: () => {
+                                        trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
+                                    },
+                                },
+                            );
                         }
                     });
                 }
@@ -269,6 +285,7 @@ const PageDetail: FC<{
                     </div>
                 </div>
                 <EditBar pageId={pageId} active={active} pageRoute={pageRoute} />
+                <ComponentsLanguageBar pageId={pageId} />
                 {!components || isLoading ? (
                     <div>Loading...</div>
                 ) : (

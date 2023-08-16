@@ -64,7 +64,7 @@ const InitialPage: FC<{
                                           componentExist &&
                                           createElement(SusComponents[componentExist as keyof typeof SusComponents] as SusComponetsType, {
                                               key: component.id,
-                                              id: { pageComponentId: component.id, pageId: page.id },
+                                              susProps: { pageComponentId: component.id, pageId: page.id, language: nextRouter.locale as string },
                                           });
 
                                       return Component;

@@ -1,8 +1,8 @@
 import { useSusInputs } from "../../sus-hooks";
 import { SusComponetsType } from "..";
 
-export const Test2: SusComponetsType = ({ id }) => {
-    const { data } = useSusInputs(id);
+export const Test2: SusComponetsType = ({ susProps }) => {
+    const { data } = useSusInputs(susProps);
     const { text, text2 } = data;
 
     return (

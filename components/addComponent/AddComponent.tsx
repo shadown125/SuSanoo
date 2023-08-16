@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "next-i18next";
 import { useNotificationStore } from "../../src/store/store";
 import shallow from "zustand/shallow";
+import { useActivePageLanguageStore } from "../../src/store/pages-store";
 
 const AddComponent: FC<{
     id: string;
@@ -28,9 +29,11 @@ const AddComponent: FC<{
     ]);
     const { mutate: addComponent } = trpc.useMutation(["auth.components.addToCurrentPage"]);
 
+    const activePageLanguage = useActivePageLanguageStore((state) => state.activePageLanguage);
+
     const addComponentHandler = async (componentId: string): Promise<void> => {
         addComponent(
-            { componentId, pageId: id },
+            { componentId, pageId: id, language: activePageLanguage },
             {
                 onSuccess: (_) => {
                     trpcCtx.invalidateQueries(["auth.pages.getCurrentPageComponents"]);
