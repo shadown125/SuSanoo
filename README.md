@@ -4,14 +4,16 @@
 
 #### Alpha milestones
 
--   Multiple Languages
+-   ---Multiple Languages---
 -   Possibility to add children in components for multiple items output
 -   Add possibility to place components inputs in desired order (thourgh drag and drop)
 -   Add roles and user management in susanoo
 -   Add support for all kind of inputs
 -   Add Template editor as input option for components (maybe CKEditor?)
 -   Protected preview routes (only if page is not active)
--   SEO tab for pages
+-   ---SEO tab for pages---
+-   Add util for navigation builder
+-   Wrap susanoo CMS styles in `susanoo` class for not colision with other styles
 
 ### Beta milestonse
 
@@ -36,6 +38,11 @@
 -   Add nested pages overview in listed pages (maybe as a line connection?)
 -   Migration from SCSS to TailwindCSS (maybe?)
 -   Optimistic updates (TRPC)
+-   Add loading skeletons
+-   Scrolling to top of app to see save notification
+-   Updating react draggable library for fix dev mode development with newer react versions
+-   Add support for favicons (maybe cloudstorage: cloudinary, uploadthing, custom, etc.)
+-   Add more customizable meta tags options for pages
 
 ### Known bugs
 
