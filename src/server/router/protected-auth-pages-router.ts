@@ -27,6 +27,14 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
             });
 
+            await ctx.prisma.pageSeo.create({
+                data: {
+                    title: name,
+                    pageId: page.id,
+                    language: Languages.EN,
+                },
+            });
+
             await ctx.prisma.pageLanguages.create({
                 data: {
                     pageId: page.id,
@@ -69,6 +77,7 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
                 include: {
                     pageLanguages: true,
+                    pageSeo: true,
                 },
             });
         },
@@ -147,6 +156,14 @@ export const protectedAuthPageRouter = createProtectedRouter()
         resolve: async ({ input, ctx }) => {
             const { pageId, language } = input;
 
+            const currentPage = await ctx.prisma.page.findUnique({
+                where: {
+                    id: pageId,
+                },
+            });
+
+            if (!currentPage) throw new Error("Page not found");
+
             const pageInputsValues = await ctx.prisma.pageInputsValues.findMany({
                 where: {
                     pageId: pageId,
@@ -164,6 +181,14 @@ export const protectedAuthPageRouter = createProtectedRouter()
                         value: "",
                     },
                 });
+            });
+
+            await ctx.prisma.pageSeo.create({
+                data: {
+                    title: currentPage.name,
+                    pageId: pageId,
+                    language: language,
+                },
             });
 
             return await ctx.prisma.pageLanguages.create({
@@ -206,14 +231,22 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 },
                 include: {
                     pageLanguages: true,
+                    pageSeo: true,
                 },
             });
 
             const currentPageLanguage = page?.pageLanguages.find((pageLanguage) => pageLanguage.language === language);
+            const currentSeoLanguagePage = page?.pageSeo.find((pageSeo) => pageSeo.language === language);
 
             if (!currentPageLanguage) {
                 throw new Error("Page language not found");
             }
+
+            await ctx.prisma.pageSeo.delete({
+                where: {
+                    id: currentSeoLanguagePage?.id,
+                },
+            });
 
             await ctx.prisma.pageLanguages.delete({
                 where: {
@@ -357,6 +390,83 @@ export const protectedAuthPageRouter = createProtectedRouter()
                 data: {
                     index: index,
                 },
+            });
+        },
+    })
+    .mutation("createPageSeo", {
+        input: z.object({
+            pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
+            title: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, language, title } = input;
+
+            return await ctx.prisma.pageSeo.create({
+                data: {
+                    title: title,
+                    pageId: pageId,
+                    language: language,
+                },
+            });
+        },
+    })
+    .query("getPageSeo", {
+        input: z.object({
+            pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, language } = input;
+
+            const pageSeos = await ctx.prisma.pageSeo.findMany({
+                where: {
+                    pageId: pageId,
+                },
+            });
+
+            return pageSeos.find((pageSeo) => pageSeo.language === language);
+        },
+    })
+    .mutation("updatePageSeo", {
+        input: z.object({
+            pageId: z.string(),
+            language: z.enum([Languages.EN, Languages.DE, Languages.PL]),
+            title: z.string(),
+            favicon: z.string().optional(),
+            description: z.string().optional(),
+            author: z.string().optional(),
+            twitterAuthor: z.string().optional(),
+            twitterSite: z.string().optional(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, language, title, favicon, description, author, twitterAuthor, twitterSite } = input;
+
+            const currentPage = await ctx.prisma.page.findUnique({
+                where: {
+                    id: pageId,
+                },
+                include: {
+                    pageSeo: true,
+                },
+            });
+
+            return currentPage?.pageSeo.forEach(async (pageSeo) => {
+                if (pageSeo.language === language) {
+                    await ctx.prisma.pageSeo.update({
+                        where: {
+                            id: pageSeo.id,
+                        },
+                        data: {
+                            title,
+                            favicon,
+                            author,
+                            description,
+                            twitterAuthor,
+                            twitterSite,
+                        },
+                    });
+                }
             });
         },
     })

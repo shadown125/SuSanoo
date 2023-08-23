@@ -6,6 +6,7 @@ export const publicPagesRouter = createRouter().query("getAll", {
         return await ctx.prisma.page.findMany({
             include: {
                 pageComponents: true,
+                pageSeo: true,
             },
         });
     },

@@ -4,8 +4,9 @@ import { FC, createElement } from "react";
 import { useRouter } from "next/router";
 import { useRoutes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { PageComponent, Page } from "@prisma/client";
+import { PageComponent, Page, PageSeo } from "@prisma/client";
 import { SusComponents, SusComponetsType } from "../../sus-components";
+import { NextSeo } from "next-seo";
 
 const Home: NextPage = () => {
     return <SusanooProvider />;
@@ -29,6 +30,7 @@ const SusanooProvider: FC<{
                         pages={
                             (pages as (Page & {
                                 pageComponents: PageComponent[];
+                                pageSeo: PageSeo[];
                             })[]) || []
                         }
                         errorPage={errorPage}
@@ -42,6 +44,7 @@ const SusanooProvider: FC<{
 const InitialPage: FC<{
     pages: (Page & {
         pageComponents: PageComponent[];
+        pageSeo: PageSeo[];
     })[];
     errorPage?: JSX.Element | JSX.Element[];
 }> = ({ pages, errorPage }) => {
@@ -55,6 +58,41 @@ const InitialPage: FC<{
                       path: `/${nextRouter.locale === nextRouter.defaultLocale ? "" : nextRouter.locale}${page.route}`,
                       element: (
                           <>
+                              <NextSeo
+                                  title={page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.title || ""}
+                                  description={page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.description || ""}
+                                  twitter={{
+                                      handle: `@${page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.twitterAuthor || ""}`,
+                                      site: `@${page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.twitterSite || ""}`,
+                                      cardType: "summary_large_image",
+                                  }}
+                                  additionalMetaTags={[
+                                      {
+                                          name: "author",
+                                          content: page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.author || "",
+                                      },
+                                  ]}
+                                  languageAlternates={[
+                                      ...(page.pageSeo?.map((seo) => ({
+                                          hrefLang: `${nextRouter.basePath}${seo.language.toLowerCase()}`,
+                                          href: `/${seo.language.toLowerCase()}${page.route}`,
+                                      })) || []),
+                                      {
+                                          hrefLang: "x-default",
+                                          href: `${nextRouter.basePath}${page.route}`,
+                                      },
+                                  ]}
+                                  additionalLinkTags={[
+                                      {
+                                          rel: "icon",
+                                          href: page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.favicon || "",
+                                      },
+                                      {
+                                          rel: "apple-touch-icon",
+                                          href: page.pageSeo?.find((seo) => seo.language === nextRouter.locale?.toUpperCase())?.favicon || "",
+                                      },
+                                  ]}
+                              />
                               {page.pageComponents
                                   .sort((a, b) => a.index - b.index)
                                   .map((component) => {

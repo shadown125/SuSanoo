@@ -15,5 +15,14 @@
     "deletePageWarning": "Uwaga! Usunięcie strony spowoduje usunięcie wszystkich jej komponentów",
     "switchPageMode": "Przełącz tryb aktywny strony",
     "editOptions": "Edytuj opcje",
-    "homePageAlert": "Pierwszą stroną jest zawsze strone startowa i zaczyna się z '/' linkiem"
+    "homePageAlert": "Pierwszą stroną jest zawsze strone startowa i zaczyna się z '/' linkiem",
+    "page-seo": {
+        "title": "Tytuł",
+        "description": "Opis",
+        "author": "Autor",
+        "twitter-author": "Twitter Autor",
+        "twitter-site": "Twitter Strona",
+        "pageSeo": "SEO",
+        "components": "Komponenty"
+    }
 }

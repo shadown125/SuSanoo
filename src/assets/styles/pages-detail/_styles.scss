@@ -351,6 +351,54 @@
             }
         }
     }
+    .tabs {
+        display: flex;
+        margin: {
+            top: susanoo.rem-calc(8);
+            bottom: susanoo.rem-calc(32);
+        }
+        button {
+            width: 100%;
+        }
+    }
+    .page-seo {
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: susanoo.rem-calc(12);
+        }
+        .input {
+            background: {
+                color: var(--color-dark2);
+            }
+            border-color: var(--color-dark2);
+        }
+        input,
+        textarea {
+            color: var(--color-white);
+            &::placeholder {
+                color: var(--color-light-blue);
+            }
+        }
+        .row {
+            flex-grow: 1;
+            &:not(&.row-half) {
+                width: 100%;
+            }
+            &.favicon {
+                pointer-events: none;
+                opacity: 0.5;
+            }
+            &.description {
+                textarea {
+                    height: susanoo.rem-calc(120);
+                }
+            }
+            label {
+                margin-bottom: susanoo.rem-calc(6);
+            }
+        }
+    }
     .edit-bar {
         display: flex;
         align-items: center;

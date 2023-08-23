@@ -15,5 +15,14 @@
     "deletePageWarning": "Note: Deleting a page will delete all its components",
     "switchPageMode": "Switch page active mode",
     "editOptions": "Edit options",
-    "homePageAlert": "First page is always home page and will start with '/' route"
+    "homePageAlert": "First page is always home page and will start with '/' route",
+    "page-seo": {
+        "title": "Title",
+        "description": "Description",
+        "author": "Author",
+        "twitter-author": "Twitter Author",
+        "twitter-site": "Twitter Site",
+        "pageSeo": "SEO",
+        "components": "Components"
+    }
 }

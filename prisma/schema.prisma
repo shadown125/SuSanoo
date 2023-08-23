@@ -68,8 +68,24 @@ model Page {
   pageComponents      PageComponent[]
   pageInputsValues    PageInputsValues[]
   pageLanguages       PageLanguages[]
+  pageSeo             PageSeo[]
 
   @@index([authorId])
+}
+
+model PageSeo {
+  id            String    @id @default(cuid())
+  page          Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  pageId        String
+  title         String
+  language      Languages
+  favicon       String?   @default("")
+  author        String?   @default("")
+  description   String?   @default("")
+  twitterAuthor String?   @default("")
+  twitterSite   String?   @default("")
+
+  @@index([pageId])
 }
 
 model PageLanguages {
