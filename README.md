@@ -43,7 +43,8 @@
 -   Updating react draggable library for fix dev mode development with newer react versions
 -   Add support for favicons (maybe cloudstorage: cloudinary, uploadthing, custom, etc.)
 -   Add more customizable meta tags options for pages
+-   Improve responsive design for small devices
 
 ### Known bugs
 
--   Fix Nesting pages
+-   ~Fix Nesting pages~
