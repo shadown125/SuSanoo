@@ -269,12 +269,12 @@ const AddAndUpdatePagePopup: FC<{
                                         {pages?.length || 0 > 0 ? (
                                             <>
                                                 {pages
-                                                    ?.filter((page) => page.id !== pageId)
+                                                    ?.filter((page) => page.id !== pageId && page.route !== "/")
                                                     .map((page) => (
                                                         <li
                                                             key={page.id}
                                                             onClick={() => {
-                                                                if (page.nestedPath === nestedPageRoute) {
+                                                                if (page.nestedPath === nestedPageRoute && page.nestedPath !== "") {
                                                                     setNestedPageRoute("");
                                                                     return;
                                                                 }
