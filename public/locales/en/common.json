@@ -45,5 +45,9 @@
     "delete": "Delete",
     "noComponents": "Currently there are no components added to this page.",
     "preview": "Page preview",
-    "componentKey": "Component key value"
+    "componentKey": "Component key value",
+    "addComponentItemInput": "Add component item input",
+    "addComponentInput": "Add component input",
+    "componentItem": "Component item",
+    "addComponentItem": "Add component item"
 }

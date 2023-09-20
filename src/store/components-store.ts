@@ -7,6 +7,8 @@ export type ComponentsStore = {
     setIsEditPopupOpen: (isOpen: boolean) => void;
     editInputId: string;
     setEditInputId: (id: string) => void;
+    isItemInput: boolean;
+    setIsItemInput: (isItemInput: boolean) => void;
 };
 
 export const useComponentsStore = create<ComponentsStore>((set) => ({
@@ -16,4 +18,6 @@ export const useComponentsStore = create<ComponentsStore>((set) => ({
     setIsEditPopupOpen: (isOpen: boolean) => set({ isEditPopupOpen: isOpen }),
     editInputId: "",
     setEditInputId: (id: string) => set({ editInputId: id }),
+    isItemInput: false,
+    setIsItemInput: (isItemInput: boolean) => set({ isItemInput: isItemInput }),
 }));

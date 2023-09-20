@@ -1,6 +1,7 @@
 import { Languages } from "@prisma/client";
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
+import uuid from "react-uuid";
 
 export const protectedAuthPageRouter = createProtectedRouter()
     .mutation("create", {
@@ -340,6 +341,143 @@ export const protectedAuthPageRouter = createProtectedRouter()
             });
         },
     })
+    .query("getPageComponentItemById", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { id } = input;
+
+            return await ctx.prisma.pageComponentsItem.findUnique({
+                where: {
+                    id: id,
+                },
+                include: {
+                    inputs: {
+                        include: {
+                            value: {
+                                include: {
+                                    value: true,
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+        },
+    })
+    .mutation("createPageComponentItem", {
+        input: z.object({
+            pageId: z.string(),
+            name: z.string(),
+            componentId: z.string(),
+            pageComponentData: z.record(z.string(), z.string()),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageId, name, componentId, pageComponentData } = input;
+
+            const page = await ctx.prisma.page.findUnique({
+                where: {
+                    id: pageId,
+                },
+                include: {
+                    pageLanguages: true,
+                },
+            });
+
+            const pageComponent = await ctx.prisma.pageComponent.findUnique({
+                where: {
+                    id: componentId,
+                },
+                include: {
+                    componentItems: {
+                        include: {
+                            inputs: true,
+                        },
+                    },
+                },
+            });
+
+            if (!pageComponent) {
+                throw new Error("Page component not found");
+            }
+
+            if (!page) {
+                throw new Error("Page not found");
+            }
+
+            const pageComponentItem = await ctx.prisma.pageComponentsItem.create({
+                data: {
+                    name: name,
+                    pageComponentId: pageComponent.id,
+                    inputs: {
+                        connect: pageComponent.componentItems.inputs.map((input) => ({
+                            id: input.id,
+                        })),
+                    },
+                },
+            });
+
+            for (const [key, value] of Object.entries(pageComponentData)) {
+                pageComponent.componentItems.inputs.forEach(async (input) => {
+                    if (input.componentItemId === pageComponent.componentItemsId && input.id === key) {
+                        const uniqueId = uuid();
+
+                        const pageInputsValue = await ctx.prisma.pageInputsValues.create({
+                            data: {
+                                pageId: pageId,
+                                inputId: input.id,
+                                pageComponentId: pageComponent.id,
+                                pageComponentItemsInputId: uniqueId,
+                                pageComponentItemsId: pageComponentItem.id,
+                            },
+                        });
+
+                        page.pageLanguages.forEach(async (pageLanguage) => {
+                            await ctx.prisma.pageInputsValuesBasedOnLanguage.create({
+                                data: {
+                                    pageInputsValuesId: pageInputsValue.id,
+                                    language: pageLanguage.language,
+                                    value: value,
+                                },
+                            });
+                        });
+                    }
+                });
+            }
+
+            // const pageInputsValues = await ctx.prisma.pageInputsValues.findMany({
+            //     where: {
+            //         pageComponentId: pageComponent.id,
+            //     },
+            //     include: {
+            //         input: true,
+            //     },
+            // });
+
+            // if (!pageInputsValues) {
+            //     throw new Error("Page inputs values not found");
+            // }
+
+            // for (const [key, value] of Object.entries(pageComponentData)) {
+            //     if (key !== "") {
+            //         pageInputsValues.forEach(async (pageInputValue) => {
+            //             if (pageInputValue.pageComponentItemsInputId === key) {
+            //                 page.pageLanguages.forEach(async (pageLanguage) => {
+            //                     await ctx.prisma.pageInputsValuesBasedOnLanguage.create({
+            //                         data: {
+            //                             pageInputsValuesId: pageInputValue.id,
+            //                             language: pageLanguage.language,
+            //                             value: value,
+            //                         },
+            //                     });
+            //                 });
+            //             }
+            //         });
+            //     }
+            // }
+        },
+    })
     .query("getCurrentPageComponents", {
         input: z.object({
             name: z.string(),
@@ -353,6 +491,12 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     pageId: pageId,
                 },
                 include: {
+                    componentItems: {
+                        include: {
+                            inputs: true,
+                        },
+                    },
+                    pageComponentsItem: true,
                     input: {
                         include: {
                             value: true,
@@ -538,6 +682,34 @@ export const protectedAuthPageRouter = createProtectedRouter()
                     input: {
                         componentId: componentId,
                     },
+                },
+            });
+        },
+    })
+    .mutation("deletePageComponentItem", {
+        input: z.object({
+            pageComponentItemId: z.string(),
+        }),
+        resolve: async ({ input, ctx }) => {
+            const { pageComponentItemId } = input;
+
+            const pageComponentItem = await ctx.prisma.pageComponentsItem.findUnique({
+                where: {
+                    id: pageComponentItemId,
+                },
+            });
+
+            if (!pageComponentItem) throw new Error("Page component item not found");
+
+            await ctx.prisma.pageComponentsItem.delete({
+                where: {
+                    id: pageComponentItemId,
+                },
+            });
+
+            await ctx.prisma.pageInputsValues.deleteMany({
+                where: {
+                    pageComponentItemsId: pageComponentItemId,
                 },
             });
         },

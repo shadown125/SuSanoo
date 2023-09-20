@@ -31,7 +31,10 @@ const AddInput: FC = () => {
     const { mutate: input } = trpc.useMutation(["auth.inputs.create"]);
     const { mutate: componentHistory } = trpc.useMutation(["auth.components.addNewHistoryChangeLog"]);
 
-    const componentId = useComponentsStore((state) => state.componentId);
+    const { componentId, isItemInput } = useComponentsStore((state) => ({
+        componentId: state.componentId,
+        isItemInput: state.isItemInput,
+    }));
 
     const resetInputType = () => {
         setSelectedType("");
@@ -46,7 +49,7 @@ const AddInput: FC = () => {
             const { required, name, half } = data;
 
             input(
-                { componentId, required: required, name: name, halfRow: half, type: selectedType as InputsTypes },
+                { componentId, required: required, name: name, halfRow: half, type: selectedType as InputsTypes, isItemInput },
                 {
                     onSuccess: () => {
                         setInputPopupState(false);

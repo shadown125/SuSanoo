@@ -14,6 +14,8 @@ import AddAndUpdatePagePopup from "../pageList/AddAndUpdatePagePopup";
 import ComponentsLanguageBar from "./ComponentsLanguageBar";
 import { useActivePageLanguageStore } from "../../src/store/pages-store";
 import PageSEO from "./PageSEO";
+import AddComponentItemPopup from "./AddComponentItemPopup";
+import EditComponentItemPopup from "./EditComponentItemPopup";
 
 export const tabStates = {
     Components: "Components",
@@ -44,8 +46,14 @@ const PageDetail: FC<{
 
     const activePageLanguage = useActivePageLanguageStore((state) => state.activePageLanguage);
 
-    const editState = useDetailPageStore((state) => state.editState);
-    const setEditState = useDetailPageStore((state) => state.setEditState);
+    const { editState, setEditState, setComponentId, setAddComponentItemPopup, setUpdateComponentItemPopup, setComponentItemId } = useDetailPageStore((state) => ({
+        editState: state.editState,
+        setEditState: state.setEditState,
+        setComponentId: state.setComponentId,
+        setAddComponentItemPopup: state.setAddComponentItemPopup,
+        setUpdateComponentItemPopup: state.setUpdateComponentItemPopup,
+        setComponentItemId: state.setComponentItemId,
+    }));
 
     const trpcCtx = trpc.useContext();
     const { t } = useTranslation("common");
@@ -332,11 +340,16 @@ const PageDetail: FC<{
                                                             <div {...provided.droppableProps} ref={provided.innerRef}>
                                                                 {components.map((component) => {
                                                                     let pageComponentIndex;
+                                                                    let componentItemsExist = false;
 
                                                                     if (component.index !== undefined) {
                                                                         pageComponentIndex = component.index;
                                                                     } else {
                                                                         return <div>Loading...</div>;
+                                                                    }
+
+                                                                    if (component.componentItems.inputs.length > 0) {
+                                                                        componentItemsExist = true;
                                                                     }
 
                                                                     return (
@@ -362,6 +375,32 @@ const PageDetail: FC<{
                                                                                         <span>Delete Component</span>
                                                                                     </button>
                                                                                     <ComponentInput pageId={pageId} pageComponentId={component.id} />
+                                                                                    <ul>
+                                                                                        {component.pageComponentsItem.map(({ id, name }, index) => (
+                                                                                            <li
+                                                                                                key={index}
+                                                                                                className="page-component-item"
+                                                                                                onClick={() => {
+                                                                                                    setUpdateComponentItemPopup(true);
+                                                                                                    setComponentItemId(id);
+                                                                                                }}
+                                                                                            >
+                                                                                                {name}
+                                                                                            </li>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                    {componentItemsExist && (
+                                                                                        <button
+                                                                                            className="button is-tertiary add-component-item"
+                                                                                            type="button"
+                                                                                            onClick={() => {
+                                                                                                setComponentId(component.id);
+                                                                                                setAddComponentItemPopup(true);
+                                                                                            }}
+                                                                                        >
+                                                                                            {t("addComponentItem")}
+                                                                                        </button>
+                                                                                    )}
                                                                                 </div>
                                                                             )}
                                                                         </Draggable>
@@ -400,6 +439,8 @@ const PageDetail: FC<{
                     </>
                 )}
             </div>
+            <EditComponentItemPopup pageId={pageId} />
+            <AddComponentItemPopup pageId={pageId} />
             <AddAndUpdatePagePopup update={true} pageId={pageId} />
         </>
     );
@@ -408,7 +449,7 @@ const PageDetail: FC<{
 export default PageDetail;
 
 // TODO: Fix types
-const buildValidationSchema = (schema: any, config: any) => {
+export const buildValidationSchema = (schema: any, config: any) => {
     const { id, validationType, validations = [] } = config;
 
     if (!(yup as any)[validationType]) {

@@ -45,5 +45,9 @@
     "delete": "Usuń",
     "noComponents": "Obecnie do tej strony nie dodano żadnych komponentów.",
     "preview": "Podgląd strony",
-    "componentKey": "Klucz do komponentu"
+    "componentKey": "Klucz do komponentu",
+    "addComponentItemInput": "Dodaj input do itemu komponentu",
+    "addComponentInput": "Dodaj input do komponentu",
+    "componentItem": "Item komponentu",
+    "addComponentItem": "Dodaj item do komponentu"
 }

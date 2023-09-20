@@ -5,6 +5,7 @@ export const useSusInputs = ({ pageComponentId, pageId, language }: { pageCompon
     const { data } = trpc.useQuery(["inputs.get", { pageComponentId: pageComponentId, pageId: pageId }]);
 
     let extractedData: Record<string, string> = {};
+    let extractedComponentItems: Record<string, string>[] = [];
 
     data?.forEach((component) => {
         const name = component.input.name;
@@ -14,10 +15,20 @@ export const useSusInputs = ({ pageComponentId, pageId, language }: { pageCompon
             return;
         }
 
+        if (component.input.componentItemId && name && value) {
+            extractedComponentItems.push({
+                name: name,
+                value: value,
+            });
+
+            return;
+        }
+
         extractedData[name] = value;
     });
 
     return {
         data: extractedData,
+        items: extractedComponentItems,
     };
 };

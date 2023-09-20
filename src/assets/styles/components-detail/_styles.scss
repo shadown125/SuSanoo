@@ -32,7 +32,37 @@
             color: white;
         }
     }
-    .component-inputs {
+    .component-items {
+        position: relative;
+        border: {
+            width: 2px;
+            color: var(--color-light-blue);
+            style: solid;
+        }
+        padding: susanoo.rem-calc(16);
+        margin: {
+            top: susanoo.rem-calc(16);
+        }
+        .headline {
+            position: absolute;
+            top: susanoo.rem-calc(-12);
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0 susanoo.rem-calc(4);
+            z-index: 2;
+            background: {
+                color: var(--color-light-dark);
+            }
+        }
+        .add-input {
+            padding: susanoo.rem-calc(8);
+            margin: {
+                top: unset;
+            }
+        }
+    }
+    .component-inputs,
+    .component-items {
         .row {
             position: relative;
             &-half {

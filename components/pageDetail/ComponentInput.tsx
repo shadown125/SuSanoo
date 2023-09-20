@@ -27,7 +27,7 @@ const AvaiblableComponentsInputList: { [key: string]: InputComponentType } = {
     select: ComponentSelectField,
 };
 
-const ComponentInputBuilder = (type: string, name: string, id: string, rawId: string) => {
+export const ComponentInputBuilder = (type: string, name: string, id: string, rawId: string) => {
     if (typeof AvaiblableComponentsInputList[type] === "undefined") {
         return <></>;
     }
@@ -52,7 +52,7 @@ const ComponentInput: FC<{
                         const inputs: JSX.Element[] = [];
 
                         types.forEach((type) => {
-                            if (pageInput.input.type?.toLowerCase() === type.toLowerCase()) {
+                            if (pageInput.input.type?.toLowerCase() === type.toLowerCase() && !pageInput.input.componentItemId) {
                                 inputs.push(
                                     <div key={index} className={`row${pageInput.input.halfRow ? " row-half" : ""}`}>
                                         <label htmlFor={pageInput.input.name}>

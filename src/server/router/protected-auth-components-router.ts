@@ -12,6 +12,26 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
             });
         },
     })
+    .query("getPageComponentById", {
+        input: z.object({
+            id: z.string(),
+        }),
+        resolve: async ({ ctx, input }) => {
+            return await ctx.prisma.pageComponent.findUnique({
+                where: {
+                    id: input.id,
+                },
+                include: {
+                    input: true,
+                    componentItems: {
+                        include: {
+                            inputs: true,
+                        },
+                    },
+                },
+            });
+        },
+    })
     .mutation("create", {
         input: z.object({
             componentName: z.string(),
@@ -34,10 +54,15 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                 throw new Error("Component already exists");
             }
 
+            const componentItems = await ctx.prisma.componentItems.create({
+                data: {},
+            });
+
             return await ctx.prisma.component.create({
                 data: {
                     name: componentName,
                     key: key,
+                    componentItemsId: componentItems.id,
                 },
             });
         },
@@ -194,18 +219,21 @@ export const protectedAuthComponentsRouter = createProtectedRouter()
                     name: component.name,
                     componentId: componentId,
                     index: pageComponents.length,
+                    componentItemsId: component.componentItemsId,
                     key: component.key,
                 },
             });
 
             component.input.forEach(async (input) => {
-                await ctx.prisma.pageInputsValues.create({
-                    data: {
-                        pageId: pageId,
-                        inputId: input.id,
-                        pageComponentId: newPageComponent.id,
-                    },
-                });
+                if (!input.componentItemId) {
+                    await ctx.prisma.pageInputsValues.create({
+                        data: {
+                            pageId: pageId,
+                            inputId: input.id,
+                            pageComponentId: newPageComponent.id,
+                        },
+                    });
+                }
             });
 
             await ctx.prisma.pageComponent.update({

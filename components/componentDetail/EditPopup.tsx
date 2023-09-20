@@ -20,11 +20,12 @@ const EditPopup: FC = () => {
     const { t } = useTranslation("common");
     const context = trpc.useContext();
 
-    const { componentId, editInputId, isEditPopupOpen, setIsEditPopupOpen } = useComponentsStore((state) => ({
+    const { componentId, editInputId, isEditPopupOpen, setIsEditPopupOpen, isItemInput } = useComponentsStore((state) => ({
         isEditPopupOpen: state.isEditPopupOpen,
         setIsEditPopupOpen: state.setIsEditPopupOpen,
         editInputId: state.editInputId,
         componentId: state.componentId,
+        isItemInput: state.isItemInput,
     }));
 
     const { data: input } = trpc.useQuery(["auth.inputs.getById", editInputId]);

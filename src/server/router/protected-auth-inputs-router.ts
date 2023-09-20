@@ -50,8 +50,19 @@ export const protectedAuthInputsRouter = createProtectedRouter()
             componentId: z.string(),
             halfRow: z.boolean(),
             required: z.boolean(),
+            isItemInput: z.boolean(),
         }),
         resolve: async ({ input, ctx }) => {
+            const currentComponent = await ctx.prisma.component.findUnique({
+                where: {
+                    id: input.componentId,
+                },
+                include: {
+                    PageComponent: true,
+                    componentItems: true,
+                },
+            });
+
             const newInput = await ctx.prisma.input.create({
                 data: {
                     required: input.required,
@@ -59,15 +70,7 @@ export const protectedAuthInputsRouter = createProtectedRouter()
                     halfRow: input.halfRow,
                     name: input.name,
                     componentId: input.componentId,
-                },
-            });
-
-            const currentComponent = await ctx.prisma.component.findUnique({
-                where: {
-                    id: input.componentId,
-                },
-                include: {
-                    PageComponent: true,
+                    componentItemId: input.isItemInput ? currentComponent?.componentItems.id : "",
                 },
             });
 

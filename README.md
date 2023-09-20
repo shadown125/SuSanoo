@@ -5,7 +5,7 @@
 #### Alpha milestones
 
 -   ~Multiple Languages~
--   Possibility to add children in components for multiple items output
+-   ~Possibility to add children in components for multiple items output~
 -   Add possibility to place components inputs in desired order (thourgh drag and drop)
 -   Add roles and user management in susanoo
 -   Add support for all kind of inputs
@@ -44,7 +44,13 @@
 -   Add support for favicons (maybe cloudstorage: cloudinary, uploadthing, custom, etc.)
 -   Add more customizable meta tags options for pages
 -   Improve responsive design for small devices
+-   Add possibility to change component name (maybe custom keys aswell?)
 
 ### Known bugs
 
 -   ~Fix Nesting pages~
+-   Fix not updated page component item after creating new item component
+
+### Investigation
+
+-   Check for user while session existenc in every db call (user deleted but stil can make manipulations in trpc routes cause session is valid...)

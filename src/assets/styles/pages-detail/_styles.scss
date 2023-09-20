@@ -361,6 +361,37 @@
             width: 100%;
         }
     }
+    .add-component-item {
+        width: 100%;
+        margin: {
+            top: susanoo.rem-calc(16);
+        }
+    }
+    ul {
+        .page-component-item {
+            background: {
+                color: var(--color-light-blue);
+            }
+            padding: susanoo.rem-calc(8);
+            cursor: pointer;
+            transition: background-color 0.2s linear;
+            &:hover {
+                background: {
+                    color: var(--color-dark-blue);
+                }
+            }
+            &:first-child {
+                margin: {
+                    top: susanoo.rem-calc(16);
+                }
+            }
+            &:not(:last-child) {
+                margin: {
+                    bottom: susanoo.rem-calc(16);
+                }
+            }
+        }
+    }
     .page-seo {
         .form-container {
             display: flex;
