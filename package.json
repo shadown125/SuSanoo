@@ -12,6 +12,7 @@
         "lint": "next lint",
         "build:package": "tsup index.tsx --format cjs,esm --dts",
         "lint:package": "tsc",
+        "release": "npm run build:package && changeset publish",
         "postinstall": "prisma generate",
         "style:build": "npm-run-all --parallel copy:* build:*",
         "build:styles": "npm-run-all sass:build postcss:build",
