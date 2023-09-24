@@ -53,4 +53,4 @@
 
 ### Investigation
 
--   Check for user while session existenc in every db call (user deleted but stil can make manipulations in trpc routes cause session is valid...)
+-   Check for user while session existence in every db call (user deleted but stil can make manipulations in trpc routes cause session is valid...)

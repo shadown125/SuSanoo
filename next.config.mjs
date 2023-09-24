@@ -10,16 +10,16 @@ import i18n from "./next-i18next.config.mjs";
  * @constraint {{import('next').NextConfig}}
  */
 function defineNextConfig(config) {
-  return config;
+    return config;
 }
 
 export default defineNextConfig({
-  reactStrictMode: true,
-  swcMinify: true,
-  ...i18n,
-  experimental: {
-    images: {
-      allowFutureImage: true
-    }
-  }
+    reactStrictMode: false,
+    swcMinify: true,
+    ...i18n,
+    experimental: {
+        images: {
+            allowFutureImage: true,
+        },
+    },
 });
