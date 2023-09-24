@@ -1,5 +1,0 @@
----
-"susanoo-cms": patch
----
-
-init
