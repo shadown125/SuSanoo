@@ -1,6 +1,6 @@
 {
     "name": "susanoo-cms",
-    "version": "0.0.112",
+    "version": "0.0.113",
     "license": "MIT",
     "main": "dist/index.js",
     "module": "dist/index.esm.js",
@@ -15,7 +15,7 @@
         "release": "npm run build:package && changeset publish",
         "db:introspect": "dotenv -- prisma introspect",
         "db:generate": "dotenv -- prisma generate",
-        "postinstall": "tsc && cp index.d.ts dist/index.d.ts && npx prisma@4.1.1 generate",
+        "postinstall": "npx prisma@4.1.1 generate",
         "style:build": "npm-run-all --parallel copy:* build:*",
         "build:styles": "npm-run-all sass:build postcss:build",
         "build:images": "imagemin src/assets/pics/*.{jpg,png,svg} --out-dir=public",
