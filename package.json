@@ -30,6 +30,9 @@
     "prisma": {
         "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "dependencies": {
         "@formkit/auto-animate": "^1.0.0-beta.3",
         "@mantine/hooks": "^6.0.17",
