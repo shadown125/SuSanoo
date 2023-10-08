@@ -1,5 +1,11 @@
 # susanoo-cms
 
+## null
+
+### Patch Changes
+
+-   1a27048: Add more mandatory exports to package
+
 ## 0.0.114
 
 ### Patch Changes
