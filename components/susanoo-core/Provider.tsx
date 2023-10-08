@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { FC, createElement } from "react";
 import { useRoutes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { trpc } from "../src/utils/trpc";
-import { SusComponents, SusComponetsType } from "../sus-components";
+import { trpc } from "../../src/utils/trpc";
+import { SusComponents, SusComponetsType } from "../../sus-components";
 
 export const SusanooProvider: FC<{
     errorPage?: JSX.Element | JSX.Element[];

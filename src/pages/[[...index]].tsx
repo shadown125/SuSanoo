@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { SusanooProvider } from "../../components/SusanooCore";
+import { SusanooProvider } from "../../components/susanoo-core/Provider";
 
 const Home: NextPage = () => {
     return <SusanooProvider />;
