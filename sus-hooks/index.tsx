@@ -1,34 +1,49 @@
+import { api } from "@/utils/api";
 import { Languages } from "@prisma/client";
-import { trpc } from "../src/utils/trpc";
 
-export const useSusInputs = ({ pageComponentId, pageId, language }: { pageComponentId: string; pageId: string; language: string }) => {
-    const { data } = trpc.useQuery(["inputs.get", { pageComponentId: pageComponentId, pageId: pageId }]);
+export const useSusInputs = ({
+  pageComponentId,
+  pageId,
+  language,
+}: {
+  pageComponentId: string;
+  pageId: string;
+  language: string;
+}) => {
+  const { data } = api.publicInputs.get.useQuery({
+    pageComponentId: pageComponentId,
+    pageId: pageId,
+  });
 
-    let extractedData: Record<string, string> = {};
-    let extractedComponentItems: Record<string, string>[] = [];
+  let extractedData: Record<string, string> = {};
+  let extractedComponentItems: Record<string, string>[] = [];
 
-    data?.forEach((component) => {
-        const name = component.input.name;
-        const value = component.value.find((value) => value.language === Languages[language.toUpperCase() as keyof typeof Languages])?.value;
+  data?.forEach((component) => {
+    const name = component.input.name;
+    const value = component.value.find(
+      (value) =>
+        value.language ===
+        Languages[language.toUpperCase() as keyof typeof Languages],
+    )?.value;
 
-        if (typeof value === "undefined" || typeof name === "undefined") {
-            return;
-        }
+    if (typeof value === "undefined" || typeof name === "undefined") {
+      return;
+    }
 
-        if (component.input.componentItemId && name && value) {
-            extractedComponentItems.push({
-                name: name,
-                value: value,
-            });
+    if (component.input.componentItemId && name && value) {
+      extractedComponentItems.push({
+        name: name,
+        value: value,
+      });
 
-            return;
-        }
+      return;
+    }
 
-        extractedData[name] = value;
-    });
+    extractedData[name] = value;
+  });
 
-    return {
-        data: extractedData,
-        items: extractedComponentItems,
-    };
+  return {
+    data: extractedData,
+    items: extractedComponentItems,
+  };
 };

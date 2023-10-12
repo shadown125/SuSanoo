@@ -1,261 +1,264 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider             = "mysql"
-  url                  = env("DATABASE_URL")
-  referentialIntegrity = "prisma"
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+    @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+    @@index([userId])
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String
-  image         String?
-  role          Role      @default(USER)
-  createdAt     DateTime  @default(now())
-  status        Boolean
-  accounts      Account[]
-  sessions      Session[]
-  pages         Page[]
-  history       History[]
-}
-
-model Page {
-  id                  String             @id @default(cuid())
-  name                String             @unique
-  active              Boolean            @default(false)
-  createdAt           DateTime           @default(now())
-  createdBy           User               @relation(fields: [authorId], references: [id])
-  authorId            String
-  route               String             @unique
-  nestedPath          String             @default("")
-  history             History[]
-  availableComponents Component[]        @relation("ComponentsPage")
-  pageComponents      PageComponent[]
-  pageInputsValues    PageInputsValues[]
-  pageLanguages       PageLanguages[]
-  pageSeo             PageSeo[]
-
-  @@index([authorId])
-}
-
-model PageSeo {
-  id            String    @id @default(cuid())
-  page          Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId        String
-  title         String
-  language      Languages
-  favicon       String?   @default("")
-  author        String?   @default("")
-  description   String?   @default("")
-  twitterAuthor String?   @default("")
-  twitterSite   String?   @default("")
-
-  @@index([pageId])
-}
-
-model PageLanguages {
-  id        String    @id @default(cuid())
-  language  Languages @default(EN)
-  page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId    String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@index([pageId])
-}
-
-model PageInputsValues {
-  id                        String                            @id @default(cuid())
-  page                      Page                              @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  pageId                    String
-  input                     Input                             @relation(fields: [inputId], references: [id], onDelete: Cascade)
-  inputId                   String
-  pageComponent             PageComponent                     @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
-  pageComponentId           String
-  pageComponentItemsInputId String?                           @default("")
-  pageComponentItems        PageComponentsItem?               @relation(fields: [pageComponentItemsInputId], references: [id], onDelete: Cascade)
-  pageComponentItemsId      String?                           @default("")
-  value                     PageInputsValuesBasedOnLanguage[]
-  createdAt                 DateTime                          @default(now())
-
-  @@index([pageComponentId])
-  @@index([inputId])
-  @@index([pageId])
-  @@index([pageComponentItemsInputId])
-}
-
-model PageInputsValuesBasedOnLanguage {
-  id                 String           @id @default(cuid())
-  language           String
-  pageInputsValues   PageInputsValues @relation(fields: [pageInputsValuesId], references: [id], onDelete: Cascade)
-  pageInputsValuesId String
-  value              String
-  createdAt          DateTime         @default(now())
-
-  @@index([pageInputsValuesId])
-}
-
-model PageComponent {
-  id                 String               @id @default(cuid())
-  key                String
-  name               String
-  pageId             String
-  component          Component            @relation(fields: [componentId], references: [id])
-  componentId        String
-  componentItems     ComponentItems       @relation(fields: [componentItemsId], references: [id])
-  componentItemsId   String
-  pageComponentsItem PageComponentsItem[]
-  input              Input[]
-  index              Int
-  page               Page                 @relation(fields: [pageId], references: [id], onDelete: Cascade)
-  PageInputsValues   PageInputsValues[]
-
-  @@index([componentId])
-  @@index([pageId])
-  @@index([componentItemsId])
-}
-
-model PageComponentsItem {
-  id               String             @id @default(cuid())
-  name             String
-  pageComponent    PageComponent      @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
-  pageComponentId  String
-  pageInputsValues PageInputsValues[]
-  inputs           Input[]
-  createdAt        DateTime           @default(now())
-
-  @@index([pageComponentId])
-}
-
-model Component {
-  id               String          @id @default(cuid())
-  key              String
-  name             String
-  input            Input[]
-  componentItems   ComponentItems  @relation(fields: [componentItemsId], references: [id])
-  componentItemsId String
-  availablePages   Page[]          @relation("ComponentsPage")
-  PageComponent    PageComponent[]
-  history          History[]
-
-  @@index([componentItemsId])
-}
-
-model Input {
-  id                String               @id @default(cuid())
-  name              String
-  type              InputsTypes?         @default(text)
-  halfRow           Boolean              @default(false)
-  required          Boolean              @default(false)
-  component         Component            @relation(fields: [componentId], references: [id])
-  componentItem     ComponentItems?      @relation(fields: [componentItemId], references: [id])
-  componentItemId   String?              @default("")
-  pageComponent     PageComponent[]
-  pageComponentId   String?              @default("")
-  pageComponentItem PageComponentsItem[]
-  componentId       String
-  selectOptions     SelectOption[]
-  value             PageInputsValues[]
-
-  @@index([componentId])
-  @@index([pageComponentId])
-  @@index([componentItemId])
-}
-
-model ComponentItems {
-  id            String          @id @default(cuid())
-  name          String?         @default("")
-  component     Component[]
-  PageComponent PageComponent[]
-  inputs        Input[]
-  createdAt     DateTime        @default(now())
-}
-
-model SelectOption {
-  id      String @id @default(cuid())
-  name    String
-  input   Input  @relation(fields: [inputId], references: [id])
-  inputId String
-
-  @@index([inputId])
-}
-
-model History {
-  id          String     @id @default(cuid())
-  changeBy    User       @relation(fields: [userId], references: [id])
-  userId      String
-  changeAt    DateTime   @default(now())
-  page        Page?      @relation(fields: [pageId], references: [id])
-  pageId      String?    @default("")
-  component   Component? @relation(fields: [componentId], references: [id])
-  componentId String?    @default("")
-
-  @@index([userId])
-  @@index([pageId])
-  @@index([componentId])
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    password      String
+    image         String?
+    role          Role      @default(USER)
+    createdAt     DateTime  @default(now())
+    status        Boolean
+    accounts      Account[]
+    sessions      Session[]
+    pages         Page[]
+    history       History[]
 }
 
 model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
+    identifier String
+    token      String   @unique
+    expires    DateTime
 
-  @@unique([identifier, token])
+    @@unique([identifier, token])
+}
+
+model Page {
+    id                  String             @id @default(cuid())
+    name                String             @unique
+    active              Boolean            @default(false)
+    createdAt           DateTime           @default(now())
+    createdBy           User               @relation(fields: [authorId], references: [id])
+    authorId            String
+    route               String             @unique
+    nestedPath          String             @default("")
+    history             History[]
+    availableComponents Component[]        @relation("ComponentsPage")
+    pageComponents      PageComponent[]
+    pageInputsValues    PageInputsValues[]
+    pageLanguages       PageLanguages[]
+    pageSeo             PageSeo[]
+
+    @@index([authorId])
+}
+
+model PageSeo {
+    id            String    @id @default(cuid())
+    page          Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    pageId        String
+    title         String
+    language      Languages
+    favicon       String?   @default("")
+    author        String?   @default("")
+    description   String?   @default("")
+    twitterAuthor String?   @default("")
+    twitterSite   String?   @default("")
+
+    @@index([pageId])
+}
+
+model PageLanguages {
+    id        String    @id @default(cuid())
+    language  Languages @default(EN)
+    page      Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    pageId    String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+
+    @@index([pageId])
+}
+
+model PageInputsValues {
+    id                        String                            @id @default(cuid())
+    page                      Page                              @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    pageId                    String
+    input                     Input                             @relation(fields: [inputId], references: [id], onDelete: Cascade)
+    inputId                   String
+    pageComponent             PageComponent                     @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
+    pageComponentId           String
+    pageComponentItemsInputId String?                           @default("")
+    pageComponentItems        PageComponentsItem?               @relation(fields: [pageComponentItemsInputId], references: [id], onDelete: Cascade)
+    pageComponentItemsId      String?                           @default("")
+    value                     PageInputsValuesBasedOnLanguage[]
+    createdAt                 DateTime                          @default(now())
+
+    @@index([pageComponentId])
+    @@index([inputId])
+    @@index([pageId])
+    @@index([pageComponentItemsInputId])
+}
+
+model PageInputsValuesBasedOnLanguage {
+    id                 String           @id @default(cuid())
+    language           String
+    pageInputsValues   PageInputsValues @relation(fields: [pageInputsValuesId], references: [id], onDelete: Cascade)
+    pageInputsValuesId String
+    value              String
+    createdAt          DateTime         @default(now())
+
+    @@index([pageInputsValuesId])
+}
+
+model PageComponent {
+    id                 String               @id @default(cuid())
+    key                String
+    name               String
+    pageId             String
+    component          Component            @relation(fields: [componentId], references: [id])
+    componentId        String
+    componentItems     ComponentItems       @relation(fields: [componentItemsId], references: [id])
+    componentItemsId   String
+    pageComponentsItem PageComponentsItem[]
+    input              Input[]
+    index              Int
+    page               Page                 @relation(fields: [pageId], references: [id], onDelete: Cascade)
+    PageInputsValues   PageInputsValues[]
+
+    @@index([componentId])
+    @@index([pageId])
+    @@index([componentItemsId])
+}
+
+model PageComponentsItem {
+    id               String             @id @default(cuid())
+    name             String
+    pageComponent    PageComponent      @relation(fields: [pageComponentId], references: [id], onDelete: Cascade)
+    pageComponentId  String
+    pageInputsValues PageInputsValues[]
+    inputs           Input[]
+    createdAt        DateTime           @default(now())
+
+    @@index([pageComponentId])
+}
+
+model Component {
+    id               String          @id @default(cuid())
+    key              String
+    name             String
+    input            Input[]
+    componentItems   ComponentItems  @relation(fields: [componentItemsId], references: [id])
+    componentItemsId String
+    availablePages   Page[]          @relation("ComponentsPage")
+    PageComponent    PageComponent[]
+    history          History[]
+
+    @@index([componentItemsId])
+}
+
+model Input {
+    id                String               @id @default(cuid())
+    name              String
+    type              InputsTypes?         @default(text)
+    halfRow           Boolean              @default(false)
+    required          Boolean              @default(false)
+    component         Component            @relation(fields: [componentId], references: [id])
+    componentItem     ComponentItems?      @relation(fields: [componentItemId], references: [id])
+    componentItemId   String?              @default("")
+    pageComponent     PageComponent[]
+    pageComponentId   String?              @default("")
+    pageComponentItem PageComponentsItem[]
+    componentId       String
+    selectOptions     SelectOption[]
+    value             PageInputsValues[]
+
+    @@index([componentId])
+    @@index([pageComponentId])
+    @@index([componentItemId])
+}
+
+model ComponentItems {
+    id            String          @id @default(cuid())
+    name          String?         @default("")
+    component     Component[]
+    PageComponent PageComponent[]
+    inputs        Input[]
+    createdAt     DateTime        @default(now())
+}
+
+model SelectOption {
+    id      String @id @default(cuid())
+    name    String
+    input   Input  @relation(fields: [inputId], references: [id])
+    inputId String
+
+    @@index([inputId])
+}
+
+model History {
+    id          String     @id @default(cuid())
+    changeBy    User       @relation(fields: [userId], references: [id])
+    userId      String
+    changeAt    DateTime   @default(now())
+    page        Page?      @relation(fields: [pageId], references: [id])
+    pageId      String?    @default("")
+    component   Component? @relation(fields: [componentId], references: [id])
+    componentId String?    @default("")
+
+    @@index([userId])
+    @@index([pageId])
+    @@index([componentId])
 }
 
 enum InputsTypes {
-  text
-  textarea
-  email
-  date
-  number
-  checkbox
-  radio
-  select
+    text
+    textarea
+    email
+    date
+    number
+    checkbox
+    radio
+    select
 }
 
 enum Role {
-  USER
-  ADMIN
+    USER
+    ADMIN
 }
 
 enum Languages {
-  EN
-  PL
-  DE
+    EN
+    PL
+    DE
 }
