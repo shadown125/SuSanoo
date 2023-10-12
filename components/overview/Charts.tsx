@@ -1,14 +1,14 @@
 import { FC } from "react";
-import LineChart from "./charts/LineChart";
-import DoughnutChart from "./charts/DoughnutChart";
+import DoughnutChart from "./charts/doughnut-chart";
+import LineChart from "./charts/line-chart";
 
 const Charts: FC = () => {
-    return (
-        <div className="charts">
-            <DoughnutChart />
-            <LineChart />
-        </div>
-    );
+  return (
+    <div className="charts">
+      <DoughnutChart />
+      <LineChart />
+    </div>
+  );
 };
 
 export default Charts;

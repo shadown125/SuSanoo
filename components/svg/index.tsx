@@ -1,2 +1,2 @@
-export * from "./PlusSvg";
-export * from "./CrossIconSvg";
+export * from "./plus-svg";
+export * from "./cross-icon-svg";
