@@ -1,12 +1,12 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState, type FC } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
-import { FieldArray, Form, Formik, FormikValues } from "formik";
+import { FieldArray, Form, Formik } from "formik";
 import { useTranslation } from "next-i18next";
 import { object, string } from "yup";
 import TextField from "../../elements/input-fields/text-field";
 import { useAddAndUpdatePagePopupStore } from "../../src/store/pages-store";
-import { FormikSubmission } from "../../src/types/formik";
+import { type FormikSubmission } from "../../src/types/formik";
 
 const validationSchema = object({
   pageName: string().required().min(1).max(60),
@@ -83,7 +83,7 @@ const AddAndUpdatePagePopup: FC<{
   };
 
   const submitHandler = (
-    values: FormikValues,
+    values: { components: { id: string; name: string }[] },
     { setSubmitting, resetForm }: FormikSubmission,
   ) => {
     try {
@@ -103,9 +103,9 @@ const AddAndUpdatePagePopup: FC<{
             nestedPath: nestedPageRoute,
           },
           {
-            onSuccess: (_) => {
-              ctx.authPages.get.invalidate();
-              ctx.authComponents.get.invalidate();
+            async onSuccess(_) {
+              await ctx.authPages.get.invalidate();
+              await ctx.authComponents.get.invalidate();
 
               reset();
               setNestedPageRoute("");
@@ -128,13 +128,13 @@ const AddAndUpdatePagePopup: FC<{
             nestedPath: nestedPageRoute,
           },
           {
-            onSuccess: (_) => {
-              ctx.authPages.get.invalidate();
-              ctx.authComponents.getAvaibleComponents.invalidate();
+            async onSuccess(_) {
+              await ctx.authPages.get.invalidate();
+              await ctx.authComponents.getAvaibleComponents.invalidate();
 
               reset();
 
-              router.push(`/admin/pages/${pageName.toLowerCase()}`);
+              await router.push(`/admin/pages/${pageName.toLowerCase()}`);
             },
           },
         );
@@ -166,13 +166,12 @@ const AddAndUpdatePagePopup: FC<{
     );
   };
 
-  const filteredComponents =
-    components?.filter(
-      (component) =>
-        !addedComponents.find(
-          (addedComponent) => addedComponent.id === component.id,
-        ),
-    ) || [];
+  const filteredComponents = components?.filter(
+    (component) =>
+      !addedComponents.find(
+        (addedComponent) => addedComponent.id === component.id,
+      ),
+  );
 
   return (
     <div
@@ -315,7 +314,7 @@ const AddAndUpdatePagePopup: FC<{
                 <h2 className="headline h5">{t("pages:addComponentToPage")}</h2>
                 <div className="components-add-container">
                   <ul className="components-list">
-                    {filteredComponents?.length > 0 ? (
+                    {filteredComponents!.length > 0 ? (
                       <>
                         {filteredComponents?.map((component) => (
                           <li
@@ -349,7 +348,7 @@ const AddAndUpdatePagePopup: FC<{
                 <h2 className="headline h5">{t("pages:nestPage")}</h2>
                 <div className="pages-container">
                   <ul className="pages-list">
-                    {pages?.length || 0 > 0 ? (
+                    {pages?.length ?? 0 > 0 ? (
                       <>
                         {pages
                           ?.filter(

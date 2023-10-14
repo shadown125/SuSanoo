@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
-import History, { history } from "./history";
+import History, { type history } from "./history";
 
 const CompleteHistory: FC = () => {
   const { data: history } = api.auth.getCompleteHistory.useQuery();

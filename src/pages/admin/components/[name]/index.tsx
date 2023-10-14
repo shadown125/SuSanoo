@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { type GetServerSideProps, type NextPage } from "next";
 import { useRouter } from "next/router";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/utils/api";

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { links } from "content/navigation/links";

@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { type GetServerSideProps, type NextPage } from "next";
 import { getServerAuthSession } from "@/server/auth";
 import ComponentsList from "components/components-list";
 import CompleteHistory from "components/history/complete-history";

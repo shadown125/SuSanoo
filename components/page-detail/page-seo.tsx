@@ -1,4 +1,4 @@
-import { FC, RefObject } from "react";
+import { type FC, type RefObject } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import { Form, Formik } from "formik";
@@ -12,7 +12,7 @@ import {
   useDetailPageStore,
   useNotificationStore,
 } from "../../src/store/store";
-import { FormikSubmission } from "../../src/types/formik";
+import { type FormikSubmission } from "../../src/types/formik";
 
 const validationSchema = object({
   title: string().max(60, "pageTitleMax").required("pageTitleRequired"),
@@ -132,12 +132,12 @@ const PageSEO: FC<{
     <div className="page-seo">
       <Formik
         initialValues={{
-          title: pageSeo?.title as string,
-          favicon: pageSeo?.favicon as string,
-          author: pageSeo?.author as string,
-          description: pageSeo?.description as string,
-          twitterAuthor: pageSeo?.twitterAuthor as string,
-          twitterSite: pageSeo?.twitterSite as string,
+          title: pageSeo!.title,
+          favicon: pageSeo!.favicon ?? "",
+          author: pageSeo!.author ?? "",
+          description: pageSeo!.description ?? "",
+          twitterAuthor: pageSeo!.twitterAuthor ?? "",
+          twitterSite: pageSeo!.twitterSite ?? "",
         }}
         onSubmit={submitHandler}
         validationSchema={validationSchema}
@@ -178,7 +178,7 @@ const PageSEO: FC<{
                 className="button is-primary back"
                 type="button"
                 onClick={() => {
-                  router.push("/admin/pages");
+                  void router.push("/admin/pages");
                   setEditState(false);
                 }}
               >

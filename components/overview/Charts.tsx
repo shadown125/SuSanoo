@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import DoughnutChart from "./charts/doughnut-chart";
 import LineChart from "./charts/line-chart";
 

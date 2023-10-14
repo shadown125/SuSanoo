@@ -44,8 +44,8 @@ export const authPages = createTRPCRouter({
         },
       });
 
-      return components.forEach(async (componentId) => {
-        await ctx.db.page.update({
+      return components.forEach((componentId) => {
+        void ctx.db.page.update({
           where: {
             id: page.id,
           },
@@ -187,8 +187,8 @@ export const authPages = createTRPCRouter({
         },
       });
 
-      pageInputsValues.forEach(async (pageInputValue) => {
-        await ctx.db.pageInputsValuesBasedOnLanguage.create({
+      pageInputsValues.forEach((pageInputValue) => {
+        void ctx.db.pageInputsValuesBasedOnLanguage.create({
           data: {
             pageInputsValuesId: pageInputValue.id,
             language: language,
@@ -232,8 +232,8 @@ export const authPages = createTRPCRouter({
         },
       });
 
-      pageInputsValues.forEach(async (pageInputValue) => {
-        await ctx.db.pageInputsValuesBasedOnLanguage.deleteMany({
+      pageInputsValues.forEach((pageInputValue) => {
+        void ctx.db.pageInputsValuesBasedOnLanguage.deleteMany({
           where: {
             pageInputsValuesId: pageInputValue.id,
             language: language,
@@ -448,7 +448,7 @@ export const authPages = createTRPCRouter({
       });
 
       for (const [key, value] of Object.entries(pageComponentData)) {
-        pageComponent.componentItems.inputs.forEach(async (input) => {
+        pageComponent.componentItems.inputs.map(async (input) => {
           if (
             input.componentItemId === pageComponent.componentItemsId &&
             input.id === key
@@ -465,7 +465,7 @@ export const authPages = createTRPCRouter({
               },
             });
 
-            page.pageLanguages.forEach(async (pageLanguage) => {
+            page.pageLanguages.map(async (pageLanguage) => {
               await ctx.db.pageInputsValuesBasedOnLanguage.create({
                 data: {
                   pageInputsValuesId: pageInputsValue.id,
@@ -615,7 +615,7 @@ export const authPages = createTRPCRouter({
         },
       });
 
-      return currentPage?.pageSeo.forEach(async (pageSeo) => {
+      return currentPage?.pageSeo.map(async (pageSeo) => {
         if (pageSeo.language === language) {
           await ctx.db.pageSeo.update({
             where: {

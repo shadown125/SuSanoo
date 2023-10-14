@@ -1,4 +1,4 @@
-import { CSSProperties, FC } from "react";
+import { type CSSProperties, type FC } from "react";
 import Image from "next/image";
 
 const UserProfile: FC<{
@@ -21,7 +21,7 @@ const UserProfile: FC<{
     <div className="user-profile">
       <div className="image-wrapper" style={setProfileStatusColor(status)}>
         <Image
-          src={image as string}
+          src={image}
           sizes="100vw"
           width={100}
           height={100}

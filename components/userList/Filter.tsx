@@ -1,9 +1,9 @@
-import { Dispatch, FC } from "react";
+import { type Dispatch, type FC, type SetStateAction } from "react";
 import { useTranslation } from "next-i18next";
-import { FilteredStates, FilterStates } from "./user-list";
+import { type FilteredStates, type FilterStates } from "./user-list";
 
 const Filter: FC<{
-  setFiltered: Dispatch<any>;
+  setFiltered: Dispatch<SetStateAction<FilteredStates>>;
   states: FilterStates;
   filtered: FilteredStates;
 }> = ({ setFiltered, states, filtered }) => {

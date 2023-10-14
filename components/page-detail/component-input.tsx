@@ -1,4 +1,4 @@
-import { createElement, FC } from "react";
+import { createElement, type FC } from "react";
 import { api } from "@/utils/api";
 import ComponentCheckboxField from "../../elements/input-fields/components/component-checkbox-field";
 import ComponentDateField from "../../elements/input-fields/components/component-date-field";
@@ -16,7 +16,7 @@ export type InputComponentType = FC<{
   rawId?: string;
 }>;
 
-const AvaiblableComponentsInputList: { [key: string]: InputComponentType } = {
+const AvaiblableComponentsInputList: Record<string, InputComponentType> = {
   text: ComponentTextField,
   textarea: ComponentTextareaField,
   email: ComponentEmailField,
@@ -36,10 +36,12 @@ export const ComponentInputBuilder = (
   if (typeof AvaiblableComponentsInputList[type] === "undefined") {
     return <></>;
   }
-  return createElement(
-    AvaiblableComponentsInputList[type] as InputComponentType,
-    { key: name, name, id, rawId },
-  );
+  return createElement(AvaiblableComponentsInputList[type]!, {
+    key: name,
+    name,
+    id,
+    rawId,
+  });
 };
 
 const ComponentInput: FC<{

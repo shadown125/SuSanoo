@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { api } from "@/utils/api";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "next-i18next";
@@ -79,7 +79,7 @@ const UserList: FC = () => {
                   </thead>
                   <motion.tbody layout>
                     <AnimatePresence>
-                      {users!.map((user, index) => (
+                      {users!.map((user) => (
                         <motion.tr
                           layout
                           animate={{ opacity: 1 }}
@@ -92,8 +92,8 @@ const UserList: FC = () => {
                             email={user.email!}
                             image={user.image!}
                             name={user.name!}
-                            role={user.role!}
-                            status={user.status!}
+                            role={user.role}
+                            status={user.status}
                           />
                         </motion.tr>
                       ))}

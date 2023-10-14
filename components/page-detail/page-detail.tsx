@@ -1,4 +1,4 @@
-import { FC, RefObject, useState } from "react";
+import { useState, type FC, type RefObject } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import { Form, Formik } from "formik";
@@ -7,7 +7,7 @@ import {
   DragDropContext,
   Draggable,
   Droppable,
-  DropResult,
+  type DropResult,
 } from "react-beautiful-dnd";
 import * as yup from "yup";
 import shallow from "zustand/shallow";
@@ -16,7 +16,7 @@ import {
   useDetailPageStore,
   useNotificationStore,
 } from "../../src/store/store";
-import { FormikSubmission } from "../../src/types/formik";
+import { type FormikSubmission } from "../../src/types/formik";
 import AddAndUpdatePagePopup from "../page-list/add-and-update-page-popup";
 import AddComponentItemPopup from "./add-component-item-popup";
 import ComponentInput from "./component-input";
@@ -119,7 +119,7 @@ const PageDetail: FC<{
   };
 
   const buildInputFieldConfigSchema = () => {
-    const inputsFieldConfig: {}[] = [];
+    const inputsFieldConfig: object[] = [];
 
     components?.forEach((component) => {
       if (component.input.length <= 0) {
@@ -152,6 +152,7 @@ const PageDetail: FC<{
       });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const yepSchema = inputsFieldConfig.reduce(buildValidationSchema, {});
 
     return yup.object().shape(yepSchema);
@@ -159,7 +160,7 @@ const PageDetail: FC<{
 
   const submitHandler = (
     data: typeof initialValues,
-    { setSubmitting, resetForm }: FormikSubmission,
+    { setSubmitting }: FormikSubmission,
   ) => {
     try {
       for (const [key, value] of Object.entries(data)) {
@@ -173,8 +174,8 @@ const PageDetail: FC<{
                   language: activePageLanguage,
                 },
                 {
-                  onSuccess: () => {
-                    ctx.authPages.getCurrentPageComponents.invalidate();
+                  async onSuccess() {
+                    await ctx.authPages.getCurrentPageComponents.invalidate();
                   },
                 },
               );
@@ -190,9 +191,9 @@ const PageDetail: FC<{
           pageId,
         },
         {
-          onSuccess: () => {
-            ctx.authPages.getCurrentPageHistory.invalidate();
-            ctx.publicInputs.get.invalidate();
+          async onSuccess() {
+            await ctx.authPages.getCurrentPageHistory.invalidate();
+            await ctx.publicInputs.get.invalidate();
           },
         },
       );
@@ -240,10 +241,10 @@ const PageDetail: FC<{
     deletePageComponent(
       { componentId, pageId },
       {
-        onSuccess: () => {
-          ctx.authPages.getCurrentPageComponents.invalidate();
-          ctx.authPages.getCurrentPageHistory.invalidate();
-          ctx.authComponents.getAvaibleComponents.invalidate();
+        async onSuccess() {
+          await ctx.authPages.getCurrentPageComponents.invalidate();
+          await ctx.authPages.getCurrentPageHistory.invalidate();
+          await ctx.authComponents.getAvaibleComponents.invalidate();
 
           setNotificationMessage(t("componentSuccefullyDeleted"));
           setNotificationState(true);
@@ -312,8 +313,8 @@ const PageDetail: FC<{
           index,
         },
         {
-          onSuccess: () => {
-            ctx.authPages.getCurrentPageComponents.invalidate();
+          async onSuccess() {
+            await ctx.authPages.getCurrentPageComponents.invalidate();
           },
         },
       );
@@ -404,7 +405,9 @@ const PageDetail: FC<{
                                   if (component.index !== undefined) {
                                     pageComponentIndex = component.index;
                                   } else {
-                                    return <div>Loading...</div>;
+                                    return (
+                                      <div key={"loading"}>Loading...</div>
+                                    );
                                   }
 
                                   if (
@@ -499,7 +502,7 @@ const PageDetail: FC<{
                           className="button is-primary back"
                           type="button"
                           onClick={() => {
-                            router.push("/admin/pages");
+                            void router.push("/admin/pages");
                             setEditState(false);
                           }}
                         >
@@ -522,7 +525,7 @@ const PageDetail: FC<{
         )}
       </div>
       <EditComponentItemPopup pageId={pageId} />
-      <AddComponentItemPopup pageId={pageId} />
+      <AddComponentItemPopup />
       <AddAndUpdatePagePopup update={true} pageId={pageId} />
     </>
   );
@@ -531,6 +534,7 @@ const PageDetail: FC<{
 export default PageDetail;
 
 // TODO: Fix types
+/* eslint-disable */
 export const buildValidationSchema = (schema: any, config: any) => {
   const { id, validationType, validations = [] } = config;
 

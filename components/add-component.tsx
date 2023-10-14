@@ -1,4 +1,4 @@
-import { FC, RefObject } from "react";
+import { type FC, type RefObject } from "react";
 import { api } from "@/utils/api";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "next-i18next";
@@ -28,15 +28,15 @@ const AddComponent: FC<{
     (state) => state.activePageLanguage,
   );
 
-  const addComponentHandler = async (componentId: string): Promise<void> => {
+  const addComponentHandler = (componentId: string) => {
     addComponent(
       { componentId, pageId: id, language: activePageLanguage },
       {
-        onSuccess: (_) => {
-          apiCtx.authPages.getCurrentPageComponents.invalidate();
-          apiCtx.authPages.getPageInputsValues.invalidate();
+        async onSuccess(_) {
+          await apiCtx.authPages.getCurrentPageComponents.invalidate();
+          await apiCtx.authPages.getPageInputsValues.invalidate();
 
-          componentsRefetch();
+          await componentsRefetch();
 
           setNotificationMessage(t("common:componentSuccefullyAddedToPage"));
           setNotificationState(true);

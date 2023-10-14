@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
 import { useTranslation } from "next-i18next";
 import { useInView } from "react-intersection-observer";
@@ -22,7 +22,7 @@ const Overview: FC = () => {
             <span
               className={`inner-bar${inView ? " is-active" : ""}`}
               style={{
-                width: `${(onlineUsersAmount! / users!.length) * 100}%`,
+                width: `${(onlineUsersAmount / users.length) * 100}%`,
               }}
             ></span>
           ) : (

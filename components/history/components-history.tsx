@@ -1,6 +1,6 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
-import History, { history } from "./history";
+import History, { type history } from "./history";
 
 const ComponentsHistory: FC<{ id: string }> = ({ id }) => {
   const { data: history } =

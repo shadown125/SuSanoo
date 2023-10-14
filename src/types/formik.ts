@@ -1,4 +1,4 @@
 export type FormikSubmission = {
-    setSubmitting: Function;
-    resetForm: Function;
+  setSubmitting: (isSubmitting: boolean) => void;
+  resetForm: (reset: boolean) => void;
 };

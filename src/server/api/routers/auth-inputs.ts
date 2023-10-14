@@ -80,7 +80,7 @@ export const authInputs = createTRPCRouter({
         },
       });
 
-      return currentComponent?.PageComponent.forEach(async (pageComponent) => {
+      return currentComponent?.PageComponent.map(async (pageComponent) => {
         const newPageInputValue = await ctx.db.pageInputsValues.create({
           data: {
             pageId: pageComponent.pageId,
@@ -96,20 +96,18 @@ export const authInputs = createTRPCRouter({
           },
         });
 
-        Object.keys(Languages).forEach(async (language) => {
-          newPageInputValue.page?.pageLanguages.forEach(
-            async (pageLanguage) => {
-              if (pageLanguage.language === language) {
-                await ctx.db.pageInputsValuesBasedOnLanguage.create({
-                  data: {
-                    pageInputsValuesId: newPageInputValue.id,
-                    language: language,
-                    value: "",
-                  },
-                });
-              }
-            },
-          );
+        Object.keys(Languages).forEach((language) => {
+          newPageInputValue.page?.pageLanguages.map(async (pageLanguage) => {
+            if (pageLanguage.language === language) {
+              await ctx.db.pageInputsValuesBasedOnLanguage.create({
+                data: {
+                  pageInputsValuesId: newPageInputValue.id,
+                  language: language,
+                  value: "",
+                },
+              });
+            }
+          });
         });
       });
     }),

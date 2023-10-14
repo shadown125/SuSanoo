@@ -5,7 +5,7 @@ import { type Page, type PageComponent, type PageSeo } from "@prisma/client";
 import { NextSeo } from "next-seo";
 import { useRoutes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { SusComponents, type SusComponetsType } from "../../sus-components";
+import { SusComponents } from "../../sus-components";
 
 export const SusanooProvider: FC<{
   errorPage?: JSX.Element | JSX.Element[];
@@ -66,26 +66,26 @@ const InitialPage: FC<{
                     page.pageSeo?.find(
                       (seo) =>
                         seo.language === nextRouter.locale?.toUpperCase(),
-                    )?.title || ""
+                    )?.title ?? ""
                   }
                   description={
                     page.pageSeo?.find(
                       (seo) =>
                         seo.language === nextRouter.locale?.toUpperCase(),
-                    )?.description || ""
+                    )?.description ?? ""
                   }
                   twitter={{
                     handle: `@${
                       page.pageSeo?.find(
                         (seo) =>
                           seo.language === nextRouter.locale?.toUpperCase(),
-                      )?.twitterAuthor || ""
+                      )?.twitterAuthor ?? ""
                     }`,
                     site: `@${
                       page.pageSeo?.find(
                         (seo) =>
                           seo.language === nextRouter.locale?.toUpperCase(),
-                      )?.twitterSite || ""
+                      )?.twitterSite ?? ""
                     }`,
                     cardType: "summary_large_image",
                   }}
@@ -96,7 +96,7 @@ const InitialPage: FC<{
                         page.pageSeo?.find(
                           (seo) =>
                             seo.language === nextRouter.locale?.toUpperCase(),
-                        )?.author || "",
+                        )?.author ?? "",
                     },
                   ]}
                   languageAlternates={[
@@ -118,7 +118,7 @@ const InitialPage: FC<{
                         page.pageSeo?.find(
                           (seo) =>
                             seo.language === nextRouter.locale?.toUpperCase(),
-                        )?.favicon || "",
+                        )?.favicon ?? "",
                     },
                     {
                       rel: "apple-touch-icon",
@@ -126,7 +126,7 @@ const InitialPage: FC<{
                         page.pageSeo?.find(
                           (seo) =>
                             seo.language === nextRouter.locale?.toUpperCase(),
-                        )?.favicon || "",
+                        )?.favicon ?? "",
                     },
                   ]}
                 />
@@ -142,13 +142,13 @@ const InitialPage: FC<{
                       createElement(
                         SusComponents[
                           componentExist as keyof typeof SusComponents
-                        ] as SusComponetsType,
+                        ]!,
                         {
                           key: component.id,
                           susProps: {
                             pageComponentId: component.id,
                             pageId: page.id,
-                            language: nextRouter.locale as string,
+                            language: nextRouter.locale!,
                           },
                         },
                       );
@@ -160,12 +160,12 @@ const InitialPage: FC<{
           }
         : {
             path: `*`,
-            element: errorPage || <>Hehehe 404</>,
+            element: errorPage ?? <>Hehehe 404</>,
           },
     ),
     {
       path: `*`,
-      element: errorPage || <>Hehehe 404</>,
+      element: errorPage ?? <>Hehehe 404</>,
     },
   ]);
 

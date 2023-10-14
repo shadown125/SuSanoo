@@ -33,9 +33,9 @@ const ComponentsList = () => {
     createComponent(
       { componentName, key },
       {
-        onSuccess: (data) => {
+        async onSuccess(data) {
           setComponentId(data.id);
-          router.push(`${router.pathname}/${data.name.toLowerCase()}`);
+          await router.push(`${router.pathname}/${data.name.toLowerCase()}`);
         },
       },
     );
@@ -55,7 +55,7 @@ const ComponentsList = () => {
         <div>Loading...</div>
       ) : (
         <>
-          {components!.length ? (
+          {components?.length ? (
             <div className="table-wrapper">
               <table>
                 <thead>

@@ -1,9 +1,7 @@
-import { FC } from "react";
 import { api } from "@/utils/api";
 import { Form, Formik } from "formik";
 import { useTranslation } from "next-i18next";
 import { object, string } from "yup";
-import shallow from "zustand/shallow";
 import TextField from "../../elements/input-fields/text-field";
 import { useDetailPageStore } from "../../src/store/store";
 import { ComponentInputBuilder } from "./component-input";
@@ -13,9 +11,7 @@ const validationSchema = object({
   itemName: string().required("itemNameRequired"),
 });
 
-const AddComponentItemPopup: FC<{
-  pageId: string;
-}> = ({ pageId }) => {
+const AddComponentItemPopup = () => {
   const { t } = useTranslation("admin");
   const { t: tPages } = useTranslation("pages");
 
@@ -48,7 +44,7 @@ const AddComponentItemPopup: FC<{
   };
 
   const buildInputFieldConfigSchema = () => {
-    const inputsFieldConfig: {}[] = [];
+    const inputsFieldConfig: object[] = [];
 
     filteredInputs?.forEach(({ id, name, type, required }) => {
       inputsFieldConfig.push({
@@ -72,6 +68,7 @@ const AddComponentItemPopup: FC<{
       });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const yepSchema = inputsFieldConfig.reduce(buildValidationSchema, {});
 
     return object().shape(yepSchema).concat(validationSchema);
@@ -79,20 +76,26 @@ const AddComponentItemPopup: FC<{
 
   const submitHandler = (
     data: typeof initialValues,
-    { setSubmitting, resetForm }: any,
+    {
+      setSubmitting,
+      resetForm,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      resetForm: (isReset: boolean) => void;
+    },
   ) => {
     try {
       addComponentItem(
         {
           componentId: componentId,
-          name: data.itemName as string,
-          pageId: component?.pageId as string,
+          name: data.itemName!,
+          pageId: component!.pageId,
           pageComponentData: data,
         },
         {
-          onSuccess: () => {
-            ctx.authPages.getCurrentPageComponents.invalidate();
-            ctx.authPages.getPageInputsValues.invalidate();
+          async onSuccess() {
+            await ctx.authPages.getCurrentPageComponents.invalidate();
+            await ctx.authPages.getPageInputsValues.invalidate();
           },
         },
       );

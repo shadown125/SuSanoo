@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import EmailField from "elements/input-fields/email-field";
@@ -7,8 +7,8 @@ import { Form, Formik } from "formik";
 import { signIn } from "next-auth/react";
 import { useTranslation } from "next-i18next";
 import { admin } from "validation/admin";
-import { FormikSubmission } from "../src/types/formik";
-import { response } from "../src/types/response";
+import { type FormikSubmission } from "../src/types/formik";
+import { type response } from "../src/types/response";
 
 type SubmitData = {
   email: string;
@@ -42,7 +42,7 @@ const AdminForm: FC = () => {
         return;
       }
 
-      await status({ status: true });
+      status({ status: true });
       await router.replace(`${router.locale}/admin/panel`);
 
       setNotification("");

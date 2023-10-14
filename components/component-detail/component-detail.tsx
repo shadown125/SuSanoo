@@ -1,7 +1,7 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
-import { Input } from "@prisma/client";
+import { type Input } from "@prisma/client";
 import { useTranslation } from "next-i18next";
 import { useComponentsStore } from "../../src/store/components-store";
 import { usePopupStore } from "../../src/store/store";
@@ -37,8 +37,8 @@ const ComponentDetail: FC<{
     deleteComponent(
       { id: componentId },
       {
-        onSuccess: () => {
-          router.push("/admin/components");
+        async onSuccess() {
+          await router.push("/admin/components");
         },
       },
     );
@@ -136,7 +136,7 @@ const ComponentDetail: FC<{
         <button
           className="button is-primary back"
           type="button"
-          onClick={() => router.push("/admin/components")}
+          onClick={() => void router.push("/admin/components")}
         >
           <span>{t("back")}</span>
         </button>

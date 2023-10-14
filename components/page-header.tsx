@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import { links } from "content/navigation/links";
@@ -30,7 +30,7 @@ const PageHeader: FC = () => {
         )}
         <div className="content">
           <LanguageSwitch />
-          <button className="button is-primary" onClick={logoutHandler}>
+          <button className="button is-primary" onClick={void logoutHandler}>
             <span>{t("logout")}</span>
           </button>
         </div>

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { api } from "@/utils/api";
 import { InputsTypes } from "@prisma/client";
 import CheckboxField from "elements/input-fields/checkbox-field";
@@ -8,7 +8,7 @@ import { useTranslation } from "next-i18next";
 import { boolean, object, string } from "yup";
 import { useComponentsStore } from "../src/store/components-store";
 import { usePopupStore } from "../src/store/store";
-import { FormikSubmission } from "../src/types/formik";
+import { type FormikSubmission } from "../src/types/formik";
 
 const validationSchema = object({
   required: boolean().required(),
@@ -58,9 +58,9 @@ const AddInput: FC = () => {
           isItemInput,
         },
         {
-          onSuccess: () => {
+          async onSuccess() {
             setInputPopupState(false);
-            context.authComponents.get.invalidate();
+            await context.authComponents.get.invalidate();
           },
         },
       );
@@ -69,8 +69,8 @@ const AddInput: FC = () => {
           componentId,
         },
         {
-          onSuccess: () => {
-            context.authComponents.getCurrentComponentsHistory.invalidate();
+          async onSuccess() {
+            await context.authComponents.getCurrentComponentsHistory.invalidate();
           },
         },
       );

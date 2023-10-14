@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
 import { Form, Formik } from "formik";
 import { useTranslation } from "next-i18next";
@@ -56,18 +56,18 @@ const EditComponentItemPopup: FC<{
       filteredInput.value.forEach((pageInputValues) => {
         pageInputValues.value.forEach((inputValue) => {
           if (inputValue.language === activePageLanguage) {
-            initialValues[pageInputValues.pageComponentItemsInputId || ""] =
+            initialValues[pageInputValues.pageComponentItemsInputId ?? ""] =
               inputValue.value;
           }
         });
       });
     });
 
-    return { itemName: pageItemComponent?.name as string, ...initialValues };
+    return { itemName: pageItemComponent!.name, ...initialValues };
   };
 
   const buildInputFieldConfigSchema = () => {
-    const inputsFieldConfig: {}[] = [];
+    const inputsFieldConfig: object[] = [];
 
     pageItemComponent?.inputs?.forEach(({ id, name, type, required }) => {
       const value = pageInputsValues?.find(
@@ -95,6 +95,7 @@ const EditComponentItemPopup: FC<{
       });
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const yepSchema = inputsFieldConfig.reduce(buildValidationSchema, {});
 
     return object().shape(yepSchema).concat(validationSchema);
@@ -102,7 +103,13 @@ const EditComponentItemPopup: FC<{
 
   const submitHandler = (
     data: typeof initialValues,
-    { setSubmitting, resetForm }: any,
+    {
+      setSubmitting,
+      resetForm,
+    }: {
+      setSubmitting: (isSubmitting: boolean) => void;
+      resetForm: (reset: boolean) => void;
+    },
   ) => {
     try {
       for (const [key, value] of Object.entries(data)) {
@@ -116,9 +123,9 @@ const EditComponentItemPopup: FC<{
                   language: activePageLanguage,
                 },
                 {
-                  onSuccess: () => {
-                    ctx.authPages.getCurrentPageComponents.invalidate();
-                    ctx.authPages.getPageComponentItemById.invalidate();
+                  async onSuccess() {
+                    await ctx.authPages.getCurrentPageComponents.invalidate();
+                    await ctx.authPages.getPageComponentItemById.invalidate();
                   },
                 },
               );
@@ -142,10 +149,10 @@ const EditComponentItemPopup: FC<{
         pageComponentItemId: componentItemId,
       },
       {
-        onSuccess: () => {
-          ctx.authPages.getCurrentPageComponents.invalidate();
-          ctx.authPages.getPageComponentItemById.invalidate();
-          ctx.authPages.getPageInputsValues.invalidate();
+        async onSuccess() {
+          await ctx.authPages.getCurrentPageComponents.invalidate();
+          await ctx.authPages.getPageComponentItemById.invalidate();
+          await ctx.authPages.getPageInputsValues.invalidate();
         },
       },
     );
@@ -192,8 +199,8 @@ const EditComponentItemPopup: FC<{
                           {ComponentInputBuilder(
                             pageInput.type as string,
                             pageInput.name,
-                            pageInputValues.pageComponentItemsInputId as string,
-                            pageInputValues.pageComponentItemsInputId as string,
+                            pageInputValues.pageComponentItemsInputId!,
+                            pageInputValues.pageComponentItemsInputId!,
                           )}
                         </div>
                       );

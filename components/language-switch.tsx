@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { languages } from "content/languages/languages";
-import { motion, Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useTranslation } from "next-i18next";
 
 type activeLanguage =

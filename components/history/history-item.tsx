@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
 import { useTranslation } from "next-i18next";
 import UserProfile from "../profile/user-profile";

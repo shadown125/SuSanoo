@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import Image from "next/image";
 import { api } from "@/utils/api";
 
@@ -11,7 +11,7 @@ const Profile: FC = () => {
         <div className="profile">
           <div className="image-wrapper">
             <Image
-              src={user.image as string}
+              src={user.image!}
               sizes="100vw"
               width={150}
               height={150}

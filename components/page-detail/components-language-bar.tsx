@@ -1,4 +1,4 @@
-import { FC, Fragment, useReducer, useState } from "react";
+import { Fragment, useState, type FC } from "react";
 import { api } from "@/utils/api";
 import { useClickOutside } from "@mantine/hooks";
 import { Languages } from "@prisma/client";
@@ -44,10 +44,10 @@ const ComponentsLanguageBar: FC<{
     addLanguage(
       { pageId, language: enumLanguage },
       {
-        onSuccess: () => {
+        async onSuccess() {
           setLanguageDropdown(false);
 
-          ctx.authPages.getById.invalidate({ id: pageId });
+          await ctx.authPages.getById.invalidate({ id: pageId });
         },
       },
     );
@@ -59,10 +59,10 @@ const ComponentsLanguageBar: FC<{
     deleteLanguage(
       { pageId, language: enumLanguage },
       {
-        onSuccess: async () => {
+        async onSuccess() {
           setDeleteLanguagePopup(false);
 
-          ctx.authPages.getById.invalidate({ id: pageId });
+          await ctx.authPages.getById.invalidate({ id: pageId });
         },
       },
     );

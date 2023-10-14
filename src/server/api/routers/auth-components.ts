@@ -192,7 +192,7 @@ export const authComponents = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { componentId, pageId, language } = input;
+      const { componentId, pageId } = input;
 
       const component = await ctx.db.component.findUnique({
         where: {
@@ -241,7 +241,7 @@ export const authComponents = createTRPCRouter({
         },
       });
 
-      component.input.forEach(async (input) => {
+      component.input.map(async (input) => {
         if (!input.componentItemId) {
           await ctx.db.pageInputsValues.create({
             data: {
@@ -278,8 +278,8 @@ export const authComponents = createTRPCRouter({
         throw new Error("Page inputs values not found");
       }
 
-      pageInputsValues.forEach(async (pageInputValue) => {
-        page.pageLanguages.forEach(async (pageLanguage) => {
+      pageInputsValues.map((pageInputValue) => {
+        page.pageLanguages.map(async (pageLanguage) => {
           await ctx.db.pageInputsValuesBasedOnLanguage.create({
             data: {
               pageInputsValuesId: pageInputValue.id,

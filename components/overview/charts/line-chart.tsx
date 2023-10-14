@@ -1,14 +1,14 @@
-import { FC } from "react";
+import { type FC } from "react";
 import {
   CategoryScale,
-  ChartData,
   Chart as ChartJS,
-  ChartOptions,
   Legend,
   LinearScale,
   LineElement,
   PointElement,
   Tooltip,
+  type ChartData,
+  type ChartOptions,
 } from "chart.js";
 import { useTranslation } from "next-i18next";
 import { Line } from "react-chartjs-2";

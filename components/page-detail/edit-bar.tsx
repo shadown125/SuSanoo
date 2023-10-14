@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState, type FC } from "react";
 import { useRouter } from "next/router";
 import { api } from "@/utils/api";
 import { useTranslation } from "next-i18next";
@@ -35,12 +35,12 @@ const EditBar: FC<{
     deletePage(
       { id: pageId },
       {
-        onSuccess: () => {
+        async onSuccess() {
           router.back();
           setEditState(false);
           setDeletePagePopup(false);
 
-          ctx.authPages.get.invalidate();
+          await ctx.authPages.get.invalidate();
         },
       },
     );
@@ -53,8 +53,8 @@ const EditBar: FC<{
         active: !active,
       },
       {
-        onSuccess: () => {
-          ctx.authPages.get.invalidate();
+        async onSuccess() {
+          await ctx.authPages.get.invalidate();
         },
       },
     );

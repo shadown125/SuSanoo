@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { type GetServerSideProps, type NextPage } from "next";
 import { getServerAuthSession } from "@/server/auth";
 import AdminForm from "components/admin-form";
 import { useTranslation } from "next-i18next";

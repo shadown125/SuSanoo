@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { api } from "@/utils/api";
 import { InputsTypes } from "@prisma/client";
 import { Form, Formik } from "formik";
@@ -8,7 +8,7 @@ import CheckboxField from "../../elements/input-fields/checkbox-field";
 import SelectField from "../../elements/input-fields/select-field";
 import TextField from "../../elements/input-fields/text-field";
 import { useComponentsStore } from "../../src/store/components-store";
-import { FormikSubmission } from "../../src/types/formik";
+import { type FormikSubmission } from "../../src/types/formik";
 
 const validationSchema = object({
   required: boolean().required(),
@@ -20,19 +20,14 @@ const EditPopup: FC = () => {
   const { t } = useTranslation("common");
   const context = api.useContext();
 
-  const {
-    componentId,
-    editInputId,
-    isEditPopupOpen,
-    setIsEditPopupOpen,
-    isItemInput,
-  } = useComponentsStore((state) => ({
-    isEditPopupOpen: state.isEditPopupOpen,
-    setIsEditPopupOpen: state.setIsEditPopupOpen,
-    editInputId: state.editInputId,
-    componentId: state.componentId,
-    isItemInput: state.isItemInput,
-  }));
+  const { componentId, editInputId, isEditPopupOpen, setIsEditPopupOpen } =
+    useComponentsStore((state) => ({
+      isEditPopupOpen: state.isEditPopupOpen,
+      setIsEditPopupOpen: state.setIsEditPopupOpen,
+      editInputId: state.editInputId,
+      componentId: state.componentId,
+      isItemInput: state.isItemInput,
+    }));
 
   const { data: input } = api.authInputs.getById.useQuery(editInputId);
   const { mutate: inputDelete } = api.authInputs.delete.useMutation();
@@ -58,12 +53,12 @@ const EditPopup: FC = () => {
           required: required,
           name: name,
           halfRow: half,
-          type: data.inputTypes as InputsTypes,
+          type: data.inputTypes!,
         },
         {
-          onSuccess: () => {
-            context.authComponents.get.invalidate();
-            context.authInputs.getById.invalidate();
+          async onSuccess() {
+            await context.authComponents.get.invalidate();
+            await context.authInputs.getById.invalidate();
 
             setIsEditPopupOpen(false);
           },
@@ -74,8 +69,8 @@ const EditPopup: FC = () => {
           componentId,
         },
         {
-          onSuccess: () => {
-            context.authComponents.getCurrentComponentsHistory.invalidate();
+          async onSuccess() {
+            await context.authComponents.getCurrentComponentsHistory.invalidate();
           },
         },
       );
@@ -94,8 +89,8 @@ const EditPopup: FC = () => {
         id: editInputId,
       },
       {
-        onSuccess: () => {
-          context.authComponents.get.invalidate();
+        async onSuccess() {
+          await context.authComponents.get.invalidate();
           setIsEditPopupOpen(false);
         },
       },
@@ -105,8 +100,8 @@ const EditPopup: FC = () => {
         componentId,
       },
       {
-        onSuccess: () => {
-          context.authComponents.getCurrentComponentsHistory.invalidate();
+        async onSuccess() {
+          await context.authComponents.getCurrentComponentsHistory.invalidate();
         },
       },
     );
